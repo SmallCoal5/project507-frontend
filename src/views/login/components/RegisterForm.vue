@@ -18,7 +18,7 @@
 	<div class="login-btn">
 		<!-- <el-button :icon="CircleClose" round @click="resetForm(loginFormRef)" size="large">注册</el-button> -->
 		<el-button :icon="UserFilled" round @click="login(loginFormRef)" size="large" type="primary" :loading="loading">
-			登录
+			注册
 		</el-button>
 	</div>
 </template>
