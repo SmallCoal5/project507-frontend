@@ -187,15 +187,15 @@ Geeker-Admin
 
 ## 八、项目后台接口 🧩
 
-> 项目后台接口完全采用 Mock 数据  
-> 推荐一个在线 Mock 平台： https://www.fastmock.site/
+> 项目后台接口： https://gitee.com/qiu-xinyun/project507-backend
 
-## 九、Vue3 优秀项目推荐 ✨
+## 九、参考项目 ✨
 
+- geeker-admin: https://github.com/HalseySpicy/Geeker-Admin
 - gin-vue-admin：https://github.com/flipped-aurora/gin-vue-admin
 - vue-vben-admin：https://github.com/vbenjs/vue-vben-admin
 
-## 十、微信交流群
+## 十、微信号
 
 > **😀 微信群超过 200 人了，请加我好友，我拉大家进群。**
 

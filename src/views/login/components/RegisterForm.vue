@@ -17,7 +17,7 @@
 	</el-form>
 	<div class="login-btn">
 		<!-- <el-button :icon="CircleClose" round @click="resetForm(loginFormRef)" size="large">注册</el-button> -->
-		<el-button :icon="UserFilled" round @click="login(loginFormRef)" size="large" type="primary" :loading="loading">
+		<el-button :icon="UserFilled" round @click="signup(loginFormRef)" size="large" type="primary" :loading="loading">
 			注册
 		</el-button>
 	</div>
@@ -25,17 +25,18 @@
 
 <script setup lang="ts">
 import { ref, reactive, inject } from "vue";
-import { useRouter } from "vue-router";
+// import { ref, reactive } from "vue";
+// import { useRouter } from "vue-router";
 import { Login } from "@/api/interface";
 import { InjectProps } from "../interface/index";
 import { UserFilled } from "@element-plus/icons-vue";
 import type { ElForm } from "element-plus";
 import { ElMessage } from "element-plus";
-import { loginApi } from "@/api/modules/login";
-import { GlobalStore } from "@/store";
+import { signupApi } from "@/api/modules/login";
+// import { GlobalStore } from "@/store";
 import md5 from "js-md5";
 
-const globalStore = GlobalStore();
+// const globalStore = GlobalStore();
 
 // 定义 formRef（校验规则）
 type FormInstance = InstanceType<typeof ElForm>;
@@ -47,14 +48,14 @@ const loginRules = reactive({
 
 // 登录表单数据
 const loginForm = reactive<Login.ReqLoginForm>({
-	username: "admin",
-	password: "123456"
+	username: "",
+	password: ""
 });
 const loading = ref<boolean>(false);
 
-const router = useRouter();
+// const router = useRouter();
 // login
-const login = (formEl: FormInstance | undefined) => {
+const signup = (formEl: FormInstance | undefined) => {
 	if (!formEl) return;
 	formEl.validate(async valid => {
 		if (valid) {
@@ -64,10 +65,15 @@ const login = (formEl: FormInstance | undefined) => {
 					username: loginForm.username,
 					password: md5(loginForm.password)
 				};
-				const res = await loginApi(requestLoginForm);
-				globalStore.setToken(res.data!.access_token);
-				ElMessage.success("登录成功！");
-				router.push({ name: "home" });
+				// eslint-disable-next-line @typescript-eslint/no-unused-vars
+				const res = await signupApi(requestLoginForm);
+				// const res = await signupApi(requestLoginForm);
+				// console.log("响应数据", res.data);
+				// globalStore.setToken(res.data!.access_token);
+				ElMessage.success("注册成功！");
+				isLogin.value = !isLogin.value;
+				// provideState.changeType();
+				// router.push({ name: "login" });
 			} finally {
 				loading.value = false;
 			}
@@ -83,29 +89,31 @@ const login = (formEl: FormInstance | undefined) => {
 
 // * 以下数据都为自己测试使用，不参与功能开发
 // inject
-const provideState = inject("provideState") as InjectProps;
-// console.log(provideState.age);
-provideState.changeName();
+const isLogin = inject("isLogin") as InjectProps;
+// console.log(isLogin.value);
+// isLogin.value = !isLogin.value;
+// provideState.changeType();
+// provideState.changeName();
 
 // 接收父组件参数（采用ts专有声明，有默认值）
-interface ParentProps {
-	age?: string;
-	address?: string[];
-	obj?: {
-		username: string;
-		password: string;
-	};
-}
-withDefaults(defineProps<ParentProps>(), {
-	age: "18",
-	address: () => ["天府广场", "天府三街"],
-	obj: () => {
-		return {
-			username: "admin",
-			password: "123456"
-		};
-	}
-});
+// interface ParentProps {
+// 	age?: string;
+// 	address?: string[];
+// 	obj?: {
+// 		username: string;
+// 		password: string;
+// 	};
+// }
+// withDefaults(defineProps<ParentProps>(), {
+// 	age: "18",
+// 	address: () => ["天府广场", "天府三街"],
+// 	obj: () => {
+// 		return {
+// 			username: "admin",
+// 			password: "123456"
+// 		};
+// 	}
+// });
 
 // 接收父组件参数（采用ts专有声明，无默认值）
 // const props1 = defineProps<{ item: string }>();
@@ -120,14 +128,14 @@ withDefaults(defineProps<ParentProps>(), {
 // };
 
 // 子组件数据暴露给父组件
-const count = ref<number>(1);
-const consoleNumber = (name: string): void => {
-	console.log("我是子组件打印的数据", name);
-};
-defineExpose({
-	count,
-	consoleNumber
-});
+// const count = ref<number>(1);
+// const consoleNumber = (name: string): void => {
+// 	console.log("我是子组件打印的数据", name);
+// };
+// defineExpose({
+// 	count,
+// 	consoleNumber
+// });
 </script>
 
 <style scoped lang="scss">

@@ -10,10 +10,9 @@
 					<!-- <img class="login-img" src="@/assets/images/form_icon.png" alt="form_icon" /> -->
 					<div class="login-form" v-if="isLogin">
 						<div class="login-logo">
-							<!-- <img class="login-icon" src="@/assets/images/logo.svg" alt="" /> -->
 							<p class="logo-text">你好，朋友!</p>
 						</div>
-						<RegisterForm ref="loginRef" :age="'20'" :address="['天府三街', '天府四街']" :obj="obj"></RegisterForm>
+						<RegisterForm ref="loginRef"></RegisterForm>
 					</div>
 					<div class="login-form" v-else>
 						<div class="login-logo">
@@ -27,12 +26,12 @@
 					<div class="small-contain" key="smallContainRegister" v-if="isLogin">
 						<img class="login-icon" src="@/assets/images/logo.svg" alt="" />
 						<el-button class="sbutton" round @click="changeType" size="large">登录</el-button>
-						<el-button class="sbutton" round @click="changeType" size="large">游客</el-button>
+						<el-button class="sbutton" round size="large">游客</el-button>
 					</div>
 					<div class="small-contain" key="smallContainLogin" v-else>
 						<img class="login-icon" src="@/assets/images/logo.svg" alt="" />
 						<el-button class="sbutton" round @click="changeType" size="large">注册</el-button>
-						<el-button class="sbutton" round @click="changeType" size="large">游客</el-button>
+						<el-button class="sbutton" round size="large">游客</el-button>
 					</div>
 				</div>
 			</div>
@@ -70,22 +69,6 @@ import { LoginFormExpose } from "./interface/index";
 import { Login } from "@/api/interface/index";
 import { ref, reactive, provide } from "vue";
 
-// * 以下数据都为自己测试使用，不参与功能开发
-// 使用provide传方法
-let phone = ref<string>("iphone");
-// provide
-provide("provideState", {
-	name: "liutao",
-	age: "20",
-	changeName: () => {
-		// console.log(phone.value);
-		setTimeout(() => {
-			phone.value = "huawei";
-			// console.log(phone.value);
-		}, 1000);
-	}
-});
-
 // 传给子组件方法（submitParent）
 // const submitParent = (LoginFrom: Login.ReqLoginForm) => {
 // 	console.log(LoginFrom);
@@ -112,6 +95,23 @@ const isLogin = ref<boolean>(false);
 const changeType = () => {
 	isLogin.value = !isLogin.value;
 };
+
+// * 以下数据都为自己测试使用，不参与功能开发
+// 使用provide传方法
+let phone = ref<string>("iphone");
+// provide
+provide("provideState", {
+	name: "liutao",
+	age: "20",
+	changeName: () => {
+		// console.log(phone.value);
+		setTimeout(() => {
+			phone.value = "huawei";
+			// console.log(phone.value);
+		}, 1000);
+	}
+});
+provide("isLogin", isLogin);
 </script>
 
 <style scoped lang="scss">

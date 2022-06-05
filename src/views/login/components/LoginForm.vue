@@ -17,10 +17,9 @@
 	</el-form>
 	<div class="login-btn">
 		<!-- <el-button :icon="CircleClose" round @click="resetForm(loginFormRef)" size="large">注册</el-button> -->
-		<el-button :icon="UserFilled" round @click="login(loginFormRef)" size="large" type="primary" :loading="loading">
-			登录
-		</el-button>
+		<el-button :icon="UserFilled" round @click="onShowVcode" size="large" type="primary" :loading="loading"> 登录 </el-button>
 	</div>
+	<Vcode :show="isShowVcode" @success="onSuccessVcode(loginFormRef)" @close="onCloseVcode" />
 </template>
 
 <script setup lang="ts">
@@ -34,7 +33,7 @@ import { ElMessage } from "element-plus";
 import { loginApi } from "@/api/modules/login";
 import { GlobalStore } from "@/store";
 import md5 from "js-md5";
-
+import Vcode from "vue3-puzzle-vcode";
 const globalStore = GlobalStore();
 
 // 定义 formRef（校验规则）
@@ -51,7 +50,7 @@ const loginForm = reactive<Login.ReqLoginForm>({
 	password: "123456"
 });
 const loading = ref<boolean>(false);
-
+const isShowVcode = ref<boolean>(false);
 const router = useRouter();
 // login
 const login = (formEl: FormInstance | undefined) => {
@@ -65,7 +64,11 @@ const login = (formEl: FormInstance | undefined) => {
 					password: md5(loginForm.password)
 				};
 				const res = await loginApi(requestLoginForm);
-				globalStore.setToken(res.data!.access_token);
+				globalStore.setToken(res.data!.token);
+				globalStore.setUUID(res.data!.uuid);
+				globalStore.setExpireTime(res.data!.expire_time);
+				console.log(res);
+				console.log(globalStore.token);
 				ElMessage.success("登录成功！");
 				router.push({ name: "home" });
 			} finally {
@@ -74,7 +77,18 @@ const login = (formEl: FormInstance | undefined) => {
 		}
 	});
 };
+const onShowVcode = () => {
+	isShowVcode.value = true;
+};
 
+const onCloseVcode = () => {
+	isShowVcode.value = false;
+};
+
+const onSuccessVcode = (formEl: FormInstance | undefined) => {
+	onCloseVcode(); // 验证成功，需要手动关闭模态框
+	login(formEl);
+};
 // resetForm
 // const resetForm = (formEl: FormInstance | undefined) => {
 // 	if (!formEl) return;

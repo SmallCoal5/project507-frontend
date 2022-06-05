@@ -12,6 +12,9 @@ export const GlobalStore = defineStore({
 	state: (): GlobalState => ({
 		// token
 		token: "",
+		// uuid
+		uuid: "",
+		expireTime: 0,
 		// userInfo
 		userInfo: "",
 		// element组件大小
@@ -31,6 +34,12 @@ export const GlobalStore = defineStore({
 		// setToken
 		setToken(token: string) {
 			this.token = token;
+		},
+		setUUID(uuid: string) {
+			this.uuid = uuid;
+		},
+		setExpireTime(time: number) {
+			this.expireTime = time;
 		},
 		// setUserInfo
 		setUserInfo(userInfo: any) {

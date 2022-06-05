@@ -3,7 +3,7 @@ import { showFullScreenLoading, tryHideFullScreenLoading } from "@/config/servic
 import { AxiosCanceler } from "./helper/axiosCancel";
 import { ResultData } from "@/api/interface";
 import { ResultEnum } from "@/enums/httpEnum";
-import { checkStatus } from "./helper/checkStatus";
+// import { checkStatus } from "./helper/checkStatus";
 import { ElMessage } from "element-plus";
 import { GlobalStore } from "@/store";
 
@@ -38,8 +38,9 @@ class RequestHttp {
 				// * 将当前请求添加到 pending 中
 				axiosCanceler.addPending(config);
 				showFullScreenLoading();
+				console.log("发送请求");
 				const token: string = globalStore.token;
-				return { ...config, headers: { "x-access-token": token } };
+				return { ...config, headers: { token: token } };
 			},
 			(error: AxiosError) => {
 				return Promise.reject(error);
@@ -67,6 +68,7 @@ class RequestHttp {
 				}
 				// * 全局错误信息拦截（防止下载文件得时候返回数据流，没有code，直接报错）
 				if (data.code && data.code !== ResultEnum.SUCCESS) {
+					console.log("拦截响应");
 					ElMessage.error(data.msg);
 					return Promise.reject(data);
 				}
@@ -75,9 +77,23 @@ class RequestHttp {
 			},
 			async (error: AxiosError) => {
 				const { response } = error;
+				const data: any = response?.data;
+				console.log("错误", error);
 				tryHideFullScreenLoading();
 				// 根据响应的错误状态码，做不同的处理
-				if (response) return checkStatus(response.status);
+				// if (response) return checkStatus(response.status);
+				if (!response) return Promise.reject(error);
+				if (data && data.code) {
+					// console.log("拦截响应");
+					ElMessage.error(data.msg);
+					// ElMessage({
+					// 	type: "error",
+					// 	showClose: true,
+					// 	message: data.msg,
+					// 	center: true
+					// });
+					return Promise.reject(data);
+				}
 				// 服务器结果都没有返回(可能服务器错误可能客户端断网)，断网处理:可以跳转到断网页面
 				if (!window.navigator.onLine) return router.replace({ path: "/500" });
 				return Promise.reject(error);

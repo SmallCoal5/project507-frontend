@@ -30,7 +30,9 @@ export namespace Login {
 		password: string;
 	}
 	export interface ResLogin {
-		access_token: string;
+		uuid: string;
+		token: string;
+		expire_time: number;
 	}
 	export interface ResAuthButtons {
 		[propName: string]: any;

@@ -7,6 +7,8 @@ export interface ThemeConfigProp {
 /* GlobalState */
 export interface GlobalState {
 	token: string;
+	uuid: string;
+	expireTime: number;
 	userInfo: any;
 	assemblySize: string;
 	language: string;
