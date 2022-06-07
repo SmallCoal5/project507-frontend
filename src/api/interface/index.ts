@@ -51,16 +51,18 @@ export namespace User {
 		status: number;
 	}
 	export interface ResUserList {
-		id: string;
+		id: number;
 		username: string;
-		gender: string;
-		age: number;
-		idCard: string;
+		password: string;
+		// gender: string;
+		// age: number;
+		student_id: string;
 		email: string;
 		address: string;
-		createTime: string;
-		status: number;
+		created_on: string;
+		modified_on: string;
 		avatar: string;
+		state: number;
 		children?: ResUserList[];
 	}
 }

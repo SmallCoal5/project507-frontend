@@ -49,7 +49,7 @@ import { useHandleData } from "@/hooks/useHandleData";
 import { useDownload } from "@/hooks/useDownload";
 import ProTable from "@/components/ProTable/index.vue";
 import ImportExcel from "@/components/ImportExcel/index.vue";
-import UserDrawer from "@/views/proTable/components/UserDrawer.vue";
+import UserDrawer from "@/views/user/components/UserDrawer.vue";
 import { CirclePlus, Delete, EditPen, Download, Upload, View, Refresh } from "@element-plus/icons-vue";
 import {
 	getUserList,
@@ -104,14 +104,16 @@ const columns: Partial<ColumnProps>[] = [
 	// },
 	{
 		prop: "ID",
-		label: "UserID",
+		label: "ID",
+		sortable: true,
 		search: true
 	},
 	{
 		prop: "username",
 		label: "用户名",
+		sortable: true,
 		search: true,
-		width: 135,
+		width: 160,
 		renderHeader
 	},
 	// {
@@ -140,9 +142,8 @@ const columns: Partial<ColumnProps>[] = [
 	},
 	{
 		prop: "state",
-		label: "用户状态",
-		sortable: true,
-		width: 160
+		label: "用户状态"
+		// width: 50
 	},
 	{
 		prop: "avatar",

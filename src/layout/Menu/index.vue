@@ -37,6 +37,7 @@ onMounted(async () => {
 	const res = await getMenuList();
 	if (!res.data) return;
 	// 把路由菜单处理成一维数组（存储到 pinia 中）
+	// console.log("获取菜单列表", res.data);
 	const dynamicRouter = handleRouter(res.data);
 	authStore.setAuthRouter(dynamicRouter);
 	menuStore.setMenuList(res.data);

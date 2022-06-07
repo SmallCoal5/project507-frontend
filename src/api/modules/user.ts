@@ -9,12 +9,12 @@ import http from "@/api";
  */
 // * 获取用户列表
 export const getUserList = (params: User.ReqGetUserParams) => {
-	return http.post<ResPage<User.ResUserList>>(PORT1 + `/user/list`, params);
+	return http.get<ResPage<User.ResUserList>>(`/user/list`, params);
 };
 
 // * 新增用户
 export const addUser = (params: { id: string }) => {
-	return http.post(PORT1 + `/user/add`, params);
+	return http.post(`/user/register`, params);
 };
 
 // * 批量添加用户
