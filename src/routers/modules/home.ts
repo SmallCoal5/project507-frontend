@@ -4,19 +4,19 @@ import { Layout } from "@/routers/constant";
 // 首页模块
 const homeRouter: Array<RouteRecordRaw> = [
 	{
-		path: "/home",
+		path: "/admin",
 		component: Layout,
-		redirect: "/home/index",
+		redirect: "/admin/home",
 		children: [
 			{
-				path: "index",
-				name: "home",
+				path: "/admin/home",
+				name: "admin",
 				component: () => import("@/views/home/index.vue"),
 				meta: {
 					keepAlive: true,
 					requiresAuth: true,
 					title: "首页",
-					key: "home"
+					key: "admin"
 				}
 			}
 		]

@@ -16,12 +16,12 @@
 
 <script setup lang="ts">
 import { TabsStore } from "@/store/modules/tabs";
-import { HOME_URL } from "@/config/config";
+import { ADMIN_URL } from "@/config/config";
 const tabStore = TabsStore();
 
 // Close Current
 const closeCurrentTab = () => {
-	if (tabStore.tabsMenuValue === HOME_URL) return;
+	if (tabStore.tabsMenuValue === ADMIN_URL) return;
 	tabStore.removeTabs(tabStore.tabsMenuValue);
 };
 

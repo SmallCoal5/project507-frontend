@@ -2,14 +2,14 @@ import { defineStore } from "pinia";
 import { TabPaneProps } from "element-plus";
 import { TabsState } from "../interface";
 import piniaPersistConfig from "@/config/piniaPersist";
-import { HOME_URL, TABS_BLACK_LIST } from "@/config/config";
+import { ADMIN_URL, TABS_BLACK_LIST } from "@/config/config";
 import router from "@/routers/index";
 
 export const TabsStore = defineStore({
 	id: "TabsState",
 	state: (): TabsState => ({
-		tabsMenuValue: HOME_URL,
-		tabsMenuList: [{ title: "首页", path: HOME_URL, icon: "home-filled", close: false }]
+		tabsMenuValue: ADMIN_URL,
+		tabsMenuList: [{ title: "首页", path: ADMIN_URL, icon: "home-filled", close: false }]
 	}),
 	getters: {},
 	actions: {
@@ -61,13 +61,13 @@ export const TabsStore = defineStore({
 		// Close MultipleTab
 		async closeMultipleTab(tabsMenuValue?: string) {
 			this.tabsMenuList = this.tabsMenuList.filter(item => {
-				return item.path === tabsMenuValue || item.path === HOME_URL;
+				return item.path === tabsMenuValue || item.path === ADMIN_URL;
 			});
 		},
 		// Go Home
 		async goHome() {
-			router.push(HOME_URL);
-			this.tabsMenuValue = HOME_URL;
+			router.push(ADMIN_URL);
+			this.tabsMenuValue = ADMIN_URL;
 		}
 	},
 	persist: piniaPersistConfig("TabsState")

@@ -25,3 +25,7 @@ export const getAuthButtons = () => {
 export const getMenuList = () => {
 	return http.get<Menu.MenuOptions[]>(`/admin/menu/list`);
 };
+
+export const refreshToken = (params: { uuid: string; id: number }) => {
+	return http.post<Login.ResLogin>(`/user/refreshToken/` + params.id, params);
+};

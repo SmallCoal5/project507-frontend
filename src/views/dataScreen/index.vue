@@ -118,7 +118,7 @@
 
 <script setup lang="ts">
 import { ref, Ref, reactive, onMounted, onBeforeUnmount } from "vue";
-import { HOME_URL } from "@/config/config";
+import { ADMIN_URL } from "@/config/config";
 import { randomNum } from "@/utils/util";
 import { useRouter } from "vue-router";
 import { useTime } from "@/hooks/useTime";
@@ -413,7 +413,7 @@ timer = setInterval(() => {
 /* 跳转home */
 const router = useRouter();
 const handleTo = (): void => {
-	router.push(HOME_URL);
+	router.push(ADMIN_URL);
 };
 
 /* 销毁时触发 */

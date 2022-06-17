@@ -15,6 +15,8 @@ export const GlobalStore = defineStore({
 		// uuid
 		uuid: "",
 		expireTime: 0,
+		uid: 0,
+		username: "",
 		// userInfo
 		userInfo: "",
 		// element组件大小
@@ -40,6 +42,12 @@ export const GlobalStore = defineStore({
 		},
 		setExpireTime(time: number) {
 			this.expireTime = time;
+		},
+		setUID(uid: number) {
+			this.uid = uid;
+		},
+		setUsername(username: string) {
+			this.username = username;
 		},
 		// setUserInfo
 		setUserInfo(userInfo: any) {

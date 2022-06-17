@@ -39,7 +39,7 @@
 	</div>
 </template>
 
-<script setup lang="tsx" name="useComponent">
+<script setup lang="tsx" name="userList">
 import { ref, reactive } from "vue";
 // import { genderType } from "@/utils/serviceDict";
 import { ElMessage } from "element-plus";
@@ -49,7 +49,7 @@ import { useHandleData } from "@/hooks/useHandleData";
 import { useDownload } from "@/hooks/useDownload";
 import ProTable from "@/components/ProTable/index.vue";
 import ImportExcel from "@/components/ImportExcel/index.vue";
-import UserDrawer from "@/views/proTable/components/UserDrawer.vue";
+import UserDrawer from "@/views/admin/components/UserDrawer.vue";
 import { CirclePlus, Delete, EditPen, Download, Upload, View, Refresh } from "@element-plus/icons-vue";
 import {
 	getUserList,
@@ -104,14 +104,16 @@ const columns: Partial<ColumnProps>[] = [
 	// },
 	{
 		prop: "ID",
-		label: "UserID",
+		label: "ID",
+		sortable: true,
 		search: true
 	},
 	{
 		prop: "username",
 		label: "用户名",
+		sortable: true,
 		search: true,
-		width: 135,
+		width: 160,
 		renderHeader
 	},
 	// {
@@ -141,8 +143,7 @@ const columns: Partial<ColumnProps>[] = [
 	{
 		prop: "state",
 		label: "用户状态",
-		sortable: true,
-		width: 160
+		width: 120
 	},
 	{
 		prop: "avatar",
@@ -179,7 +180,7 @@ const columns: Partial<ColumnProps>[] = [
 
 // 删除用户信息
 const deleteAccount = async (params: User.ResUserList) => {
-	await useHandleData(deleteUser, { id: [params.id] }, `删除【${params.username}】用户`);
+	await useHandleData(deleteUser, { id: params.ID }, `删除【${params.username}】用户`);
 	proTable.value.refresh();
 };
 
@@ -191,13 +192,14 @@ const batchDelete = async (id: string[]) => {
 
 // 重置用户密码
 const resetPass = async (params: User.ResUserList) => {
-	await useHandleData(resetUserPassWord, { id: params.id }, `重置【${params.username}】用户密码`);
+	await useHandleData(resetUserPassWord, { id: params.ID }, `重置【${params.username}】用户密码`);
 	proTable.value.refresh();
 };
 
 // 切换用户状态
 const changeStatus = async (row: User.ResUserList) => {
-	await useHandleData(changeUserStatus, { id: row.id, state: row.state == 1 ? 0 : 1 }, `切换【${row.username}】用户状态`);
+	console.log("切换用户状态q", row.ID);
+	await useHandleData(changeUserStatus, { id: row.ID, state: row.state == 1 ? 0 : 1 }, `切换【${row.username}】用户状态`);
 	proTable.value.refresh();
 };
 

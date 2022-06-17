@@ -10,11 +10,11 @@ Object.keys(metaRouters).forEach(item => {
 		routerArray.push(...metaRouters[item][key]);
 	});
 });
-
+console.log("routerArray", routerArray);
 const routes: RouteRecordRaw[] = [
 	{
 		path: "/",
-		redirect: { name: "login" }
+		redirect: { name: "admin" }
 	},
 	{
 		path: "/login",

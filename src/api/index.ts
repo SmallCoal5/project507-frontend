@@ -78,7 +78,7 @@ class RequestHttp {
 			async (error: AxiosError) => {
 				const { response } = error;
 				const data: any = response?.data;
-				console.log("错误", error);
+				// console.log("错误", error);
 				tryHideFullScreenLoading();
 				// 根据响应的错误状态码，做不同的处理
 				// if (response) return checkStatus(response.status);

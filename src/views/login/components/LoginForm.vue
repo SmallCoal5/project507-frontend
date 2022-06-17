@@ -67,10 +67,11 @@ const login = (formEl: FormInstance | undefined) => {
 				globalStore.setToken(res.data!.token);
 				globalStore.setUUID(res.data!.uuid);
 				globalStore.setExpireTime(res.data!.expire_time);
-				console.log(res);
+				globalStore.setUID(res.data!.uid);
+				console.log("login res:", res);
 				console.log(globalStore.token);
 				ElMessage.success("登录成功！");
-				router.push({ name: "home" });
+				router.push({ name: "admin" });
 			} finally {
 				loading.value = false;
 			}

@@ -13,7 +13,7 @@ export const getUserList = (params: User.ReqGetUserParams) => {
 };
 
 // * 新增用户
-export const addUser = (params: { id: string }) => {
+export const addUser = (params: { id: number }) => {
 	return http.post(`/user/register`, params);
 };
 
@@ -28,13 +28,13 @@ export const editUser = (params: { id: string }) => {
 };
 
 // * 删除用户
-export const deleteUser = (params: { id: string[] }) => {
-	return http.post(PORT1 + `/user/delete`, params);
+export const deleteUser = (params: { id: number }) => {
+	return http.delete(`/user/delete/` + params.id);
 };
 
 // * 切换用户状态
-export const changeUserStatus = (params: { id: string; status: number }) => {
-	return http.post(PORT1 + `/user/change`, params);
+export const changeUserStatus = (params: { id: number; state: number }) => {
+	return http.put(`/user/update/` + params.id + `/state`, params);
 };
 
 // * 重置用户密码

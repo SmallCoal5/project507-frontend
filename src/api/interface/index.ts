@@ -30,6 +30,8 @@ export namespace Login {
 		password: string;
 	}
 	export interface ResLogin {
+		uid: number;
+		username: string;
 		uuid: string;
 		token: string;
 		expire_time: number;
@@ -51,7 +53,7 @@ export namespace User {
 		status: number;
 	}
 	export interface ResUserList {
-		id: number;
+		ID: number;
 		username: string;
 		password: string;
 		// gender: string;
@@ -64,5 +66,57 @@ export namespace User {
 		avatar: string;
 		state: number;
 		children?: ResUserList[];
+	}
+}
+
+// *标签管理
+export namespace Tag {
+	export interface ReqTag extends ReqPage {
+		name: string;
+	}
+	export interface ResTag {
+		ID: number;
+		name: string;
+		state: number;
+	}
+}
+// *文章管理
+export namespace Article {
+	export interface Image {
+		ID: number;
+		name: string;
+	}
+	export interface Tag {
+		ID: number;
+		name: string;
+	}
+	export interface ReqGetArticleParams extends ReqPage {
+		title: string;
+		content: string;
+		user_id: number;
+		tags: string[];
+		images: File[];
+	}
+	export interface ReqAddArticleParams {
+		title: string;
+		content: string;
+		user_id: string;
+		tags: string[];
+	}
+	export interface ReqAddArticleWithImgParams extends ReqAddArticleParams {
+		images: File;
+	}
+	export interface ResArticleList {
+		ID: number;
+		title: string;
+		content: string;
+		user_id: number;
+		like: number;
+		watch: number;
+		tags: Tag[];
+		images: Image[];
+		state: number;
+		created_on: string;
+		modified_on: string;
 	}
 }
