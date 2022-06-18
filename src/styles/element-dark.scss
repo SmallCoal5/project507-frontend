@@ -110,6 +110,11 @@ html.dark {
 			}
 		}
 	}
+	.waterfall-list {
+		background-color: var(--geeker-main-bg-color);
+
+		// background-color: #2c2e3a;
+	}
 
 	// scroll-bar
 	::-webkit-scrollbar {

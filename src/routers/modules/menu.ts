@@ -1,11 +1,11 @@
 import { RouteRecordRaw } from "vue-router";
-import { Layout } from "@/routers/constant";
+import { LayoutAdmin } from "@/routers/constant";
 
 // menu模块(多级路由全部设置为二级路由，为了缓存页面，缺点：面包屑导航栏只能获取到最后一级)
 const menuRouter: Array<RouteRecordRaw> = [
 	{
 		path: "/menu",
-		component: Layout,
+		component: LayoutAdmin,
 		redirect: "/menu/menu1",
 		meta: {
 			title: "菜单嵌套"

@@ -1,23 +1,31 @@
 .header {
 	display: flex;
-	flex-direction: row;
 	justify-content: space-between;
 	align-items: center;
-	height: 60px;
+	height: 55px;
+	padding: 0 15px;
+	background-color: #ffffff;
+	border-bottom: 1px solid #f6f6f6;
 	box-sizing: border-box;
 	.header-lf {
-		display: flex;
-		.el-menu-top {
-			margin: 0;
+		.collapse-icon {
+			margin-right: 20px;
+			font-size: 22px;
+			cursor: pointer;
 		}
 	}
 	.header-ri {
-		margin-right: 17%;
+		margin: 0 30px;
 		.icon-style {
 			margin: 0 22px 0 0;
 			font-size: 20px;
 			color: rgb(0 0 0 / 75%);
 			cursor: pointer;
+		}
+		.username {
+			margin: 0 20px 0 0;
+			font-size: 15px;
+			color: rgb(0 0 0 / 75%);
 		}
 		.avatar {
 			width: 40px;

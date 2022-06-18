@@ -1,11 +1,11 @@
 import { RouteRecordRaw } from "vue-router";
-import { Layout } from "@/routers/constant";
+import { LayoutAdmin } from "@/routers/constant";
 
 // 超级表格模块
 const proTableRouter: Array<RouteRecordRaw> = [
 	{
 		path: "/proTable",
-		component: Layout,
+		component: LayoutAdmin,
 		redirect: "/proTable/useHooks",
 		meta: {
 			title: "超级表格"

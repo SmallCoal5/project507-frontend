@@ -1,11 +1,29 @@
 import { RouteRecordRaw } from "vue-router";
-import { Layout } from "@/routers/constant";
+import { LayoutAdmin } from "@/routers/constant";
 
 // 超级表格模块
 const adminRouter: Array<RouteRecordRaw> = [
 	{
+		path: "/admin",
+		component: LayoutAdmin,
+		redirect: "/admin/home",
+		children: [
+			{
+				path: "/admin/home",
+				name: "admin",
+				component: () => import("@/views/admin/index.vue"),
+				meta: {
+					keepAlive: true,
+					requiresAuth: true,
+					title: "首页",
+					key: "admin"
+				}
+			}
+		]
+	},
+	{
 		path: "/admin/user",
-		component: Layout,
+		component: LayoutAdmin,
 		redirect: "/admin/user/list",
 		meta: {
 			title: "用户管理"
@@ -26,7 +44,7 @@ const adminRouter: Array<RouteRecordRaw> = [
 	},
 	{
 		path: "/admin/article",
-		component: Layout,
+		component: LayoutAdmin,
 		redirect: "/admin/article/list",
 		meta: {
 			title: "文章管理"

@@ -1,11 +1,11 @@
 import { RouteRecordRaw } from "vue-router";
-import { Layout } from "@/routers/constant";
+import { LayoutAdmin } from "@/routers/constant";
 
 // dashboard 模块
 const dashboardRouter: Array<RouteRecordRaw> = [
 	{
 		path: "/dashboard",
-		component: Layout,
+		component: LayoutAdmin,
 		redirect: "/dashboard/dataVisualize",
 		meta: {
 			title: "Dashboard"

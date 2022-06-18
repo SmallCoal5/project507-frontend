@@ -1,11 +1,11 @@
 import { RouteRecordRaw } from "vue-router";
-import { Layout } from "@/routers/constant";
+import { LayoutAdmin } from "@/routers/constant";
 
 // 自定义指令模块
 const directivesRouter: Array<RouteRecordRaw> = [
 	{
 		path: "/directives",
-		component: Layout,
+		component: LayoutAdmin,
 		redirect: "/directives/copyDirect",
 		meta: {
 			title: "自定义指令"

@@ -14,7 +14,7 @@ console.log("routerArray", routerArray);
 const routes: RouteRecordRaw[] = [
 	{
 		path: "/",
-		redirect: { name: "admin" }
+		redirect: { name: "home" }
 	},
 	{
 		path: "/login",

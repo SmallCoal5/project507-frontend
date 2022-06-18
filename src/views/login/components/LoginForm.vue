@@ -71,7 +71,7 @@ const login = (formEl: FormInstance | undefined) => {
 				console.log("login res:", res);
 				console.log(globalStore.token);
 				ElMessage.success("登录成功！");
-				router.push({ name: "admin" });
+				router.push({ name: "home" });
 			} finally {
 				loading.value = false;
 			}

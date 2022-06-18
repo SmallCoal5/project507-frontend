@@ -1,11 +1,11 @@
 import { RouteRecordRaw } from "vue-router";
-import { Layout } from "@/routers/constant";
+import { LayoutAdmin } from "@/routers/constant";
 
 // echarts 模块
 const echartsRouter: Array<RouteRecordRaw> = [
 	{
 		path: "/echarts",
-		component: Layout,
+		component: LayoutAdmin,
 		redirect: "/echarts/waterChart",
 		meta: {
 			title: "Echarts"

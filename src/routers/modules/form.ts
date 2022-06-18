@@ -1,11 +1,11 @@
 import { RouteRecordRaw } from "vue-router";
-import { Layout } from "@/routers/constant";
+import { LayoutAdmin } from "@/routers/constant";
 
 // 表单 Form 模块
 const formRouter: Array<RouteRecordRaw> = [
 	{
 		path: "/form",
-		component: Layout,
+		component: LayoutAdmin,
 		redirect: "/form/basicForm",
 		meta: {
 			title: "表单 Form"

@@ -1,11 +1,11 @@
 import { RouteRecordRaw } from "vue-router";
-import { Layout } from "@/routers/constant";
+import { LayoutAdmin } from "@/routers/constant";
 
 // 外部链接模块
 const myBlogRouter: Array<RouteRecordRaw> = [
 	{
 		path: "/link",
-		component: Layout,
+		component: LayoutAdmin,
 		redirect: "/link/gitee",
 		meta: {
 			title: "外部链接"

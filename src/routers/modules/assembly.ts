@@ -1,11 +1,11 @@
 import { RouteRecordRaw } from "vue-router";
-import { Layout } from "@/routers/constant";
+import { LayoutAdmin } from "@/routers/constant";
 
 // 常用组件模块
 const assemblyRouter: Array<RouteRecordRaw> = [
 	{
 		path: "/assembly",
-		component: Layout,
+		component: LayoutAdmin,
 		redirect: "/assembly/selectIcon",
 		meta: {
 			title: "常用组件"
