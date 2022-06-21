@@ -35,11 +35,17 @@
 								<span>{{ item.name }}</span>
 								<div class="bottom card-header">
 									<div class="time">{{ currentDate }}</div>
-									<button class="btn_like" type="button" @click.stop="handleStar(item)">
-										<div class="svg_wrap">
-											<Like></Like>
+									<div class="like_content">
+										<button class="btn_like" type="button" @click.stop="handleStar(item)">
+											<div class="svg_wrap">
+												<LikeFilled v-if="item.star"></LikeFilled>
+												<Like v-else></Like>
+											</div>
+										</button>
+										<div class="like_count">
+											<span>{{ item.like }}</span>
 										</div>
-									</button>
+									</div>
 								</div>
 							</div>
 						</el-card>
@@ -51,9 +57,14 @@
 		<div>
 			<button @click="handleLoadMore">加载更多</button>
 		</div>
-		<el-dialog v-model="previewVisible" :title="previewTitle" width="800px">
-			<img style="width: 100%" :src="previewURL" />
+		<el-dialog v-model="previewVisible" :show-close="false">
+			<div class="dialog-box">
+				<ImageShow :url="previewURL" :srcList="srcList"></ImageShow>
+				<Right></Right>
+			</div>
+			<!-- <img style="width: 100%" :src="previewURL" /> -->
 		</el-dialog>
+		<!-- <Dialog :url="previewURL" :title="previewTitle" :visible="previewVisible"></Dialog> -->
 	</div>
 </template>
 
@@ -67,7 +78,9 @@ import { getList } from "./api";
 import { ViewCard } from "./interface";
 // import { Star, StarFilled } from "@element-plus/icons-vue";
 import Like from "./icon/Like.vue";
-
+import LikeFilled from "./icon/LikeFilled.vue";
+import ImageShow from "./components/ImageShow.vue";
+import Right from "./components/Right.vue";
 // 侧边栏控制
 const currentDate = new Date().toDateString();
 const loadingCard = ref(false);
@@ -75,21 +88,23 @@ function usePreview() {
 	const previewVisible = ref(false);
 	const previewTitle = ref<string | undefined>("");
 	const previewURL = ref("");
-
+	const srcList = ref<string[]>([]);
 	const handlePreview = (item: ViewCard, url: string) => {
 		previewTitle.value = item.name;
 		previewURL.value = url;
 		previewVisible.value = true;
+		srcList.value = [url, url];
 	};
 
 	return {
 		previewVisible,
 		previewTitle,
 		previewURL,
+		srcList,
 		handlePreview
 	};
 }
-
+const { previewVisible, previewURL, srcList, handlePreview } = usePreview();
 function useWaterfall() {
 	const list = ref<ViewCard[]>([]);
 	const options = reactive({
@@ -156,9 +171,13 @@ const { list, options, handleLoadMore } = useWaterfall();
 // 侧边栏控制
 // const { isOpen, handleToggleController } = useSlideBar();
 function handleStar(item: ViewCard) {
+	if (item.star) {
+		item.like -= 1;
+	} else {
+		item.like += 1;
+	}
 	item.star = !item.star;
 }
-const { previewVisible, previewTitle, previewURL, handlePreview } = usePreview();
 </script>
 <style scoped lang="scss">
 @import "./index.scss";

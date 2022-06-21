@@ -9,6 +9,7 @@ export interface ViewCard {
 	id?: string;
 	name?: string;
 	star?: boolean;
+	like: number;
 	backgroundColor?: string;
 	[attr: string]: any;
 }

@@ -6,22 +6,6 @@
 				<img src="@/assets/images/login_left0.png" alt="login" />
 			</div> -->
 			<div class="box">
-				<div class="login-box" :class="{ active: isLogin }">
-					<!-- <img class="login-img" src="@/assets/images/form_icon.png" alt="form_icon" /> -->
-					<div class="login-form" v-if="isLogin">
-						<div class="login-logo">
-							<p class="logo-text">你好，朋友!</p>
-						</div>
-						<RegisterForm ref="loginRef"></RegisterForm>
-					</div>
-					<div class="login-form" v-else>
-						<div class="login-logo">
-							<!-- <img class="login-icon" src="@/assets/images/logo.svg" alt="" /> -->
-							<p class="logo-text">Project-507</p>
-						</div>
-						<LoginForm ref="loginRef" :age="'20'" :address="['天府三街', '天府四街']" :obj="obj"></LoginForm>
-					</div>
-				</div>
 				<div class="small-box" :class="{ active: isLogin }">
 					<div class="small-contain" key="smallContainRegister" v-if="isLogin">
 						<img class="login-icon" src="@/assets/images/logo.svg" alt="" />
@@ -32,6 +16,22 @@
 						<img class="login-icon" src="@/assets/images/logo.svg" alt="" />
 						<el-button class="sbutton" round @click="changeType" size="large">注册</el-button>
 						<el-button class="sbutton" round size="large">游客</el-button>
+					</div>
+				</div>
+				<div class="login-box" :class="{ active: isLogin }">
+					<!-- <img class="login-img" src="@/assets/images/form_icon.png" alt="form_icon" /> -->
+					<div class="login-form" v-if="isLogin">
+						<div class="login-logo">
+							<span class="logo-text">你好，朋友!</span>
+						</div>
+						<RegisterForm ref="loginRef"></RegisterForm>
+					</div>
+					<div class="login-form" v-else>
+						<div class="login-logo">
+							<!-- <img class="login-icon" src="@/assets/images/logo.svg" alt="" /> -->
+							<span class="logo-text">Project-507</span>
+						</div>
+						<LoginForm ref="loginRef" :age="'20'" :address="['天府三街', '天府四街']" :obj="obj"></LoginForm>
 					</div>
 				</div>
 			</div>

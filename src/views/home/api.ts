@@ -73,6 +73,7 @@ export function getList(pageSize = 10) {
 		list.push({
 			id: randomID(),
 			star: false,
+			like: 100,
 			src: {
 				original: Math.random() < 0.95 ? successURL : errorURL
 			},
