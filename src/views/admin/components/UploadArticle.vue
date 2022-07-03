@@ -1,11 +1,11 @@
 <template>
-	<el-dialog v-model="dialogFormVisible" :title="`添加文章`" :destroy-on-close="true" width="580px" draggable>
+	<el-dialog v-model="dialogFormVisible" :title="`添加动态`" :destroy-on-close="true" width="580px" draggable>
 		<el-form ref="formRef" :model="form" :rules="rules" class="drawer-multiColumn-form" label-width="100px">
 			<el-form-item label="标题 :" prop="title">
 				<el-input v-model="form.title" />
 			</el-form-item>
 			<el-form-item label="内容 :" prop="content">
-				<el-input v-model="form.content" type="textarea" />
+				<el-input v-model="form.content" :autosize="{ minRows: 2, maxRows: 4 }" type="textarea" />
 			</el-form-item>
 			<el-form-item label="标签">
 				<el-tag

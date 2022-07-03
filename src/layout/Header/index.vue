@@ -22,6 +22,8 @@
 		</div>
 
 		<div class="header-ri flx-center">
+			<el-button :icon="Plus" class="icon-style" @click="addNew" text bg round></el-button>
+			<!-- <Upload></Upload> -->
 			<Language></Language>
 			<!-- Theme -->
 			<Theme></Theme>
@@ -29,18 +31,28 @@
 			<Avatar></Avatar>
 		</div>
 	</div>
+	<UploadArticle ref="dialogRef"></UploadArticle>
 </template>
 
 <script setup lang="ts">
-import { HomeFilled, View, ChatLineSquare } from "@element-plus/icons-vue";
+import { HomeFilled, View, ChatLineSquare, Plus } from "@element-plus/icons-vue";
 import { ref } from "vue";
 import Fullscreen from "./components/Fullscreen.vue";
 import Avatar from "./components/Avatar.vue";
 import Language from "./components/Language.vue";
 import Theme from "./components/Theme.vue";
+import UploadArticle from "@/components/UploadArticle/index.vue";
+// import Upload from "./components/Upload.vue";
 const activeIndex = ref("1");
 const handleSelect = (key: string, keyPath: string[]) => {
 	console.log(key, keyPath);
+};
+interface DialogExpose {
+	acceptParams: () => void;
+}
+const dialogRef = ref<DialogExpose>();
+const addNew = () => {
+	dialogRef.value!.acceptParams();
 };
 </script>
 

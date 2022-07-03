@@ -19,7 +19,7 @@ export const changeArticleStatus = (params: { id: number; state: number }) => {
 
 // * 新增文章
 export const addArticleApi = (params: any) => {
-	return http.post(API + `/article/add`, params, { headers: { "Content-Type": ContentTypeEnum.FORM_DATA } });
+	return http.post(API + `/article`, params, { headers: { "Content-Type": ContentTypeEnum.FORM_DATA } });
 };
 
 // * 更新文章

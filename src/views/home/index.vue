@@ -15,52 +15,45 @@
 			:load-props="options.loadProps"
 		>
 			<template #item="{ item, url }">
-				<el-skeleton :loading="loadingCard" animated>
-					<template #template>
-						<el-skeleton-item variant="image" style="width: 240px; height: 240px" />
-						<div style="padding: 14px">
-							<el-skeleton-item variant="h3" style="width: 50%" />
-							<div style="display: flex; align-items: center; height: 16px; margin-top: 16px; justify-items: space-between">
-								<el-skeleton-item variant="text" style="margin-right: 16px" />
-								<el-skeleton-item variant="text" style="width: 30%" />
+				<el-card class="pic-card" :body-style="{ padding: '0px' }">
+					<!-- <div class="card"> -->
+					<!-- <el-image @click="handlePreview(item, url)" :key="url" :src="url">
+						<template #error>
+							<div class="image-slot">
+								<el-icon><icon-picture /></el-icon>
 							</div>
-						</div>
-					</template>
-					<template #default>
-						<el-card class="pic-card" :body-style="{ padding: '0px' }">
-							<div class="pic-show">
-								<LazyImg :url="url" @click="handlePreview(item, url)" />
-							</div>
-							<div class="pic-info">
-								<span>{{ item.name }}</span>
-								<div class="bottom card-header">
-									<div class="time">{{ currentDate }}</div>
-									<div class="like_content">
-										<button class="btn_like" type="button" @click.stop="handleStar(item)">
-											<div class="svg_wrap">
-												<LikeFilled v-if="item.star"></LikeFilled>
-												<Like v-else></Like>
-											</div>
-										</button>
-										<div class="like_count">
-											<span>{{ item.like }}</span>
-										</div>
+						</template>
+					</el-image> -->
+					<LazyImg :url="url" @click="handlePreview(item, url)" />
+					<div class="pic-info">
+						<span>{{ item.name }}</span>
+						<div class="bottom card-header">
+							<div class="time">{{ currentDate }}</div>
+							<div class="like_content">
+								<button class="btn_like" type="button" @click.stop="handleStar(item)">
+									<div class="svg_wrap">
+										<LikeFilled v-if="item.star"></LikeFilled>
+										<Like v-else></Like>
 									</div>
+								</button>
+								<div class="like_count">
+									<span>{{ item.like }}</span>
 								</div>
 							</div>
-						</el-card>
-					</template>
-				</el-skeleton>
+						</div>
+					</div>
+					<!-- </div> -->
+				</el-card>
 			</template>
 		</Waterfall>
 
 		<div>
-			<button @click="handleLoadMore">加载更多</button>
+			<button @click="handleLoadMore(10)">加载更多</button>
 		</div>
 		<el-dialog v-model="previewVisible" :show-close="false">
 			<div class="dialog-box">
 				<ImageShow :url="previewURL" :srcList="srcList"></ImageShow>
-				<Right></Right>
+				<Right :item="articleItem!"></Right>
 			</div>
 			<!-- <img style="width: 100%" :src="previewURL" /> -->
 		</el-dialog>
@@ -77,23 +70,25 @@ import error from "./assets/error.png";
 import { getList } from "./api";
 import { ViewCard } from "./interface";
 // import { Star, StarFilled } from "@element-plus/icons-vue";
-import Like from "./icon/Like.vue";
-import LikeFilled from "./icon/LikeFilled.vue";
+// import { Picture as IconPicture } from "@element-plus/icons-vue";
+import { Like, LikeFilled } from "./icon";
 import ImageShow from "./components/ImageShow.vue";
 import Right from "./components/Right.vue";
 // 侧边栏控制
 const currentDate = new Date().toDateString();
-const loadingCard = ref(false);
+// const loadingCard = ref(false);
 function usePreview() {
 	const previewVisible = ref(false);
 	const previewTitle = ref<string | undefined>("");
 	const previewURL = ref("");
 	const srcList = ref<string[]>([]);
+	const articleItem = ref<ViewCard>();
 	const handlePreview = (item: ViewCard, url: string) => {
 		previewTitle.value = item.name;
 		previewURL.value = url;
 		previewVisible.value = true;
 		srcList.value = [url, url];
+		articleItem.value = item;
 	};
 
 	return {
@@ -101,10 +96,12 @@ function usePreview() {
 		previewTitle,
 		previewURL,
 		srcList,
+		articleItem,
 		handlePreview
 	};
 }
-const { previewVisible, previewURL, srcList, handlePreview } = usePreview();
+const { previewVisible, previewURL, srcList, articleItem, handlePreview } = usePreview();
+
 function useWaterfall() {
 	const list = ref<ViewCard[]>([]);
 	const options = reactive({
@@ -150,12 +147,12 @@ function useWaterfall() {
 	});
 
 	onMounted(() => {
-		handleLoadMore();
+		handleLoadMore(40);
 	});
 
 	// 加载更多
-	function handleLoadMore() {
-		list.value.push(...getList(30));
+	function handleLoadMore(cnt: number) {
+		list.value.push(...getList(cnt));
 	}
 
 	return {

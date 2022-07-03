@@ -14,6 +14,16 @@ export interface ViewCard {
 	[attr: string]: any;
 }
 
+export interface CommentCard {
+	user: string;
+	id: string;
+	content: string;
+	like: number;
+	is_like: boolean;
+	avater: any;
+	create_time: string;
+	sub_comments?: CommentCard[];
+}
 interface Point {
 	rowPerView: number;
 }
