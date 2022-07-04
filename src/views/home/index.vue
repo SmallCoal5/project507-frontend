@@ -147,7 +147,7 @@ function useWaterfall() {
 	});
 
 	onMounted(() => {
-		handleLoadMore(40);
+		handleLoadMore(10);
 	});
 
 	// 加载更多

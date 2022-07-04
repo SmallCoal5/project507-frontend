@@ -208,7 +208,8 @@ html.dark {
 		.el-main {
 			background-color: var(--geeker-main-bg-color) !important;
 			.main-box {
-				background-color: var(--el-bg-color) !important;
+				// background-color: var(--el-bg-color) !important;
+				background-color: var(--geeker-main-bg-color) !important;
 			}
 		}
 		.el-tabs {
@@ -238,5 +239,9 @@ html.dark {
 				}
 			}
 		}
+	}
+	.nav-searchform {
+		background: rgb(34 35 36);
+		border: 1px solid rgb(34 35 36);
 	}
 }
