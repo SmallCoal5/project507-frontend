@@ -62,14 +62,13 @@ function randomName() {
 	return NAMES[getRandomNum(0, 25)];
 }
 
-let start = 100;
+let start = 1;
 export function getList(pageSize = 10) {
 	const end = start + pageSize;
 	const list: ViewCard[] = [];
 	for (let i = start; i <= end; i++) {
-		const successURL = `https://images.weserv.nl/?url=https://api.mz-moe.cn/img/img${i}.jpg`;
-		// const successURL = `https://img.xjh.me/random_img.php?return=302`;
-		// const successURL = `https://images.weserv.nl/?url=https://api.mz-moe.cn/img/img${i}.jpg?timestamp=${Date.now()}`
+		// const successURL = `https://images.weserv.nl/?url=https://api.mz-moe.cn/img/img${i}.jpg`;
+		const successURL = `/pic/${i}.jpg`;
 		const errorURL = "https://api.mz-moe.cn/img/img00000.jpg";
 		list.push({
 			id: randomID(),
