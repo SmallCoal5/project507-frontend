@@ -14,10 +14,25 @@
 	// position: relative;
 	width: 70%;
 }
+:deep(.waterfall-card) {
+	animation-duration: 1s;
+	animation-name: fadeInUp;
+	animation-fill-mode: both;
+}
+:deep(.el-card) {
+	border: 0 solid var(--el-card-border-color);
+}
 .waterfall-list {
 	background-color: #ffffff;
 	.pic-show {
 		cursor: pointer;
+	}
+	.pic-card {
+		// background-color: rgb(17 24 39 / 100%);
+		border-radius: 0.5rem;
+		transition-duration: 300ms;
+		transition-property: all;
+		transition-timing-function: linear;
 	}
 
 	// .el-card__body {

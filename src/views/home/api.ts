@@ -68,6 +68,7 @@ export function getList(pageSize = 10) {
 	const list: ViewCard[] = [];
 	for (let i = start; i <= end; i++) {
 		const successURL = `https://images.weserv.nl/?url=https://api.mz-moe.cn/img/img${i}.jpg`;
+		// const successURL = `https://img.xjh.me/random_img.php?return=302`;
 		// const successURL = `https://images.weserv.nl/?url=https://api.mz-moe.cn/img/img${i}.jpg?timestamp=${Date.now()}`
 		const errorURL = "https://api.mz-moe.cn/img/img00000.jpg";
 		list.push({
