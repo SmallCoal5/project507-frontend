@@ -30,8 +30,12 @@ export namespace Login {
 		password: string;
 	}
 	export interface ResLogin {
-		uid: number;
+		uid: string;
 		username: string;
+		name: string;
+		avator: string;
+		fan_num: string;
+		follow_num: string;
 		uuid: string;
 		token: string;
 		expire_time: number;

@@ -48,7 +48,7 @@
 		</Waterfall>
 
 		<div>
-			<button @click="handleLoadMore(10)">加载更多</button>
+			<button @click="handleLoadMore(20)">加载更多</button>
 		</div>
 		<el-dialog v-model="previewVisible" :show-close="false">
 			<div class="dialog-box">
@@ -112,7 +112,7 @@ function useWaterfall() {
 		// 是否有周围的gutter
 		hasAroundGutter: true,
 		// 卡片在PC上的宽度
-		width: 320,
+		width: 340,
 		// 自定义行显示个数，主要用于对移动端的适配
 		breakpoints: {
 			1200: {
@@ -147,7 +147,7 @@ function useWaterfall() {
 	});
 
 	onMounted(() => {
-		handleLoadMore(10);
+		handleLoadMore(20);
 	});
 
 	// 加载更多
