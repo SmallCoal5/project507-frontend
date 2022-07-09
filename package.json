@@ -1,9 +1,9 @@
 {
-	"name": "geeker-admin",
+	"name": "project-507",
 	"private": true,
 	"version": "0.0.1",
-	"description": "Geeker-Admin后台管理系统",
-	"author": "SpicyBoy <848130454@qq.com>",
+	"description": "校园社区网站",
+	"author": "QXY <877368536@qq.com>",
 	"scripts": {
 		"dev": "vite",
 		"serve": "vite",

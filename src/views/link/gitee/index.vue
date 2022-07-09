@@ -2,7 +2,10 @@
 	<div class="content-box">
 		<span class="text">
 			Gitee 仓库：
-			<a href="https://gitee.com/laramie/Geeker-Admin" target="_blank">https://gitee.com/laramie/Geeker-Admin</a> 🍒🍉🍊
+			<a href="https://github.com/qiuminlu2010/project507-frontend" target="_blank"
+				>https://github.com/qiuminlu2010/project507-frontend</a
+			>
+			🍒🍉🍊
 		</span>
 	</div>
 </template>
