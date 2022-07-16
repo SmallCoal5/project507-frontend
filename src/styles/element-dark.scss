@@ -87,8 +87,9 @@ html.dark {
 			background-color: var(--el-mask-color) !important;
 			.box {
 				z-index: 0;
-				background-color: var(--el-bg-color) !important;
-				box-shadow: var(--geeker-login-shadow-light) !important;
+
+				// background-color: var(--el-bg-color) !important;
+				// box-shadow: var(--geeker-login-shadow-light) !important;
 			}
 			.small-box {
 				background-color: rgb(68 101 138 / 40.7%) !important;

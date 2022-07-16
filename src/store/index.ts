@@ -15,10 +15,10 @@ export const GlobalStore = defineStore({
 		// uuid
 		uuid: "",
 		expireTime: 0,
-		uid: "0",
+		uid: 0,
 		username: "",
-		// userInfo
-		userInfo: "",
+		name: "",
+		avator: "",
 		// element组件大小
 		assemblySize: "default",
 		// language
@@ -43,17 +43,18 @@ export const GlobalStore = defineStore({
 		setExpireTime(time: number) {
 			this.expireTime = time;
 		},
-		setUID(uid: string) {
+		setUID(uid: number) {
 			this.uid = uid;
 		},
 		setUsername(username: string) {
 			this.username = username;
 		},
-		// setUserInfo
-		setUserInfo(userInfo: any) {
-			this.userInfo = userInfo;
+		setName(name: string | undefined) {
+			this.name = name;
 		},
-		// setAssemblySizeSize
+		setAvator(avator: string) {
+			this.avator = avator;
+		},
 		setAssemblySizeSize(assemblySize: string) {
 			this.assemblySize = assemblySize;
 		},

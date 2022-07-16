@@ -14,7 +14,7 @@ export interface ResPage<T> {
 	datalist: T[];
 	pageNum: number;
 	pageSize: number;
-	total: number;
+	total?: number;
 }
 
 // * 分页请求参数
@@ -30,7 +30,7 @@ export namespace Login {
 		password: string;
 	}
 	export interface ResLogin {
-		uid: string;
+		uid: number;
 		username: string;
 		name: string;
 		avator: string;
@@ -47,6 +47,12 @@ export namespace Login {
 
 // * 用户管理
 export namespace User {
+	export interface UserInfo {
+		id: number;
+		username: string;
+		name: string;
+		avatar: string;
+	}
 	export interface ReqGetUserParams extends ReqPage {
 		username: string;
 		gender: number;
@@ -122,5 +128,25 @@ export namespace Article {
 		state: number;
 		created_on: string;
 		modified_on: string;
+	}
+}
+
+// *消息管理
+export namespace Message {
+	export interface MessageInfo {
+		from_uid: number;
+		to_uid: number;
+		content: string;
+		image_url: string;
+		created_on: number;
+		status: number;
+	}
+	export interface ReqGetParams extends ReqPage {
+		from_uid: number;
+		to_uid: number;
+	}
+	export interface ResMessages {
+		messages: MessageInfo[];
+		userInfo: User.UserInfo;
 	}
 }
