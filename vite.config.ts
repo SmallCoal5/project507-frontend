@@ -46,6 +46,11 @@ export default defineConfig((mode: ConfigEnv): UserConfig => {
 					target: "http://172.31.225.62:8000",
 					changeOrigin: true,
 					rewrite: path => path.replace(/^\/base/, "")
+				},
+				"/flare": {
+					target: "http://172.31.224.2:8155",
+					changeOrigin: true,
+					rewrite: path => path.replace(/^\/flare/, "")
 				}
 			}
 		},

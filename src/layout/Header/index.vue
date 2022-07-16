@@ -19,8 +19,15 @@
 				</el-menu-item>
 			</el-menu> -->
 		<div class="header-lf flx-center">
-			<el-menu :default-active="activeIndex" class="el-menu-top" mode="horizontal" :ellipsis="false" @select="handleSelect">
-				<el-menu-item index="1">
+			<el-menu
+				:default-active="activeIndex"
+				class="el-menu-top"
+				mode="horizontal"
+				:ellipsis="false"
+				:router="true"
+				@select="handleSelect"
+			>
+				<el-menu-item index="/home">
 					<el-icon><HomeFilled /></el-icon>
 					<span>主页</span>
 				</el-menu-item>
@@ -28,11 +35,11 @@
 					<el-icon><View /></el-icon>
 					<span>发现</span>
 				</el-menu-item>
-				<el-menu-item index="3">
+				<el-menu-item index="/mm/pred">
 					<el-icon><Shop /></el-icon>
 					<span>闲置</span>
 				</el-menu-item>
-				<el-menu-item index="4">
+				<el-menu-item index="/msg">
 					<el-icon><ChatLineSquare /></el-icon>
 					<span>聊天</span>
 				</el-menu-item>
@@ -74,7 +81,7 @@ import Language from "./components/Language.vue";
 import Theme from "./components/Theme.vue";
 import UploadArticle from "@/components/UploadArticle/index.vue";
 // import Upload from "./components/Upload.vue";
-const activeIndex = ref("1");
+const activeIndex = ref("/home");
 const handleSelect = (key: string, keyPath: string[]) => {
 	console.log(key, keyPath);
 };
