@@ -6,6 +6,7 @@ export const MsgStore = defineStore({
 		return {
 			sessionList: [],
 			sessionSelectId: 0,
+			sessionListOffset: 0,
 			allSessionList: [],
 			allSessionSelectId: 0,
 			messageList: new Map(),

@@ -1,12 +1,12 @@
 <template>
-	<div class="lg:w-73% w-100%">
+	<div class="lg:w-70% w-100%">
 		<!-- 聊天区域 -->
 		<div v-show="true">
 			<!-- 聊天头部 -->
 			<ChatHead></ChatHead>
 
 			<!-- 聊天内容 -->
-			<div class="px-20px h-500px">
+			<div class="px-20px">
 				<el-scrollbar
 					class="rounded-6px box-border"
 					max-height="100%"

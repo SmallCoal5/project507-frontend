@@ -145,6 +145,9 @@ export namespace Message {
 		from_uid: number;
 		to_uid: number;
 	}
+	export interface ReqGetSessionParams extends ReqPage {
+		uid: number;
+	}
 	export interface ResMessages {
 		messages: MessageInfo[];
 		userInfo: User.UserInfo;
