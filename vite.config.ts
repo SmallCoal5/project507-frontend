@@ -8,6 +8,9 @@ import viteCompression from "vite-plugin-compression";
 import VueSetupExtend from "vite-plugin-vue-setup-extend";
 import eslintPlugin from "vite-plugin-eslint";
 import vueJsx from "@vitejs/plugin-vue-jsx";
+// vite.config.ts
+import Unocss from "unocss/vite";
+import { presetAttributify, presetIcons, presetUno, transformerDirectives, transformerVariantGroup } from "unocss";
 // import importToCDN from "vite-plugin-cdn-import";
 // import AutoImport from "unplugin-auto-import/vite";
 // import Components from "unplugin-vue-components/vite";
@@ -76,6 +79,20 @@ export default defineConfig((mode: ConfigEnv): UserConfig => {
 			vueJsx(),
 			// * name 可以写在 script 标签上
 			VueSetupExtend(),
+
+			Unocss({
+				presets: [
+					presetUno(),
+					presetAttributify(),
+					presetIcons({
+						scale: 1.2,
+						warn: true
+					})
+				],
+				safelist: ["i-ep-chat-dot-round", "i-ep-user"],
+				transformers: [transformerDirectives(), transformerVariantGroup()]
+			}),
+
 			// * demand import element（如果使用了cdn引入,没必要使用element自动导入了）
 			// AutoImport({
 			// 	resolvers: [ElementPlusResolver()]

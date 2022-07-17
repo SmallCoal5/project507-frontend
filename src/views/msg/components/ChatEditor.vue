@@ -20,11 +20,17 @@
 // import { getCurrentInstance, watch, reactive, onMounted, nextTick } from "vue";
 // import { MsgStore } from "..";
 // const store = MsgStore();
-defineProps<{
+
+interface EditorProps {
 	value: string;
 	id: string;
 	height: number;
-}>();
+}
+withDefaults(defineProps<EditorProps>(), {
+	height: 135,
+	id: "chatEditor",
+	value: "value"
+});
 // const { proxy }: any = getCurrentInstance();
 
 function handleChange() {}

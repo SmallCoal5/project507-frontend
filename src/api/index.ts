@@ -58,7 +58,9 @@ class RequestHttp {
 				axiosCanceler.removePending(config);
 				tryHideFullScreenLoading();
 				// * 登陆失效（code == 599）
-				if (data.code == ResultEnum.OVERDUE) {
+				console.log("拦截响应", data.code);
+				if (data.code == ResultEnum.ERROR_TOKEN_FAIL) {
+					console.log("登陆失效");
 					ElMessage.error(data.msg);
 					globalStore.setToken("");
 					router.replace({
@@ -83,6 +85,15 @@ class RequestHttp {
 				// 根据响应的错误状态码，做不同的处理
 				// if (response) return checkStatus(response.status);
 				if (!response) return Promise.reject(error);
+				if (data.code == ResultEnum.ERROR_TOKEN_FAIL) {
+					console.log("登陆失效");
+					ElMessage.error(data.msg);
+					globalStore.setToken("");
+					router.replace({
+						path: "/login"
+					});
+					return Promise.reject(data);
+				}
 				if (data && data.code) {
 					// console.log("拦截响应");
 					ElMessage.error(data.msg);

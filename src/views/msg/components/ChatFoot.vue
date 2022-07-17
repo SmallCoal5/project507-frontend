@@ -63,11 +63,6 @@ import { ref } from "vue";
 // const { proxy }: any = getCurrentInstance();
 const store = MsgStore();
 const editor = ref(null);
-defineProps<{
-	value: string;
-	id: string;
-	height: number;
-}>();
 // 选择表情
 function selectIcon() {}
 

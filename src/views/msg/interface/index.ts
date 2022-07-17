@@ -16,6 +16,7 @@ export interface Message {
 
 export interface Main {
 	sessionList: Array<any>;
+	sessionListOffset: number;
 	sessionSelectId: number;
 	allSessionList: Array<any>;
 	allSessionSelectId: number;
