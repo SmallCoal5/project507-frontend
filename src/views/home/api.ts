@@ -35,10 +35,6 @@ let start = 0;
 export async function getList(pageSize = 1) {
 	const end = start + pageSize;
 	const list: ViewCard[] = [];
-	let image_list: string[] = [];
-	let name_list: string[] = [];
-	let data_list: string[] = [];
-	let likes_list: number[] = [];
 	let params: Article.ReqGetArticleParams = {
 		pageNum: 0,
 		pageSize: pageSize
@@ -46,31 +42,19 @@ export async function getList(pageSize = 1) {
 	const res = await getArticleListApi(params);
 	console.log("res", res);
 	res.data?.datalist.forEach(item => {
-		// 文章url
-		image_list.push(item.images[0].url);
-		//文章名
-		name_list.push(item.title);
-		//时间戳
-		data_list.push(formatTime(item.created_on));
-		// 点赞数
-		likes_list.push(item.like_count);
-	});
-	for (let i = start; i <= 2; i++) {
-		const successURL = `/base/` + image_list[i];
-		// const errorURL = "https://api.mz-moe.cn/img/img00000.jpg";
 		list.push({
-			id: randomID(),
-			star: false,
-			like: likes_list[i],
+			id: item.ID,
+			star: item.is_like,
+			like: item.like_count,
 			src: {
 				// original: Math.random() < 0.95 ? successURL : errorURL
-				original: successURL
+				original: `/base/` + item.images[0].url
 			},
 			backgroundColor: randomColor(),
-			name: name_list[i],
-			data: data_list[i]
+			name: item.title,
+			data: formatTime(item.created_on)
 		});
-	}
+	});
 	start = end + 1;
 	return list;
 }

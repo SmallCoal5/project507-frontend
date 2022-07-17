@@ -123,6 +123,7 @@ export namespace Article {
 		content: string;
 		user_id: number;
 		like_count: number;
+		is_like: boolean;
 		tags: Tag[];
 		images: Image[];
 		state: number;

@@ -6,7 +6,7 @@
  */
 export interface ViewCard {
 	src: any;
-	id?: string;
+	id?: number;
 	name?: string;
 	star?: boolean;
 	like: number;
