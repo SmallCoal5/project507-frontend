@@ -4,14 +4,21 @@ export interface ThemeConfigProp {
 	isDark: boolean;
 }
 
+export interface UserInfo {
+	uid: string;
+	username: string;
+	name?: string;
+	avator: string;
+}
 /* GlobalState */
 export interface GlobalState {
 	token: string;
 	uuid: string;
-	uid: string;
+	uid: number;
 	username: string;
+	name?: string;
+	avator: string;
 	expireTime: number;
-	userInfo: any;
 	assemblySize: string;
 	language: string;
 	themeConfig: ThemeConfigProp;

@@ -28,7 +28,7 @@
 					<div class="pic-info">
 						<span>{{ item.name }}</span>
 						<div class="bottom card-header">
-							<div class="time">{{ currentDate }}</div>
+							<div class="time">{{ item.data }}</div>
 							<div class="like_content">
 								<button class="btn_like" type="button" @click.stop="handleStar(item)">
 									<div class="svg_wrap">
@@ -75,7 +75,7 @@ import { Like, LikeFilled } from "./icon";
 import ImageShow from "./components/ImageShow.vue";
 import Right from "./components/Right.vue";
 // 侧边栏控制
-const currentDate = new Date().toDateString();
+// const currentDate = new Date().toDateString();
 // const loadingCard = ref(false);
 function usePreview() {
 	const previewVisible = ref(false);
@@ -151,8 +151,8 @@ function useWaterfall() {
 	});
 
 	// 加载更多
-	function handleLoadMore(cnt: number) {
-		list.value.push(...getList(cnt));
+	async function handleLoadMore(cnt: number) {
+		list.value.push(...(await getList(cnt)));
 	}
 
 	return {

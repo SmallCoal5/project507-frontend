@@ -1,26 +1,27 @@
 <template>
-	<div class="login-form-content">
-		<el-form ref="loginFormRef" :model="loginForm" :rules="loginRules" size="large">
-			<el-form-item prop="username">
-				<el-input v-model="loginForm.username" placeholder="用户名">
-					<template #prefix>
-						<el-icon class="el-input__icon"><user /></el-icon>
-					</template>
-				</el-input>
-			</el-form-item>
-			<el-form-item prop="password">
-				<el-input type="password" show-password v-model="loginForm.password" placeholder="密码">
-					<template #prefix>
-						<el-icon class="el-input__icon"><lock /></el-icon>
-					</template>
-				</el-input>
-			</el-form-item>
-		</el-form>
+	<el-form ref="loginFormRef" :model="loginForm" :rules="loginRules" @keyup.enter="onShowVcode" size="large">
+		<div class="login-logo">
+			<span class="logo-text">Project-507</span>
+		</div>
+		<el-form-item prop="username">
+			<el-input v-model="loginForm.username" placeholder="用户名">
+				<template #prefix>
+					<el-icon class="el-input__icon"><user /></el-icon>
+				</template>
+			</el-input>
+		</el-form-item>
+		<el-form-item prop="password">
+			<el-input type="password" show-password v-model="loginForm.password" placeholder="密码">
+				<template #prefix>
+					<el-icon class="el-input__icon"><lock /></el-icon>
+				</template>
+			</el-input>
+		</el-form-item>
 		<div class="login-btn">
 			<!-- <el-button :icon="CircleClose" round @click="resetForm(loginFormRef)" size="large">注册</el-button> -->
 			<el-button :icon="UserFilled" round @click="onShowVcode" size="large" type="primary" :loading="loading"> 登录 </el-button>
 		</div>
-	</div>
+	</el-form>
 	<Vcode :show="isShowVcode" @success="onSuccessVcode(loginFormRef)" @close="onCloseVcode" />
 </template>
 
@@ -48,8 +49,8 @@ const loginRules = reactive({
 
 // 登录表单数据
 const loginForm = reactive<Login.ReqLoginForm>({
-	username: "admin",
-	password: "123456"
+	username: "",
+	password: ""
 });
 const loading = ref<boolean>(false);
 const isShowVcode = ref<boolean>(false);
@@ -67,9 +68,10 @@ const login = (formEl: FormInstance | undefined) => {
 				};
 				const res = await loginApi(requestLoginForm);
 				globalStore.setToken(res.data!.token);
-				globalStore.setUUID(res.data!.uuid);
 				globalStore.setExpireTime(res.data!.expire_time);
 				globalStore.setUID(res.data!.uid);
+				globalStore.setName(res.data?.name);
+				globalStore.setUsername(res.data!.username);
 				console.log("login res:", res);
 				console.log(globalStore.token);
 				ElMessage.success("登录成功！");
@@ -77,6 +79,8 @@ const login = (formEl: FormInstance | undefined) => {
 			} finally {
 				loading.value = false;
 			}
+		} else {
+			ElMessage.success("登录失败！");
 		}
 	});
 };

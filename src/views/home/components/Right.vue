@@ -7,7 +7,7 @@
 				</div>
 				<div class="userinfo">
 					<div class="username">Username</div>
-					<div class="time">{{ currentDate }}</div>
+					<div class="time">{{ item.data }}</div>
 				</div>
 				<div class="follow">
 					<el-button class="follow-btn" round>+关注</el-button>
@@ -85,13 +85,14 @@ import { nextTick, onMounted, onUpdated, ref } from "vue";
 import { Share, ChatDotSquare, WarningFilled } from "@element-plus/icons-vue";
 import { Like, LikeFilled, Thumb, ThumbFilled } from "../icon";
 import { ViewCard, CommentCard } from "../interface";
+import { formatTime } from "../utils";
 interface ArticleProps {
 	item: ViewCard;
 }
 const props = withDefaults(defineProps<ArticleProps>(), {
 	// title: "",
 });
-const currentDate = new Date().toLocaleString();
+// const currentDate = new Date().toLocaleString();
 const commentList = ref<CommentCard[]>([]);
 const tags = ref<Array<string>>([
 	"Tag 1",
@@ -157,7 +158,7 @@ function getList(pageSize = 10) {
 			like: 99,
 			is_like: false,
 			avater: "https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png",
-			create_time: new Date().toLocaleString()
+			create_time: formatTime(new Date().getTime)
 		});
 	}
 	start = end + 1;
