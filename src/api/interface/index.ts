@@ -88,18 +88,19 @@ export namespace Tag {
 export namespace Article {
 	export interface Image {
 		ID: number;
-		name: string;
+		url: string;
+		thumb_url: string;
 	}
 	export interface Tag {
 		ID: number;
 		name: string;
 	}
 	export interface ReqGetArticleParams extends ReqPage {
-		title: string;
-		content: string;
-		user_id: number;
-		tags: string[];
-		images: File[];
+		// title: string;
+		// content: string;
+		user_id?: number;
+		// tags: string[];
+		// images: File[];
 	}
 	export interface ReqAddArticleParams {
 		title: string;
@@ -115,8 +116,7 @@ export namespace Article {
 		title: string;
 		content: string;
 		user_id: number;
-		like: number;
-		watch: number;
+		like_count: number;
 		tags: Tag[];
 		images: Image[];
 		state: number;

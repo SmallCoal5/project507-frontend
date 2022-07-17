@@ -8,8 +8,8 @@ import { ContentTypeEnum } from "@/enums/httpEnum";
  */
 
 // * 获取文章列表
-export const getArticleList = (params: Article.ReqGetArticleParams) => {
-	return http.get<ResPage<Article.ResArticleList>>(API + `/article/list/`, params);
+export const getArticleListApi = (params: Article.ReqGetArticleParams) => {
+	return http.get<ResPage<Article.ResArticleList>>(API + `/article`, params);
 };
 
 // * 切换文章状态
