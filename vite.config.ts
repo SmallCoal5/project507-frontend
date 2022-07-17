@@ -47,10 +47,16 @@ export default defineConfig((mode: ConfigEnv): UserConfig => {
 					changeOrigin: true,
 					rewrite: path => path.replace(/^\/base/, "")
 				},
+				"/pic": {
+					target: "https://gitcode.net/qq_44112897/imgbed/-/raw/master/comic",
+					changeOrigin: true,
+					rewrite: path => path.replace(/^\/pic/, "")
+        },
 				"/flare": {
 					target: "http://172.31.224.2:8155",
 					changeOrigin: true,
 					rewrite: path => path.replace(/^\/flare/, "")
+          },
 				}
 			}
 		},

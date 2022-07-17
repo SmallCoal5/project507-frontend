@@ -7,8 +7,11 @@
  * @LastEditTime: 2022-03-24 14:25:30
  */
 
+import { Article } from "@/api/interface";
+import { getArticleListApi } from "@/api/modules/article";
+// import axios from "axios";
 import { ViewCard } from "./interface";
-
+import { formatTime } from "./utils";
 /**
  * 获取随机ID
  * @param {*} length
@@ -19,36 +22,6 @@ export function randomID(length = 6) {
 }
 
 const COLORS = ["#409EFF", "#67C23A", "#E6A23C", "#F56C6C", "#909399"];
-const NAMES = [
-	"小当家",
-	"樱木花道",
-	"木之本樱",
-	"小可",
-	"水冰月",
-	"哆啦A梦",
-	"大雄",
-	"项少羽",
-	"天明",
-	"月儿",
-	"石兰",
-	"夏尔凡多姆海恩",
-	"塞巴斯蒂安",
-	"亚伦沃克",
-	"皮卡丘",
-	"鸣人",
-	"宇智波佐助",
-	"旗木卡卡西",
-	"喜洋洋",
-	"灰太狼",
-	"爱德华",
-	"阿冈",
-	"黑崎一护",
-	"路飞",
-	"索隆",
-	"山治",
-	"恋次",
-	"越前龙马"
-];
 
 function getRandomNum(min: number, max: number) {
 	return Math.floor(Math.random() * (max - min + 1)) + min;
@@ -58,28 +31,44 @@ function randomColor() {
 	return COLORS[getRandomNum(0, 4)];
 }
 
-function randomName() {
-	return NAMES[getRandomNum(0, 25)];
-}
-
-let start = 100;
-export function getList(pageSize = 10) {
+let start = 0;
+export async function getList(pageSize = 1) {
 	const end = start + pageSize;
 	const list: ViewCard[] = [];
-	for (let i = start; i <= end; i++) {
-		const successURL = `https://images.weserv.nl/?url=https://api.mz-moe.cn/img/img${i}.jpg`;
-		// const successURL = `https://img.xjh.me/random_img.php?return=302`;
-		// const successURL = `https://images.weserv.nl/?url=https://api.mz-moe.cn/img/img${i}.jpg?timestamp=${Date.now()}`
-		const errorURL = "https://api.mz-moe.cn/img/img00000.jpg";
+	let image_list: string[] = [];
+	let name_list: string[] = [];
+	let data_list: string[] = [];
+	let likes_list: number[] = [];
+	let params: Article.ReqGetArticleParams = {
+		pageNum: 0,
+		pageSize: pageSize
+	};
+	const res = await getArticleListApi(params);
+	console.log("res", res);
+	res.data?.datalist.forEach(item => {
+		// 文章url
+		image_list.push(item.images[0].url);
+		//文章名
+		name_list.push(item.title);
+		//时间戳
+		data_list.push(formatTime(item.created_on));
+		// 点赞数
+		likes_list.push(item.like_count);
+	});
+	for (let i = start; i <= 2; i++) {
+		const successURL = `/base/` + image_list[i];
+		// const errorURL = "https://api.mz-moe.cn/img/img00000.jpg";
 		list.push({
 			id: randomID(),
 			star: false,
-			like: 100,
+			like: likes_list[i],
 			src: {
-				original: Math.random() < 0.95 ? successURL : errorURL
+				// original: Math.random() < 0.95 ? successURL : errorURL
+				original: successURL
 			},
 			backgroundColor: randomColor(),
-			name: randomName()
+			name: name_list[i],
+			data: data_list[i]
 		});
 	}
 	start = end + 1;

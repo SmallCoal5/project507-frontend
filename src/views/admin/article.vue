@@ -1,6 +1,6 @@
 <template>
 	<div class="table-box">
-		<ProTable ref="proTable" :requestApi="getArticleList" :initParam="initParam" :columns="columns">
+		<ProTable ref="proTable" :requestApi="getArticleListApi" :initParam="initParam" :columns="columns">
 			<!-- 表格 header 按钮 -->
 			<template #tableHeader="scope">
 				<el-button type="primary" :icon="CirclePlus" @click="addNew">新增文章</el-button>
@@ -49,7 +49,7 @@ import UploadArticle from "@/components/UploadArticle/index.vue";
 import UserDrawer from "@/views/admin/components/UserDrawer.vue";
 import { CirclePlus, Delete, EditPen, Download, Upload, View } from "@element-plus/icons-vue";
 import {
-	getArticleList,
+	getArticleListApi,
 	changeArticleStatus,
 	deleteArticle,
 	exportArticleInfo,
