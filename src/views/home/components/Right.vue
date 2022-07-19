@@ -6,14 +6,14 @@
 					<el-avatar :size="50" src="https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png" />
 				</div>
 				<div class="userinfo">
-					<div class="username">Username</div>
+					<div class="username">{{ item.owner_username }}</div>
 					<div class="time">{{ item.data }}</div>
 				</div>
 				<div class="follow">
 					<el-button class="follow-btn" round>+关注</el-button>
 				</div>
 			</div>
-			<div class="article-content">哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈</div>
+			<div class="article-content">{{ item.content }}</div>
 			<div class="tag-list">
 				<el-button class="tag-box" type="primary" v-for="tag in tags" :key="tag" link>
 					{{ tag }}
@@ -48,16 +48,16 @@
 				<div class="hint">快来发表你的评论吧</div>
 			</div>
 			<el-scrollbar class="comment-list" :height="scrollHeight" v-else>
-				<div class="comment-item" v-for="comment in commentList" :key="comment.id">
+				<div class="comment-item" v-for="comment in commentList" :key="comment.ID">
 					<div class="comment-left">
-						<el-avatar :src="comment.avater" />
+						<el-avatar :src="comment.avatar" />
 					</div>
 					<div class="comment-right">
 						<div class="content">
-							<span class="username">{{ comment.user }} </span> {{ comment.content }}
+							<span class="username">{{ comment.username }} </span> {{ comment.content }}
 						</div>
 						<div class="bottom">
-							<div class="time">{{ comment.create_time }}</div>
+							<div class="time">{{ comment.created_on }}</div>
 							<div class="reply">
 								<button class="cm-btn">
 									<!-- <el-icon :size="13"><ChatDotSquare /></el-icon> -->
@@ -81,32 +81,28 @@
 	</div>
 </template>
 <script lang="ts" setup>
-import { nextTick, onMounted, onUpdated, ref } from "vue";
+import { computed, nextTick, onMounted, onUpdated, ref } from "vue";
 import { Share, ChatDotSquare, WarningFilled } from "@element-plus/icons-vue";
 import { Like, LikeFilled, Thumb, ThumbFilled } from "../icon";
 import { ViewCard, CommentCard } from "../interface";
-import { formatTime } from "../utils";
+import { CommentStore } from "@/store";
+// import { formatTime } from "../utils";
+
+const store = CommentStore();
+const commentList = computed(() => {
+	return store.currentCommentList;
+});
+
 interface ArticleProps {
 	item: ViewCard;
+	commentitem: CommentCard[];
 }
 const props = withDefaults(defineProps<ArticleProps>(), {
 	// title: "",
 });
 // const currentDate = new Date().toLocaleString();
-const commentList = ref<CommentCard[]>([]);
-const tags = ref<Array<string>>([
-	"Tag 1",
-	"Tag 2",
-	"Tag 3",
-	"Tag 4",
-	"Tag 5",
-	"Tag 4",
-	"Tag 4",
-	"Tag 4",
-	"Tag 4",
-	"Tag 4",
-	"Tag 4"
-]);
+// const commentList = ref<CommentCard[]>([]);
+const tags = ref<Array<string>>(["Tag 1", "Tag 4"]);
 const commentInput = ref("");
 function handleStar(item: ViewCard) {
 	const _item = item;
@@ -119,9 +115,9 @@ function handleStar(item: ViewCard) {
 }
 function handleCommentLike(item: CommentCard) {
 	if (item.is_like) {
-		item.like -= 1;
+		item.like! -= 1;
 	} else {
-		item.like += 1;
+		item.like! += 1;
 	}
 	item.is_like = !item.is_like;
 }
@@ -130,7 +126,6 @@ nextTick(() => {
 	fixHeight();
 });
 onMounted(() => {
-	handleLoadMore();
 	window.onresize = () => {
 		fixHeight();
 	};
@@ -142,28 +137,6 @@ const fixHeight = () => {
 	scrollHeight.value = document.getElementById("comment-box")!.offsetHeight - 45 + "px";
 	console.log("scrollHeight.value", scrollHeight.value);
 };
-function handleLoadMore() {
-	commentList.value.push(...getList(10));
-}
-
-let start = 0;
-function getList(pageSize = 10) {
-	const end = start + pageSize;
-	const list: CommentCard[] = [];
-	for (let i = start; i <= end; i++) {
-		list.push({
-			id: "" + i,
-			user: "User" + i,
-			content: "评论" + i + "哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈",
-			like: 99,
-			is_like: false,
-			avater: "https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png",
-			create_time: formatTime(new Date().getTime)
-		});
-	}
-	start = end + 1;
-	return list;
-}
 </script>
 <style scoped lang="scss">
 @import "../index.scss";
