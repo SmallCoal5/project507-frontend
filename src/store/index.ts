@@ -1,5 +1,5 @@
 import { defineStore } from "pinia";
-import { GlobalState, ThemeConfigProp } from "./interface";
+import { GlobalState, ThemeConfigProp, CommentState } from "./interface";
 import { createPinia } from "pinia";
 import piniaPersist from "pinia-plugin-persist";
 import piniaPersistConfig from "@/config/piniaPersist";
@@ -70,6 +70,18 @@ export const GlobalStore = defineStore({
 	persist: piniaPersistConfig("GlobalState")
 });
 
+export const CommentStore = defineStore({
+	id: "CommentState",
+	state: (): CommentState => ({
+		currentCommentList: []
+	}),
+	getters: {},
+	actions: {
+		setCurrentCommentList(CommentList: any) {
+			this.currentCommentList = CommentList;
+		}
+	}
+});
 // piniaPersist(持久化)
 const pinia = createPinia();
 pinia.use(piniaPersist);

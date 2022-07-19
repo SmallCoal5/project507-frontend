@@ -92,6 +92,9 @@ export namespace Tag {
 }
 // *文章管理
 export namespace Article {
+	export interface Comments {
+		article_id: number;
+	}
 	export interface Image {
 		ID: number;
 		url: string;
@@ -118,17 +121,33 @@ export namespace Article {
 		images: File;
 	}
 	export interface ResArticleList {
-		ID: number;
+		id: number;
+		created_on: number;
+		owner_id: number;
+		owner_name: string;
+		owner_username: string;
+		owner_avatar: string;
 		title: string;
 		content: string;
-		user_id: number;
 		like_count: number;
 		is_like: boolean;
-		tags: Tag[];
 		images: Image[];
-		state: number;
-		created_on: string;
-		modified_on: string;
+		tags: Tag[];
+		// state: number;
+		// modified_on: string;
+	}
+	export interface ResArticleComment {
+		ID: number;
+		created_on: number;
+		user_id: number;
+		article_id: number;
+		reply_id?: null;
+		username: string;
+		avatar: any;
+		content: string;
+		like: number;
+		is_like: boolean;
+		replies?: ResArticleComment[];
 	}
 }
 
