@@ -1,27 +1,30 @@
 <template>
-	<div class="chat-session lg:w-30% w-100% p-8px box-border">
+	<div class="chat-session p-8px box-border">
 		<div class="session-search-box">
 			<div class="search-icon">
 				<Search style="width: 1em; height: 1em; margin-right: 8px" />
 			</div>
 			<input type="search" placeholder="搜索" autocomplete="off" class="search-input" spellcheck="false" data-ms-editor="true" />
 		</div>
-		<el-scrollbar max-height="100%">
+		<el-scrollbar height="auto">
 			<!-- 会话列表 -->
 			<template v-for="item in handleSessionList" :key="item">
 				<div
 					class="session-item cursor-pointer rounded-8px"
 					:class="[item.id === store.sessionSelectId ? 'session-active' : '']"
-					@click="selectSession()"
+					@click="selectSession(item)"
 				>
 					<div class="session-container">
-						<el-badge>
-							<el-avatar shape="square" class="!block" :size="40" fit="cover" :src="item.avatar" />
+						<el-badge class="mr-15px" :value="item.unread" :max="99" :hidden="item.unread == 0">
+							<el-avatar shape="square" class="!block" :size="42" fit="cover" :src="item.avatar" />
 						</el-badge>
-						<div class="w-50% ml-10px text-left">
-							<div class="truncate">{{ item.username }}</div>
-							<div class="truncate text-12px mt-2px" style="color: var(--ep-color-primary-light-3)">
-								{{ getLastSession }}
+						<div class="w-100% text-left text-container text-ellipsis">
+							<div class="truncate h-25px text-title">
+								<div class="username text-ellipsis">{{ item.username }}</div>
+								<div class="text-date">2022-07-17 02:22</div>
+							</div>
+							<div class="truncate text-12px h-16px max-w-258px" style="color: #67717a">
+								{{ item.messages[0].content }}
 							</div>
 						</div>
 					</div>
@@ -34,36 +37,57 @@
 
 <script setup lang="ts">
 import { Message } from "@/api/interface";
-import { getMessagesApi } from "@/api/modules/msg";
+import { updateUnreadMessageApi } from "@/api/modules/msg";
 import { GlobalStore } from "@/store";
-import { ElMessage } from "element-plus";
+// import { ElMessage } from "element-plus";
 import { computed } from "vue";
 import { MsgStore } from "..";
 import { Search } from "@element-plus/icons-vue";
 const store = MsgStore();
 const globalStore = GlobalStore();
+
 // 选择聊天用户
-async function selectSession() {
-	if (!store.messageList.has(store.sessionSelectId)) {
-		let params: Message.ReqGetParams = {
-			from_uid: globalStore.uid,
-			to_uid: store.sessionSelectId,
-			pageNum: 0,
-			pageSize: 10
-		};
-		const res = await getMessagesApi(params);
-		if (res.code === "200") {
-			store.messageList.set(store.sessionSelectId, res.data!.datalist[0]);
-			console.log("获取会话消息", "sessionSelectId", store.sessionSelectId, store.messageList.get(store.sessionSelectId));
-		} else {
-			ElMessage.error("获取会话消息失败！");
-		}
+async function selectSession(item: Message.SessionInfo) {
+	// 更新已读消息状态
+	if (store.sessionSelectId > 0 && store.sessionSelected !== null && store.sessionSelected.unread > 0) {
+		updateUnreadMessageApi({ uid: globalStore.uid, session_uid: store.sessionSelectId });
 	}
+	store.sessionSelectId = item.id;
+	if (store.sessionSelectId > 0 && item.unread > 0) {
+		updateUnreadMessageApi({ uid: globalStore.uid, session_uid: store.sessionSelectId });
+	}
+	if (item.avatar.length == 0) {
+		// store.sessionAvatar = "@/assets/images/avatar.png";
+		store.sessionAvatar = "https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png";
+	} else {
+		store.sessionAvatar = item.avatar;
+	}
+	store.sessionName = item.username;
+	store.sessionSelected = item;
+	item.unread = 0;
+	// if (!store.messageList.has(store.sessionSelectId)) {
+	// 	let params: Message.ReqGetParams = {
+	// 		from_uid: globalStore.uid,
+	// 		to_uid: store.sessionSelectId,
+	// 		pageNum: 0,
+	// 		pageSize: 10
+	// 	};
+	// 	const res = await getMessagesApi(params);
+	// 	if (res.code == 200) {
+	// 		store.messageList.set(store.sessionSelectId, res.data!.datalist);
+	// 		console.log("获取会话消息", "sessionSelectId", store.sessionSelectId, store.messageList.get(store.sessionSelectId));
+	// 		// store.initEditor();
+	// 	} else {
+	// 		ElMessage.error("获取会话消息失败！");
+	// 	}
+	// }
+	// store.toBottom();
 }
 // 获取最后一条消息内容
-const getLastSession = computed(() => {
-	return "最后一条消息";
-});
+// const getLastSession = computed(() => {
+// 	// return item.messages[0];
+// 	return "最后一条信息";
+// });
 // 返回对应选择列表
 const handleSessionList = computed(() => {
 	console.log("返回会话列表", store.sessionList);
@@ -77,14 +101,25 @@ const handleSessionList = computed(() => {
 /* stylelint-disable-next-line scss/dollar-variable-pattern */
 $selectBg: #f6f6f6;
 .chat-session {
+	// min-width: 260px;
+	// max-width: 500px;
+	position: relative;
+	display: flex;
+	height: 100%;
+	background: #ffffff;
+	border-right: 1px solid #e1e5e8;
+	flex-flow: column;
+	flex: 0 0 30%;
 	:deep(p) {
 		margin: 0;
 	}
-
-	border-right: 1px solid #e1e5e8;
-	@media (max-width: 1024px) {
-		border-right: none;
+	:deep(.el-scrollbar) {
+		height: auto;
 	}
+
+	// @media (max-width: 1024px) {
+	// 	border-right: none;
+	// }
 	.session-search-box {
 		position: sticky;
 		display: flex;
@@ -128,11 +163,35 @@ $selectBg: #f6f6f6;
 		&:hover {
 			background: $selectBg;
 		}
+		.text-ellipsis {
+			width: 100%;
+			overflow: hidden;
+			text-overflow: ellipsis;
+			white-space: nowrap;
+		}
 		.session-container {
 			display: flex;
 			flex: 1;
 			align-items: center;
 			width: 100%;
+			.text-container {
+				flex: 1;
+			}
+			.text-title {
+				display: flex;
+				align-items: center;
+				line-height: 25px;
+				.username {
+					font-weight: 500;
+					color: #0a0a0a;
+					flex: 1;
+				}
+				.text-date {
+					margin-left: 5px;
+					font-size: 11px;
+					color: #a8aeb8;
+				}
+			}
 		}
 	}
 	.session-active {

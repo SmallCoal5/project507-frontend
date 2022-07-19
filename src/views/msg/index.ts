@@ -6,18 +6,33 @@ export const MsgStore = defineStore({
 		return {
 			sessionList: [],
 			sessionSelectId: 0,
-			sessionListOffset: 0,
-			allSessionList: [],
-			allSessionSelectId: 0,
-			messageList: new Map(),
+			sessionName: "",
 			sessionAvatar: "",
+			sessionListOffset: 0,
+			sessionSelected: null,
+			messageList: new Map(),
 			socket: null,
+			onlineStatus: false,
 			sendInfo: null,
-			emojiList: []
+			emojiList: [],
+			chatScrollbar: null,
+			chatEditor: null,
+			editor: null,
+			editorData: ""
 		};
 	},
 	actions: {
 		// 本地新增信息记录
-		sendLocal() {}
+		sendLocal() {},
+		// 初始化编辑器
+
+		// 设置会话窗口到达底部
+		toBottom() {
+			// this.chatScrollbar?.setScrollTop(9999);
+			const timer = setTimeout(() => {
+				this.chatScrollbar?.setScrollTop(9999);
+				clearTimeout(timer);
+			}, 100);
+		}
 	}
 });
