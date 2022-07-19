@@ -8,9 +8,9 @@
  */
 
 import { Article } from "@/api/interface";
-import { getArticleListApi } from "@/api/modules/article";
+import { getArticleListApi, getArticleCommentApi } from "@/api/modules/article";
 // import axios from "axios";
-import { ViewCard } from "./interface";
+import { CommentCard, ViewCard } from "./interface";
 import { formatTime } from "./utils";
 /**
  * 获取随机ID
@@ -32,7 +32,7 @@ function randomColor() {
 }
 
 let start = 0;
-export async function getList(pageSize = 1) {
+export async function getArtileList(pageSize = 1) {
 	const end = start + pageSize;
 	const list: ViewCard[] = [];
 	let params: Article.ReqGetArticleParams = {
@@ -40,10 +40,9 @@ export async function getList(pageSize = 1) {
 		pageSize: pageSize
 	};
 	const res = await getArticleListApi(params);
-	console.log("res", res);
 	res.data?.datalist.forEach(item => {
 		list.push({
-			id: item.ID,
+			id: item.id,
 			star: item.is_like,
 			like: item.like_count,
 			src: {
@@ -51,10 +50,44 @@ export async function getList(pageSize = 1) {
 				original: `/base/` + item.images[0].url
 			},
 			backgroundColor: randomColor(),
-			name: item.title,
-			data: formatTime(item.created_on)
+			title: item.title,
+			content: item.content,
+			data: formatTime(item.created_on * 1000),
+			owner_id: item.owner_id,
+			owner_name: item.owner_name,
+			owner_username: item.owner_username,
+			owner_avatar: item.owner_avatar
 		});
 	});
 	start = end + 1;
 	return list;
+}
+
+export async function getCommentList(id: number) {
+	// const end = start + pageSize;
+	let params: Article.Comments = {
+		article_id: id
+	};
+	const res = await getArticleCommentApi(params);
+	console.log("res", res);
+	console.log("id", id);
+	if (res.data?.datalist.length == 0) {
+		return null;
+	} else {
+		const list: CommentCard[] = [
+			{
+				ID: res.data!.datalist[0].ID,
+				created_on: res.data!.datalist[0].created_on,
+				user_id: res.data!.datalist[0].user_id,
+				// article_id: res.data!.datalist[0].article_id,
+				article_id: id,
+				reply_id: res.data!.datalist[0]!.reply_id,
+				username: res.data!.datalist[0].username,
+				avatar: res.data!.datalist[0].avatar,
+				content: res.data!.datalist[0].content,
+				replies: res.data!.datalist[0].replies
+			}
+		];
+		return list;
+	}
 }

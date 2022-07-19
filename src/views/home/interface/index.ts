@@ -6,8 +6,13 @@
  */
 export interface ViewCard {
 	src: any;
-	id?: number;
-	name?: string;
+	id: number;
+	title?: string;
+	content: string;
+	owner_id: number;
+	owner_name: string;
+	owner_username: string;
+	owner_avatar: string;
 	star?: boolean;
 	like: number;
 	backgroundColor?: string;
@@ -15,14 +20,17 @@ export interface ViewCard {
 }
 
 export interface CommentCard {
-	user: string;
-	id: string;
+	ID: number;
+	created_on: number;
+	user_id: number;
+	article_id: number;
+	reply_id?: null;
+	username: string;
+	avatar?: any;
 	content: string;
-	like: number;
-	is_like: boolean;
-	avater: any;
-	create_time: string;
-	sub_comments?: CommentCard[];
+	like?: number;
+	is_like?: boolean;
+	replies?: CommentCard[];
 }
 interface Point {
 	rowPerView: number;
