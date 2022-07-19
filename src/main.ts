@@ -32,9 +32,15 @@ import pinia from "@/store/index";
 import "uno.css";
 
 import "nprogress/nprogress.css";
+//编辑器
+import "@wangeditor/editor/dist/css/style.css";
+
+//日期时间库
+import moment from "moment";
+import "moment/dist/locale/zh-cn";
+moment.locale("zh-cn");
 
 const app = createApp(App);
-
 // 注册element Icons组件
 Object.keys(Icons).forEach(key => {
 	app.component(key, Icons[key as keyof typeof Icons]);

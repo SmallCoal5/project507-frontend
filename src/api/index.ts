@@ -38,7 +38,7 @@ class RequestHttp {
 				// * 将当前请求添加到 pending 中
 				axiosCanceler.addPending(config);
 				showFullScreenLoading();
-				console.log("发送请求");
+				// console.log("发送请求");
 				const token: string = globalStore.token;
 				return { ...config, headers: { token: token } };
 			},
@@ -58,7 +58,7 @@ class RequestHttp {
 				axiosCanceler.removePending(config);
 				tryHideFullScreenLoading();
 				// * 登陆失效（code == 599）
-				console.log("拦截响应", data.code);
+				// console.log("拦截响应", data.code);
 				if (data.code == ResultEnum.ERROR_TOKEN_FAIL) {
 					console.log("登陆失效");
 					ElMessage.error(data.msg);
