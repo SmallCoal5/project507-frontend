@@ -84,8 +84,9 @@ function send() {
 			to_uid: store.sessionSelectId
 		};
 		console.log("发送消息", JSON.stringify(wsMsg));
-		store.messageList.get(store.sessionSelectId)?.push(msg);
-		store.toBottom();
+		store.sessionSelected.messages.push(msg);
+		// store.messageList.get(store.sessionSelectId)?.push(msg);
+		// store.toBottom();
 
 		if (store.socket != null) {
 			store.socket.send(JSON.stringify(wsMsg));

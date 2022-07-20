@@ -30,7 +30,8 @@ export const MsgStore = defineStore({
 		toBottom() {
 			// this.chatScrollbar?.setScrollTop(9999);
 			const timer = setTimeout(() => {
-				this.chatScrollbar?.setScrollTop(9999);
+				// this.chatScrollbar?.setScrollTop(9999);
+				this.chatScrollbar.scrollTo(0, this.chatScrollbar.maxScrollY);
 				clearTimeout(timer);
 			}, 100);
 		}

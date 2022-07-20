@@ -21,7 +21,7 @@
 						<div class="w-100% text-left text-container text-ellipsis">
 							<div class="truncate h-25px text-title">
 								<div class="username text-ellipsis">{{ item.username }}</div>
-								<div class="text-date">2022-07-17 02:22</div>
+								<div class="text-date">{{ formatTime(item.messages[0].created_on) }}</div>
 							</div>
 							<div class="truncate text-12px h-16px max-w-258px" style="color: #67717a">
 								{{ item.messages[0].content }}
@@ -43,12 +43,14 @@ import { GlobalStore } from "@/store";
 import { computed } from "vue";
 import { MsgStore } from "..";
 import { Search } from "@element-plus/icons-vue";
+import { formatTime } from "../utils";
 const store = MsgStore();
 const globalStore = GlobalStore();
 
 // 选择聊天用户
 async function selectSession(item: Message.SessionInfo) {
 	// 更新已读消息状态
+	// store.chatScrollbar.scrollTo(0, store.chatScrollbar.maxScrollY);
 	if (store.sessionSelectId > 0 && store.sessionSelected !== null && store.sessionSelected.unread > 0) {
 		updateUnreadMessageApi({ uid: globalStore.uid, session_uid: store.sessionSelectId });
 	}
@@ -65,6 +67,13 @@ async function selectSession(item: Message.SessionInfo) {
 	store.sessionName = item.username;
 	store.sessionSelected = item;
 	item.unread = 0;
+	// store.toBottom();
+	// store.chatScrollbar.scrollTo(0, -200);
+	// const timer = setTimeout(() => {
+	// 	// this.chatScrollbar?.setScrollTop(9999);
+	// 	store.chatScrollbar.scrollTo(0, store.chatScrollbar.maxScrollY);
+	// 	clearTimeout(timer);
+	// }, 100);
 	// if (!store.messageList.has(store.sessionSelectId)) {
 	// 	let params: Message.ReqGetParams = {
 	// 		from_uid: globalStore.uid,
