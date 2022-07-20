@@ -1,6 +1,6 @@
-export function formatTime(created_data: number) {
+export function formatTime(created_data: string) {
 	//时间戳
-	const date_temp = new Date(created_data);
+	const date_temp = new Date(parseInt(created_data) * 1000);
 	const y = date_temp.getFullYear();
 	let m: string | number = date_temp.getMonth() + 1;
 	m = m < 10 ? `0${String(m)}` : m;
