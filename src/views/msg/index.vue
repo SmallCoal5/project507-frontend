@@ -87,8 +87,8 @@ async function init() {
 async function getSessionList(start: number) {
 	let params: Message.ReqGetSessionParams = {
 		uid: globalStore.uid,
-		pageNum: start,
-		pageSize: 10
+		page_num: start,
+		page_size: 10
 	};
 	const res = await getSessionsApi(params);
 	console.log("获取会话列表", res);

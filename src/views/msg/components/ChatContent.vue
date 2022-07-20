@@ -4,8 +4,21 @@
 		<!-- 聊天头部 -->
 		<ChatHead></ChatHead>
 		<!-- 聊天内容 -->
-		<div class="scroll-wrapper rounded-6px box-border w-full message-box" ref="scrollbarRef">
-			<div class="p-20px">
+		<div class="scroll-wrapper rounded-6px box-border w-full message-box max-h-100%" ref="scrollbarRef">
+			<div class="px-20px pb-20px">
+				<div class="pulldown-wrapper justify-center">
+					<div v-if="store.beforePullDown">
+						<span>加载更多</span>
+					</div>
+					<div v-else>
+						<div v-if="store.isPullingDown">
+							<span>加载中...</span>
+						</div>
+						<div v-else>
+							<span>加载完毕</span>
+						</div>
+					</div>
+				</div>
 				<template v-for="(item, index) in messages" :key="index">
 					<!-- 聊天时间 -->
 					<div class="text-12px flex w-full justify-center">
@@ -40,7 +53,7 @@
 							</video>
 						</div>
 						<el-icon
-							v-if="item.status === 0"
+							v-if="false"
 							:class="item.from_uid == globalStore.uid ? 'mr-10px' : 'ml-10px'"
 							class="is-loading pt-5px"
 							size="40px"
@@ -49,6 +62,9 @@
 						</el-icon>
 					</el-row>
 				</template>
+			</div>
+			<div class="custom-vertical-scrollbar" ref="verticalRef">
+				<div class="custom-vertical-indicator"></div>
 			</div>
 		</div>
 		<!-- 聊天底部 -->
@@ -67,51 +83,108 @@ import { formatTime } from "../utils";
 import { Message } from "@/api/interface";
 import BScroll from "@better-scroll/core";
 import MouseWheel from "@better-scroll/mouse-wheel";
-// import ObserveDOM from "@better-scroll/observe-dom";
-
-// import { Messages } from "../interface";
+import PullDown from "@better-scroll/pull-down";
+import { ElMessage } from "element-plus";
+import { getMessagesApi } from "@/api/modules/msg";
+BScroll.use(PullDown);
 BScroll.use(MouseWheel);
-// BScroll.use(ObserveDOM);
 const store = MsgStore();
 const globalStore = GlobalStore();
 const scrollbarRef = ref();
+// const verticalRef = ref();
 
 onMounted(() => {
 	nextTick(() => {
 		// store.chatScrollbar = scrollbarRef.value;
 		store.chatScrollbar = new BScroll(".scroll-wrapper", {
 			probeType: 3,
-			click: true,
-			// observeDOM: true,
+			click: false,
+			scrollX: false,
+			scrollY: true,
+			bounceTime: 800,
+			useTransition: false,
+			pullDownRefresh: {
+				threshold: 70,
+				stop: 56
+			},
 			mouseWheel: {
 				speed: 20,
 				invert: false,
 				easeTime: 300
 			}
 		});
-		store.chatScrollbar.on("scrollStart", () => {
-			console.log("scrollStart-");
+		store.chatScrollbar.on("refresh", () => {
+			console.log("会话页面切换");
+			// store.chatScrollbar.scrollTo(0, store.chatScrollbar.maxScrollY);
 		});
-		store.chatScrollbar.on("scroll", () => {
-			console.log("scrolling-");
-		});
-		store.chatScrollbar.on("scrollEnd", (pos: any) => {
-			console.log(pos);
-		});
+		store.chatScrollbar.on("pullingDown", loadMoreMessages);
 	});
 	// console.log("加载聊天页面");
 	// store.toBottom();
 });
+
 // 获取会话列表
 const messages = computed(() => {
+	return store.sessionSelected.messages.slice().reverse();
 	let item = store.sessionList.filter((x: Message.SessionInfo) => x.id == store.sessionSelectId);
-	// console.log("获取会话列表", item);
 	if (item.length == 0) return [];
-	return item[0].messages;
+	return item[0].messages.slice().reverse();
 	if (!store.messageList.has(store.sessionSelectId)) return [];
 	// store.toBottom();
 	return store.messageList.get(store.sessionSelectId)!;
 });
+
+async function loadMoreMessages() {
+	store.beforePullDown = false;
+	store.isPullingDown = true;
+	console.log("加载更多消息", store.beforePullDown);
+	let msgLen = store.sessionSelected.messages.length;
+	let pageSize = 10;
+	let pageNum = Math.floor(msgLen / pageSize);
+	if (pageNum == 0 || store.sessionSelectId == 0) {
+		console.log("结束加载", msgLen, pageNum);
+		finishPullDown();
+		// store.isPullingDown = false;
+		// store.beforePullDown = true;
+		// store.chatScrollbar.finishPullDown();
+		return;
+	}
+	let _id = store.sessionSelectId;
+	let params: Message.ReqGetParams = {
+		from_uid: globalStore.uid,
+		to_uid: store.sessionSelectId,
+		page_num: pageNum,
+		page_size: pageSize
+	};
+	const res = await getMessagesApi(params);
+	if (res.code == 200) {
+		if (_id === store.sessionSelectId) {
+			store.sessionSelected.messages.push(...res.data!.datalist);
+		}
+		// store.messageList.set(store.sessionSelectId, res.data!.datalist);
+		console.log("获取会话消息", "sessionSelectId", store.sessionSelectId, store.sessionSelected.messages);
+		// store.initEditor();
+	} else {
+		ElMessage.error("获取会话消息失败！");
+	}
+	finishPullDown();
+}
+
+async function finishPullDown() {
+	store.isPullingDown = false;
+	console.log("结束加载");
+	// const stopTime = TIME_STOP;
+	await new Promise<void>(resolve => {
+		setTimeout(() => {
+			store.chatScrollbar.finishPullDown();
+			resolve();
+		}, 600);
+	});
+	setTimeout(() => {
+		store.beforePullDown = true;
+		store.chatScrollbar.refresh();
+	}, 800);
+}
 // const messageList = store.messageList.get(store.sessionSelectId);
 
 // 渲染时间每隔5分钟显示一次
@@ -138,6 +211,8 @@ const messages = computed(() => {
 .message-box {
 	// overflow-y: auto;
 	overflow: hidden;
+
+	// height: 100%;
 	background: #f8f9fa;
 	flex: 1;
 }
@@ -150,4 +225,33 @@ const messages = computed(() => {
 .msg {
 	max-width: calc(70%);
 }
+.pulldown-wrapper {
+	display: flex;
+
+	// position: absolute;
+	width: 100%;
+
+	// padding-bottom: 10px;
+	color: #999999;
+	text-align: center;
+	transform: translateY(-100%) translateZ(0);
+	box-sizing: border-box;
+}
+
+// .custom-vertical-scrollbar {
+// 	position: absolute;
+// 	top: 50%;
+// 	right: 10px;
+// 	width: 7px;
+// 	height: 200px;
+// 	background-color: rgb(200 200 200 / 30%);
+// 	border-radius: 6px;
+// 	transform: translateY(-20%) translateZ(0);
+// }
+// .custom-vertical-indicator {
+// 	width: 100%;
+// 	height: 40px;
+// 	background-color: #db8090;
+// 	border-radius: 6px;
+// }
 </style>

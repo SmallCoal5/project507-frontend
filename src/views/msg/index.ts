@@ -18,7 +18,9 @@ export const MsgStore = defineStore({
 			chatScrollbar: null,
 			chatEditor: null,
 			editor: null,
-			editorData: ""
+			editorData: null,
+			beforePullDown: true,
+			isPullingDown: false
 		};
 	},
 	actions: {

@@ -51,6 +51,7 @@ const globalStore = GlobalStore();
 async function selectSession(item: Message.SessionInfo) {
 	// 更新已读消息状态
 	// store.chatScrollbar.scrollTo(0, store.chatScrollbar.maxScrollY);
+	// store.chatScrollbar.refresh();
 	if (store.sessionSelectId > 0 && store.sessionSelected !== null && store.sessionSelected.unread > 0) {
 		updateUnreadMessageApi({ uid: globalStore.uid, session_uid: store.sessionSelectId });
 	}
@@ -67,13 +68,14 @@ async function selectSession(item: Message.SessionInfo) {
 	store.sessionName = item.username;
 	store.sessionSelected = item;
 	item.unread = 0;
-	// store.toBottom();
-	// store.chatScrollbar.scrollTo(0, -200);
-	// const timer = setTimeout(() => {
-	// 	// this.chatScrollbar?.setScrollTop(9999);
-	// 	store.chatScrollbar.scrollTo(0, store.chatScrollbar.maxScrollY);
-	// 	clearTimeout(timer);
-	// }, 100);
+	// store.chatScrollbar.refresh();
+	// store.chatScrollbar.scrollTo(0, store.chatScrollbar.maxScrollY);
+	setTimeout(() => {
+		// store.chatScrollbar.refresh();
+		store.chatScrollbar.refresh();
+		store.chatScrollbar.scrollTo(0, store.chatScrollbar.maxScrollY);
+	}, 1);
+
 	// if (!store.messageList.has(store.sessionSelectId)) {
 	// 	let params: Message.ReqGetParams = {
 	// 		from_uid: globalStore.uid,
