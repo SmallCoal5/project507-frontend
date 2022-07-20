@@ -12,15 +12,15 @@ export interface ResultData<T = any> extends Result {
 // * 分页响应参数
 export interface ResPage<T> {
 	datalist: T[];
-	pageNum: number;
-	pageSize: number;
+	page_num: number;
+	page_size: number;
 	total?: number;
 }
 
 // * 分页请求参数
 export interface ReqPage {
-	pageNum: number;
-	pageSize: number;
+	page_num: number;
+	page_size: number;
 }
 
 // * 登录
@@ -158,6 +158,7 @@ export namespace Message {
 		to_uid: number;
 		content: string;
 		image_url: string;
+		video_url?: string;
 		created_on: number;
 		status: number;
 		readed?: boolean;
@@ -181,4 +182,8 @@ export namespace Message {
 
 export interface ImageInfo {
 	image_url: string;
+}
+
+export interface VideoInfo {
+	video_url: string;
 }

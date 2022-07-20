@@ -26,11 +26,12 @@
 // const store = MsgStore();
 import "@wangeditor/editor/dist/css/style.css"; // 引入 css
 
-import { onBeforeUnmount, ref, shallowRef, onMounted } from "vue";
+import { onBeforeUnmount, ref } from "vue";
 import { Editor } from "@wangeditor/editor-for-vue";
 import { Message } from "@/api/interface/index";
 import { GlobalStore } from "@/store";
 import { MsgStore } from "..";
+import { IEditorConfig } from "@wangeditor/core";
 
 // interface EditorProps {
 // 	value: string;
@@ -45,52 +46,58 @@ import { MsgStore } from "..";
 // const { proxy }: any = getCurrentInstance();
 const globalStore = GlobalStore();
 const store = MsgStore();
-const editorRef = shallowRef();
-const valueHtml = ref("<p>hello</p>");
-const editorConfig = { placeholder: "请输入内容..." };
-// 模拟 ajax 异步获取内容
-onMounted(() => {
-	setTimeout(() => {
-		valueHtml.value = "模拟 Ajax 异步设置内容";
-	}, 1500);
-});
+// const editorRef = shallowRef();
+const valueHtml = ref("");
+const editorConfig: Partial<IEditorConfig> = {
+	placeholder: "请输入内容...",
+	maxLength: 200
+};
 // 组件销毁时，也及时销毁编辑器
 onBeforeUnmount(() => {
-	const editor = editorRef.value;
+	// const editor = editorRef.value;
+	const editor = store.editor;
 	if (editor == null) return;
 	editor.destroy();
 });
 
 const handleCreated = (editor: any) => {
-	editorRef.value = editor; // 记录 editor 实例，重要！
+	// editorRef.value = editor; // 记录 editor 实例，重要！
+	store.editor = editor;
+	store.editorData = valueHtml;
 };
-const handleChange = (editor: { getHtml: () => any }) => {
-	console.log("change:", editor.getHtml().trim());
+const handleChange = () => {
+	console.log("change:", store.editor.getHtml().trim());
 };
 
 function send() {
-	let txt = editorRef.value.getText();
+	let txt = store.editor.getText();
 	if (txt.length !== 0) {
 		let msg: Message.MessageInfo = {
 			from_uid: globalStore.uid,
 			to_uid: store.sessionSelectId,
-			content: txt,
+			content: valueHtml.value,
 			image_url: "",
 			created_on: Math.round(Date.now() / 1000),
 			status: 0
 		};
 		let wsMsg = {
-			content: txt,
+			content: valueHtml.value,
 			to_uid: store.sessionSelectId
 		};
 		console.log("发送消息", JSON.stringify(wsMsg));
-		store.sessionSelected.messages.push(msg);
+		store.sessionSelected.messages.unshift(msg);
 		// store.messageList.get(store.sessionSelectId)?.push(msg);
 		// store.toBottom();
 
 		if (store.socket != null) {
 			store.socket.send(JSON.stringify(wsMsg));
+			setTimeout(() => {
+				// store.chatScrollbar.refresh();
+				store.chatScrollbar.refresh();
+				store.chatScrollbar.scrollTo(0, store.chatScrollbar.maxScrollY);
+			}, 1);
 		}
+		store.editor.setHtml("<p></p>");
 	}
 }
 // 获取文本

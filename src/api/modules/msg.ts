@@ -1,4 +1,4 @@
-import { ResPage, Message, ImageInfo } from "@/api/interface/index";
+import { ResPage, Message, ImageInfo, VideoInfo } from "@/api/interface/index";
 import { API } from "@/api/config/servicePort";
 import http from "@/api";
 import { ContentTypeEnum } from "@/enums/httpEnum";
@@ -24,4 +24,9 @@ export const updateUnreadMessageApi = (params: { uid: number; session_uid: numbe
 // * 上传图片
 export const uploadImageApi = (params: any) => {
 	return http.post<ImageInfo>(API + `/upload/image`, params, { headers: { "Content-Type": ContentTypeEnum.FORM_DATA } });
+};
+
+// * 上传视频
+export const uploadVideoApi = (params: any) => {
+	return http.post<VideoInfo>(API + `/upload/video`, params, { headers: { "Content-Type": ContentTypeEnum.FORM_DATA } });
 };

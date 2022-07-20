@@ -30,5 +30,7 @@ export interface Main {
 	chatScrollbar: any;
 	chatEditor: any;
 	editor: any;
-	editorData: string;
+	editorData: any;
+	beforePullDown: boolean;
+	isPullingDown: boolean;
 }

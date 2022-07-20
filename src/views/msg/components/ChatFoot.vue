@@ -1,8 +1,8 @@
 <template>
 	<div class="session-footer border-box">
-		<div class="pl-20px mt-20px">
+		<div class="pl-10px mt-20px">
 			<!--工具栏-->
-			<el-row type="flex" class="mb-10px">
+			<el-row type="flex" class="mb-10px pl-10px">
 				<el-popover placement="top" popper-class="chat-icon-popover" trigger="click">
 					<template #reference>
 						<div class="text-20px cursor-pointer dark:filter-invert-100">
@@ -12,12 +12,13 @@
 					<el-scrollbar class="emoji" height="150px">
 						<ul class="m0 p0 pr-2px flex flex-wrap">
 							<li
-								v-for="item in store.emojiList"
-								:key="item.title"
+								v-for="(item, row_id) in store.emojiList"
+								:key="row_id"
 								class="p-5px list-none hover:animate-heart-beat animate-count-animated animate-duration-1s cursor-pointer"
-								:title="item.title"
+								:title="item"
+								@click="selectIcon(item)"
 							>
-								<img width="30" height="30" :src="item.icon" @click="selectIcon()" />
+								{{ item }}
 							</li>
 						</ul>
 					</el-scrollbar>
@@ -57,14 +58,17 @@ import { Message } from "@/api/interface/index";
 // import { ElMessage } from "element-plus";
 import { getCurrentInstance, ref } from "vue";
 import { GlobalStore } from "@/store";
-import { uploadImageApi } from "@/api/modules/msg";
+import { uploadImageApi, uploadVideoApi } from "@/api/modules/msg";
 // const { proxy }: any = getCurrentInstance();
 const store = MsgStore();
 const globalStore = GlobalStore();
 const { proxy }: any = getCurrentInstance();
 const editor = ref(null);
 // 选择表情
-function selectIcon() {}
+function selectIcon(item: any) {
+	console.log("选择表情", item);
+	store.editor.insertText(item);
+}
 
 // function blurHighLight() {}
 //发送图片
@@ -87,7 +91,7 @@ async function sendImage(e: any) {
 				created_on: Math.round(Date.now() / 1000),
 				status: 0
 			};
-			store.messageList.get(store.sessionSelectId)?.push(msg);
+			store.sessionSelected.messages.push(msg);
 			let wsMsg = {
 				content: "",
 				image_url: "",
@@ -106,7 +110,39 @@ async function sendImage(e: any) {
 		}
 	}
 }
-function sendVideo() {}
+async function sendVideo(e: any) {
+	const resultFile = e.target.files;
+	const fileObj = new Blob([resultFile[0]], { type: "video/mp4" });
+	const tempFilePath = URL.createObjectURL(fileObj);
+	let msg: Message.MessageInfo = {
+		from_uid: globalStore.uid,
+		to_uid: store.sessionSelectId,
+		content: "",
+		image_url: "",
+		video_url: tempFilePath,
+		created_on: Math.round(Date.now() / 1000),
+		status: 0
+	};
+	let wsMsg = {
+		content: "",
+		image_url: "",
+		to_uid: store.sessionSelectId
+	};
+	store.sessionSelected.messages.push(msg);
+	let formData = new FormData();
+	formData.append("video", resultFile[0]);
+	const res = await uploadVideoApi(formData);
+	if (res.code === 200) {
+		wsMsg.image_url = res.data!.video_url;
+	}
+	if (store.socket != null) {
+		store.socket.send(JSON.stringify(wsMsg));
+	}
+	proxy.$refs.UploadImageRef.value = null;
+}
+
+store.emojiList =
+	"😀 😁 😂 🤣 😃 😄 😅 😆 😉 😊 😫 😴 😌 😛 😜 😒 😓 😔 🙁 😖 😑 😶 🙄 😏 😣 😞 😟 😤 😢 😭 💘 👍 👎 👊 👌".split(" ");
 </script>
 <style scoped lang="scss">
 .session-footer {
