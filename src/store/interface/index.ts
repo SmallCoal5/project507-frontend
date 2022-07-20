@@ -24,6 +24,9 @@ export interface GlobalState {
 	themeConfig: ThemeConfigProp;
 }
 
+export interface CommentState {
+	currentCommentList: Array<any>;
+}
 /* MenuState */
 export interface MenuState {
 	isCollapse: boolean;

@@ -1,7 +1,7 @@
 <template>
 	<div class="home_box">
 		<Waterfall
-			:list="list"
+			:list="Artile_list"
 			:row-key="options.rowKey"
 			:gutter="options.gutter"
 			:has-around-gutter="options.hasAroundGutter"
@@ -53,7 +53,7 @@
 		<el-dialog v-model="previewVisible" :show-close="false">
 			<div class="dialog-box">
 				<ImageShow :url="previewURL" :srcList="srcList"></ImageShow>
-				<Right :item="articleItem!"></Right>
+				<Right :item="articleItem!" :commentitem="commentItem!"></Right>
 			</div>
 			<!-- <img style="width: 100%" :src="previewURL" /> -->
 		</el-dialog>
@@ -67,28 +67,63 @@ import "vue-waterfall-plugin-next/style.css";
 import { onMounted, reactive, ref } from "vue";
 import loading from "./assets/loading.png";
 import error from "./assets/error.png";
-import { getList } from "./api";
-import { ViewCard } from "./interface";
+import { getArtileList } from "./api";
+import { CommentCard, ViewCard } from "./interface";
 // import { Star, StarFilled } from "@element-plus/icons-vue";
 // import { Picture as IconPicture } from "@element-plus/icons-vue";
 import { Like, LikeFilled } from "./icon";
 import ImageShow from "./components/ImageShow.vue";
 import Right from "./components/Right.vue";
+import { getArticleCommentApi } from "@/api/modules/article";
+import { ElMessage } from "element-plus";
+
+import { CommentStore } from "@/store";
+const store = CommentStore();
 // 侧边栏控制
 // const currentDate = new Date().toDateString();
 // const loadingCard = ref(false);
+
 function usePreview() {
 	const previewVisible = ref(false);
 	const previewTitle = ref<string | undefined>("");
 	const previewURL = ref("");
 	const srcList = ref<string[]>([]);
 	const articleItem = ref<ViewCard>();
-	const handlePreview = (item: ViewCard, url: string) => {
+	const commentItem = ref<CommentCard[]>();
+	// const commentleItem = ref<CommentCard>();
+	const handlePreview = async (item: ViewCard, url: string) => {
 		previewTitle.value = item.name;
 		previewURL.value = url;
 		previewVisible.value = true;
 		srcList.value = [url, url];
 		articleItem.value = item;
+
+		const res = await getArticleCommentApi({ article_id: item.id });
+
+		if (res.code == "200") {
+			let temp: CommentCard[] = [
+				{
+					ID: res.data!.datalist[0].ID!,
+					created_on: res.data!.datalist[0].created_on,
+					user_id: res.data!.datalist[0].user_id,
+					article_id: res.data!.datalist[0].article_id,
+					username: res.data!.datalist[0].username,
+					content: res.data!.datalist[0].content
+				}
+			];
+			store.setCurrentCommentList(temp);
+			// commentItem.value = temp;
+			// commentStore.currentCommentList = temp;
+			console.log("获取评论列表", store.currentCommentList);
+		} else {
+			ElMessage.error("获取评论列表失败！");
+		}
+		// const res = await getCommentList(item.id);
+		// if (res.code)
+		// 	if (temp == null) {
+		// 		temp = await getCommentList(2);
+		// 		console.log("获取评论列表", commentItem.value);
+		// 	} else commentItem.value = temp;
 	};
 
 	return {
@@ -97,13 +132,14 @@ function usePreview() {
 		previewURL,
 		srcList,
 		articleItem,
+		commentItem,
 		handlePreview
 	};
 }
-const { previewVisible, previewURL, srcList, articleItem, handlePreview } = usePreview();
+const { previewVisible, previewURL, srcList, articleItem, commentItem, handlePreview } = usePreview();
 
 function useWaterfall() {
-	const list = ref<ViewCard[]>([]);
+	const Artile_list = ref<ViewCard[]>([]);
 	const options = reactive({
 		// 唯一key值
 		rowKey: "id",
@@ -152,18 +188,17 @@ function useWaterfall() {
 
 	// 加载更多
 	async function handleLoadMore(cnt: number) {
-		list.value.push(...(await getList(cnt)));
+		Artile_list.value.push(...(await getArtileList(cnt)));
 	}
-
 	return {
-		list,
+		Artile_list,
 		options,
 		handleLoadMore
 	};
 }
 
 // 列表
-const { list, options, handleLoadMore } = useWaterfall();
+const { Artile_list, options, handleLoadMore } = useWaterfall();
 
 // 侧边栏控制
 // const { isOpen, handleToggleController } = useSlideBar();

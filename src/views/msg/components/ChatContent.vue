@@ -122,7 +122,6 @@ onMounted(() => {
 	// console.log("加载聊天页面");
 	// store.toBottom();
 });
-
 // 获取会话列表
 const messages = computed(() => {
 	return store.sessionSelected.messages.slice().reverse();

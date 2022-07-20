@@ -12,6 +12,11 @@ export const getArticleListApi = (params: Article.ReqGetArticleParams) => {
 	return http.get<ResPage<Article.ResArticleList>>(API + `/article`, params);
 };
 
+//*获取文章评论
+export const getArticleCommentApi = (params: { article_id: number }) => {
+	return http.get<ResPage<Article.ResArticleComment>>(API + `/comments/` + params.article_id);
+};
+
 // * 切换文章状态
 export const changeArticleStatus = (params: { id: number; state: number }) => {
 	return http.put(API + `/article/update/` + params.id + `/state`, params);
