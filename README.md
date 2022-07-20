@@ -1,4 +1,4 @@
-# Vue 3.2 + TypeScript + Pinia + Vite2 + Element-Plus 校园社区
+# Vue 3.2 + TypeScript + Pinia + Vite2 + Element-Plus 网站
 
 ## 安装使用步骤
 
@@ -64,3 +64,10 @@ npm run commit
 ```
 
 ## 项目截图
+
+## Dependency
+
+- unocss 原子化 css 插件
+- wangEditor5 富文本编辑器
+- Moment.js 日期处理库
+- [betterScroll](https://better-scroll.github.io/) 滚动插件

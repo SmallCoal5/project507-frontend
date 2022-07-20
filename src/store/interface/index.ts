@@ -17,7 +17,7 @@ export interface GlobalState {
 	uid: number;
 	username: string;
 	name?: string;
-	avator: string;
+	avatar?: string;
 	expireTime: number;
 	assemblySize: string;
 	language: string;
