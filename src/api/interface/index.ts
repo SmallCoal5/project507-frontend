@@ -1,6 +1,6 @@
 // * 请求响应参数(不包含data)
 export interface Result {
-	code: number;
+	code: string;
 	msg: string;
 }
 
@@ -111,7 +111,7 @@ export namespace Article {
 	export interface ReqAddArticleParams {
 		title: string;
 		content: string;
-		user_id: number;
+		user_id: string;
 		tags: string[];
 	}
 	export interface ReqAddArticleWithImgParams extends ReqAddArticleParams {
@@ -141,7 +141,6 @@ export namespace Message {
 		image_url: string;
 		created_on: number;
 		status: number;
-		readed?: boolean;
 	}
 	export interface ReqGetParams extends ReqPage {
 		from_uid: number;
@@ -154,12 +153,4 @@ export namespace Message {
 		messages: MessageInfo[];
 		userInfo: User.UserInfo;
 	}
-	export interface SessionInfo extends User.UserInfo {
-		unread: number;
-		messages: MessageInfo[];
-	}
-}
-
-export interface ImageInfo {
-	image_url: string;
 }

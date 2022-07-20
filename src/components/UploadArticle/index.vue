@@ -99,7 +99,7 @@ const submitForm = async (formEl: FormInstance | undefined) => {
 			// formData.append("tag_name", articleForm.tags as unknown as Blob);
 			formData.append("title", articleForm.title);
 			formData.append("content", articleForm.content);
-			formData.set("user_id", articleForm.user_id + "");
+			formData.set("user_id", articleForm.user_id);
 			const res = await addArticleApi(formData);
 			ElMessage.success("上传成功！");
 			console.log(res);

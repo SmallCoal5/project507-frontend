@@ -50,11 +50,6 @@ export default defineConfig((mode: ConfigEnv): UserConfig => {
 					changeOrigin: true,
 					rewrite: path => path.replace(/^\/base/, "")
 				},
-				"/base_ws": {
-					target: "ws://172.31.225.62:8000",
-					changeOrigin: true,
-					rewrite: path => path.replace(/^\/base_ws/, "")
-				},
 				"/pic": {
 					target: "https://gitcode.net/qq_44112897/imgbed/-/raw/master/comic",
 					changeOrigin: true,

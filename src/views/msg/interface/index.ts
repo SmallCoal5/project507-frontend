@@ -15,20 +15,15 @@ export interface Message {
 // }
 
 export interface Main {
-	sessionList: Array<any>; //User.UserInfo[]
+	sessionList: Array<any>;
 	sessionListOffset: number;
 	sessionSelectId: number;
-	sessionName: string;
-	sessionSelected: any;
-	messageList: Map<number, Message.MessageInfo[]>;
+	allSessionList: Array<any>;
+	allSessionSelectId: number;
+	messageList: Map<number, Message.ResMessages>;
 	sessionAvatar: string;
 	// systemSession: Message.ResMessages;
 	socket: any;
-	onlineStatus: boolean;
 	sendInfo: any;
 	emojiList: Array<any>;
-	chatScrollbar: any;
-	chatEditor: any;
-	editor: any;
-	editorData: string;
 }

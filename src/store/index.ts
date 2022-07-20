@@ -18,7 +18,7 @@ export const GlobalStore = defineStore({
 		uid: 0,
 		username: "",
 		name: "",
-		avatar: "",
+		avator: "",
 		// element组件大小
 		assemblySize: "default",
 		// language
@@ -52,8 +52,8 @@ export const GlobalStore = defineStore({
 		setName(name: string | undefined) {
 			this.name = name;
 		},
-		setAvatar(avatar: string | undefined) {
-			this.avatar = avatar;
+		setAvator(avator: string) {
+			this.avator = avator;
 		},
 		setAssemblySizeSize(assemblySize: string) {
 			this.assemblySize = assemblySize;

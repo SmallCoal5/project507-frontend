@@ -1,117 +1,72 @@
 <template>
-	<div class="session-footer border-box">
-		<div class="pl-20px mt-20px">
-			<!--工具栏-->
-			<el-row type="flex" class="mb-10px">
-				<el-popover placement="top" popper-class="chat-icon-popover" trigger="click">
-					<template #reference>
-						<div class="text-20px cursor-pointer dark:filter-invert-100">
-							<img width="24" height="24" class="block" src="@/assets/images/emoji.svg" />
-						</div>
-					</template>
-					<el-scrollbar class="emoji" height="150px">
-						<ul class="m0 p0 pr-2px flex flex-wrap">
-							<li
-								v-for="item in store.emojiList"
-								:key="item.title"
-								class="p-5px list-none hover:animate-heart-beat animate-count-animated animate-duration-1s cursor-pointer"
-								:title="item.title"
-							>
-								<img width="30" height="30" :src="item.icon" @click="selectIcon()" />
-							</li>
-						</ul>
-					</el-scrollbar>
-				</el-popover>
-				<div class="ml-10px text-20px i-ep-picture-rounded !cursor-pointer">
-					<input
-						ref="UploadImageRef"
-						class="opacity-0"
-						name="customerService"
-						type="file"
-						value=""
-						accept="image/*"
-						@change="sendImage"
-					/>
-				</div>
-				<div class="ml-10px text-20px i-ep-video-camera !cursor-pointer">
-					<input
-						ref="referenceUploadVideo"
-						class="opacity-0 hidden"
-						name="customerService"
-						type="file"
-						value=""
-						accept="video/*"
-						@change="sendVideo"
-					/>
-				</div>
-			</el-row>
-			<ChatEditor ref="editor"></ChatEditor>
-		</div>
-	</div>
+	<footer class="px-20px">
+		<!--工具栏-->
+		<el-row type="flex" class="mb-10px">
+			<el-popover placement="top" popper-class="chat-icon-popover" trigger="click">
+				<template #reference>
+					<div class="text-20px cursor-pointer dark:filter-invert-100">
+						<img width="24" height="24" class="block" src="@/assets/emoji.svg" />
+					</div>
+				</template>
+				<el-scrollbar class="emoji" height="150px">
+					<ul class="m0 p0 pr-2px flex flex-wrap">
+						<li
+							v-for="item in store.emojiList"
+							:key="item.title"
+							class="p-5px list-none hover:animate-heart-beat animate-count-animated animate-duration-1s cursor-pointer"
+							:title="item.title"
+						>
+							<img width="30" height="30" :src="item.icon" @click="selectIcon()" />
+						</li>
+					</ul>
+				</el-scrollbar>
+			</el-popover>
+			<div class="ml-10px text-20px i-ep-picture-rounded !cursor-pointer">
+				<input
+					ref="referenceUpload"
+					class="opacity-0"
+					name="customerService"
+					type="file"
+					value=""
+					accept="image/*"
+					@change="sendImage"
+				/>
+			</div>
+			<div class="ml-10px text-20px i-ep-video-camera !cursor-pointer">
+				<input
+					ref="referenceUploadVideo"
+					class="opacity-0"
+					name="customerService"
+					type="file"
+					value=""
+					accept="video/*"
+					@change="sendVideo"
+				/>
+			</div>
+		</el-row>
+		<ChatEditor
+			v-model="store.sendInfo"
+			ref="editor"
+			id="chatEditor"
+			:height="135"
+			class="answer-editor"
+			placeholder="请输入聊天"
+		></ChatEditor>
+	</footer>
 </template>
 
 <script setup lang="ts">
 import { MsgStore } from "..";
 import ChatEditor from "./ChatEditor.vue";
-import { Message } from "@/api/interface/index";
 // import { ElMessage } from "element-plus";
-import { getCurrentInstance, ref } from "vue";
-import { GlobalStore } from "@/store";
-import { uploadImageApi } from "@/api/modules/msg";
+import { ref } from "vue";
 // const { proxy }: any = getCurrentInstance();
 const store = MsgStore();
-const globalStore = GlobalStore();
-const { proxy }: any = getCurrentInstance();
 const editor = ref(null);
 // 选择表情
 function selectIcon() {}
 
 // function blurHighLight() {}
-//发送图片
-async function sendImage(e: any) {
-	const fileData = e.target.files[0];
-	if (fileData != null) {
-		if (!/image\/\w+/.test(fileData.type)) {
-			return alert("请选择图片文件!");
-		}
-		if (fileData.size > 1024 * 1024 * 10) {
-			return alert("上传图片不能超过10M!");
-		} else {
-			console.log(fileData);
-			const tempFilePath = URL.createObjectURL(fileData);
-			let msg: Message.MessageInfo = {
-				from_uid: globalStore.uid,
-				to_uid: store.sessionSelectId,
-				content: "",
-				image_url: tempFilePath,
-				created_on: Math.round(Date.now() / 1000),
-				status: 0
-			};
-			store.messageList.get(store.sessionSelectId)?.push(msg);
-			let wsMsg = {
-				content: "",
-				image_url: "",
-				to_uid: store.sessionSelectId
-			};
-			let formData = new FormData();
-			formData.append("image", fileData);
-			const res = await uploadImageApi(formData);
-			if (res.code === 200) {
-				wsMsg.image_url = res.data!.image_url;
-			}
-			if (store.socket != null) {
-				store.socket.send(JSON.stringify(wsMsg));
-			}
-			proxy.$refs.UploadImageRef.value = null;
-		}
-	}
-}
+function sendImage() {}
 function sendVideo() {}
 </script>
-<style scoped lang="scss">
-.session-footer {
-	z-index: 10;
-	width: 100%;
-	border-top: 1px solid #e1e5e8;
-}
-</style>

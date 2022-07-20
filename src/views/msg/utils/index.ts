@@ -3,11 +3,7 @@
  * @param {string} option
  * @returns {string}
  */
-import moment from "moment";
 export function formatTime(time: any) {
-	// console.log(moment.locales());
-	// console.log("moment: ", moment(time * 1000).calendar());
-	return moment(time * 1000).calendar();
 	if (("" + time).length === 10) {
 		time = parseInt(time) * 1000;
 	} else {
