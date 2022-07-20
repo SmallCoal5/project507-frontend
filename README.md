@@ -70,3 +70,4 @@ npm run commit
 - unocss 原子化 css 插件
 - wangEditor5 富文本编辑器
 - Moment.js 日期处理库
+- [betterScroll](https://better-scroll.github.io/) 滚动插件

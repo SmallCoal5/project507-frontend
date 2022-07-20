@@ -19,6 +19,10 @@
 		"commit": "git pull && git add -A && git-cz && git push"
 	},
 	"dependencies": {
+		"@better-scroll/core": "^2.4.2",
+		"@better-scroll/infinity": "^2.4.2",
+		"@better-scroll/mouse-wheel": "^2.4.2",
+		"@better-scroll/observe-dom": "^2.4.2",
 		"@element-plus/icons-vue": "^1.1.4",
 		"@vueuse/core": "^8.0.1",
 		"@wangeditor/editor": "^5.1.10",

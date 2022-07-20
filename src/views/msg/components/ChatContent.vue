@@ -4,7 +4,7 @@
 		<!-- 聊天头部 -->
 		<ChatHead></ChatHead>
 		<!-- 聊天内容 -->
-		<el-scrollbar class="rounded-6px box-border w-full message-box transition-all" max-height="100%" ref="chatScrollbar">
+		<div class="scroll-wrapper rounded-6px box-border w-full message-box" ref="scrollbarRef">
 			<div class="p-20px">
 				<template v-for="(item, index) in messages" :key="index">
 					<!-- 聊天时间 -->
@@ -50,7 +50,7 @@
 					</el-row>
 				</template>
 			</div>
-		</el-scrollbar>
+		</div>
 		<!-- 聊天底部 -->
 		<ChatFoot></ChatFoot>
 	</div>
@@ -60,27 +60,47 @@
 import ChatHead from "./ChatHead.vue";
 import ChatFoot from "./ChatFoot.vue";
 import { GlobalStore } from "@/store";
-import { computed, nextTick, onMounted, onUpdated, ref } from "vue";
+import { computed, nextTick, onMounted, ref } from "vue";
 // import { computed } from "vue";
 import { MsgStore } from "..";
 import { formatTime } from "../utils";
 import { Message } from "@/api/interface";
-// import { Messages } from "../interface";
+import BScroll from "@better-scroll/core";
+import MouseWheel from "@better-scroll/mouse-wheel";
+// import ObserveDOM from "@better-scroll/observe-dom";
 
+// import { Messages } from "../interface";
+BScroll.use(MouseWheel);
+// BScroll.use(ObserveDOM);
 const store = MsgStore();
 const globalStore = GlobalStore();
-const chatScrollbar = ref(null);
+const scrollbarRef = ref();
 
 onMounted(() => {
 	nextTick(() => {
-		store.chatScrollbar = chatScrollbar.value;
+		// store.chatScrollbar = scrollbarRef.value;
+		store.chatScrollbar = new BScroll(".scroll-wrapper", {
+			probeType: 3,
+			click: true,
+			// observeDOM: true,
+			mouseWheel: {
+				speed: 20,
+				invert: false,
+				easeTime: 300
+			}
+		});
+		store.chatScrollbar.on("scrollStart", () => {
+			console.log("scrollStart-");
+		});
+		store.chatScrollbar.on("scroll", () => {
+			console.log("scrolling-");
+		});
+		store.chatScrollbar.on("scrollEnd", (pos: any) => {
+			console.log(pos);
+		});
 	});
 	// console.log("加载聊天页面");
 	// store.toBottom();
-});
-
-onUpdated(() => {
-	store.toBottom();
 });
 // 获取会话列表
 const messages = computed(() => {
@@ -116,7 +136,8 @@ const messages = computed(() => {
 	flex-flow: column;
 }
 .message-box {
-	overflow-y: auto;
+	// overflow-y: auto;
+	overflow: hidden;
 	background: #f8f9fa;
 	flex: 1;
 }

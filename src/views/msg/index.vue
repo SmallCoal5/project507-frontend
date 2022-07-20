@@ -4,7 +4,7 @@
 			<!-- 会话区域 -->
 			<ChatDomain />
 			<!-- 聊天区域 -->
-			<ChatContent v-show="true" />
+			<ChatContent v-if="store.sessionSelectId != 0" />
 		</div>
 	</el-row>
 </template>
