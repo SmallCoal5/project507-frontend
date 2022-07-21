@@ -57,7 +57,7 @@
 							<span class="username">{{ comment.username }} </span> {{ comment.content }}
 						</div>
 						<div class="bottom">
-							<div class="time">{{ comment.created_on }}</div>
+							<div class="time">{{ formatTime(comment.created_on * 1000) }}</div>
 							<div class="reply">
 								<button class="cm-btn">
 									<!-- <el-icon :size="13"><ChatDotSquare /></el-icon> -->
@@ -86,7 +86,8 @@ import { Share, ChatDotSquare, WarningFilled } from "@element-plus/icons-vue";
 import { Like, LikeFilled, Thumb, ThumbFilled } from "../icon";
 import { ViewCard, CommentCard } from "../interface";
 import { CommentStore } from "@/store";
-// import { formatTime } from "../utils";
+import { formatTime } from "../utils";
+import { handleStar, handleCommentLike } from "../api";
 
 const store = CommentStore();
 const commentList = computed(() => {
@@ -104,23 +105,7 @@ const props = withDefaults(defineProps<ArticleProps>(), {
 // const commentList = ref<CommentCard[]>([]);
 const tags = ref<Array<string>>(["Tag 1", "Tag 4"]);
 const commentInput = ref("");
-function handleStar(item: ViewCard) {
-	const _item = item;
-	if (_item.star) {
-		_item.like -= 1;
-	} else {
-		_item.like += 1;
-	}
-	_item.star = !_item.star;
-}
-function handleCommentLike(item: CommentCard) {
-	if (item.is_like) {
-		item.like! -= 1;
-	} else {
-		item.like! += 1;
-	}
-	item.is_like = !item.is_like;
-}
+
 const scrollHeight = ref("100px");
 nextTick(() => {
 	fixHeight();
