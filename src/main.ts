@@ -35,6 +35,7 @@ import "nprogress/nprogress.css";
 //编辑器
 import "@wangeditor/editor/dist/css/style.css";
 
+import VueDOMPurifyHTML from "vue-dompurify-html";
 //日期时间库
 import moment from "moment";
 import "moment/dist/locale/zh-cn";
@@ -46,4 +47,4 @@ Object.keys(Icons).forEach(key => {
 	app.component(key, Icons[key as keyof typeof Icons]);
 });
 
-app.use(router).use(I18n).use(pinia).use(directives).use(ElementPlus).mount("#app");
+app.use(router).use(I18n).use(pinia).use(directives).use(ElementPlus).use(VueDOMPurifyHTML).mount("#app");

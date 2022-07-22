@@ -73,12 +73,21 @@ export const GlobalStore = defineStore({
 export const CommentStore = defineStore({
 	id: "CommentState",
 	state: (): CommentState => ({
-		currentCommentList: []
+		currentCommentList: [],
+		editor: null,
+		scrollBar: null,
+		emojiList: []
 	}),
 	getters: {},
 	actions: {
 		setCurrentCommentList(CommentList: any) {
 			this.currentCommentList = CommentList;
+		},
+		handleEditorCreated(editor: any) {
+			this.editor = editor;
+		},
+		handleEditorChange() {
+			console.log("change:", this!.editor.getHtml().trim());
 		}
 	}
 });

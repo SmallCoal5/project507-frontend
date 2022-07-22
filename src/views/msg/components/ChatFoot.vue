@@ -55,20 +55,24 @@
 import { MsgStore } from "..";
 import ChatEditor from "./ChatEditor.vue";
 import { Message } from "@/api/interface/index";
-// import { ElMessage } from "element-plus";
+import { ElMessage } from "element-plus";
 import { getCurrentInstance, ref } from "vue";
 import { GlobalStore } from "@/store";
 import { uploadImageApi, uploadVideoApi } from "@/api/modules/msg";
+// import { ElMessage } from "element-plus/lib/components";
 // const { proxy }: any = getCurrentInstance();
 const store = MsgStore();
 const globalStore = GlobalStore();
 const { proxy }: any = getCurrentInstance();
 const editor = ref(null);
 // 选择表情
-function selectIcon(item: any) {
-	console.log("选择表情", item);
-	store.editor.insertText(item);
-}
+const selectIcon = (item: any) => {
+	// const editor = store.editor;
+	// if (editor == null) return;
+	// console.log("选择表情1", item, editor.getHtml());
+	store.insertText(item);
+	store.editor.focus();
+};
 
 // function blurHighLight() {}
 //发送图片
@@ -83,6 +87,7 @@ async function sendImage(e: any) {
 		} else {
 			console.log(fileData);
 			const tempFilePath = URL.createObjectURL(fileData);
+			//localMsg
 			let msg: Message.MessageInfo = {
 				from_uid: globalStore.uid,
 				to_uid: store.sessionSelectId,
@@ -91,21 +96,29 @@ async function sendImage(e: any) {
 				created_on: Math.round(Date.now() / 1000),
 				status: 0
 			};
-			store.sessionSelected.messages.push(msg);
-			let wsMsg = {
-				content: "",
-				image_url: "",
-				to_uid: store.sessionSelectId
-			};
 			let formData = new FormData();
 			formData.append("image", fileData);
 			const res = await uploadImageApi(formData);
 			if (res.code === 200) {
-				wsMsg.image_url = res.data!.image_url;
+				//添加本地消息
+				store.sessionSelected.messages.unshift(msg);
+				let wsMsg = {
+					content: "",
+					image_url: res.data!.image_url,
+					to_uid: store.sessionSelectId
+				};
+				//发送给对方消息
+				if (store.socket != null) {
+					store.socket.send(JSON.stringify(wsMsg));
+				}
+			} else {
+				ElMessage.error("发送图片失败！");
 			}
-			if (store.socket != null) {
-				store.socket.send(JSON.stringify(wsMsg));
-			}
+			setTimeout(() => {
+				// store.chatScrollbar.refresh();
+				store.chatScrollbar.refresh();
+				store.chatScrollbar.scrollTo(0, store.chatScrollbar.maxScrollY);
+			}, 1);
 			proxy.$refs.UploadImageRef.value = null;
 		}
 	}
@@ -138,6 +151,11 @@ async function sendVideo(e: any) {
 	if (store.socket != null) {
 		store.socket.send(JSON.stringify(wsMsg));
 	}
+	setTimeout(() => {
+		// store.chatScrollbar.refresh();
+		store.chatScrollbar.refresh();
+		store.chatScrollbar.scrollTo(0, store.chatScrollbar.maxScrollY);
+	}, 1);
 	proxy.$refs.UploadImageRef.value = null;
 }
 

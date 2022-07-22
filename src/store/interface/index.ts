@@ -26,6 +26,9 @@ export interface GlobalState {
 
 export interface CommentState {
 	currentCommentList: Array<any>;
+	editor: any;
+	scrollBar: any;
+	emojiList: Array<any>;
 }
 /* MenuState */
 export interface MenuState {

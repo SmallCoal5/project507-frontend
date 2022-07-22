@@ -72,11 +72,7 @@
 				}
 			}
 		}
-
-		// background-color: rgb(17 24 39);
 	}
-
-	// }
 }
 ::v-deep .el-dialog__body {
 	padding: 0;
@@ -98,10 +94,6 @@
 ::v-deep .el-carousel__item {
 	display: flex;
 	align-items: center;
-
-	// background-color: var(--geeker-main-bg-color) !important;
-
-	// background-color: rgba(0 0 0 / 28%);
 }
 .dialog-box {
 	display: flex;
@@ -301,31 +293,6 @@
 				.hint {
 					margin-top: 5%;
 				}
-			}
-		}
-		.comment-input {
-			display: flex;
-			padding: 4%;
-			.input-box {
-				width: 88%;
-				margin-right: 5px;
-			}
-			.submit-btn {
-				width: 64px;
-				height: 28px;
-				padding: 0 !important;
-				margin-top: 2px;
-				margin-left: 5px;
-				font-size: 0.9rem;
-				font-weight: 700;
-				line-height: 1;
-				color: rgba(51 117 185 / 88%);
-				cursor: pointer;
-
-				// border: 1px solid;
-				border-radius: 2.25rem;
-
-				// box-sizing: border-box;
 			}
 		}
 

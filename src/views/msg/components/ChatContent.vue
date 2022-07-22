@@ -24,7 +24,7 @@
 					<div class="text-12px flex w-full justify-center">
 						<div
 							class="bg-gray-200 w-auto text-12px py-5px px-8px text-center rounded-5px"
-							v-if="(item && index === 0) || (item && item.created_on - messages[index - 1].created_on > 5 * 60 * 1000)"
+							v-if="(item && index === 0) || (item && item.created_on - messages[index - 1].created_on > 5 * 60)"
 						>
 							{{ formatTime(item.created_on) }}
 						</div>
@@ -35,15 +35,14 @@
 							v-if="item.image_url.length == 0"
 							:class="item.from_uid == globalStore.uid ? 'mr-10px bg-green-100' : 'ml-10px bg-white'"
 							class="break-words px-15px rounded-6px text-left py-12px msg"
-						>
-							{{ item.content }}
-						</div>
+							v-dompurify-html="item.content"
+						></div>
 						<div v-else :class="item.from_uid == globalStore.uid ? 'mr-10px' : 'ml-10px'">
 							<el-image
 								v-if="item.image_url.length != 0"
 								class="w-200px ha max-h-200px"
-								:src="'/base/' + item.image_url"
-								:preview-src-list="[item.image_url]"
+								:src="item.image_url.indexOf('blob') == 0 ? item.image_url : '/base/' + item.image_url"
+								:preview-src-list="[item.image_url.indexOf('blob') == 0 ? item.image_url : '/base/' + item.image_url]"
 								:initial-index="4"
 								fit="cover"
 							/>
@@ -101,7 +100,7 @@ onMounted(() => {
 			click: false,
 			scrollX: false,
 			scrollY: true,
-			bounceTime: 800,
+			bounceTime: 400,
 			useTransition: false,
 			pullDownRefresh: {
 				threshold: 70,
@@ -110,11 +109,12 @@ onMounted(() => {
 			mouseWheel: {
 				speed: 20,
 				invert: false,
-				easeTime: 300
+				easeTime: 300,
+				dampingFactor: 0.4
 			}
 		});
 		store.chatScrollbar.on("refresh", () => {
-			console.log("会话页面切换");
+			// console.log("会话页面切换");
 			// store.chatScrollbar.scrollTo(0, store.chatScrollbar.maxScrollY);
 		});
 		store.chatScrollbar.on("pullingDown", loadMoreMessages);
@@ -125,23 +125,18 @@ onMounted(() => {
 // 获取会话列表
 const messages = computed(() => {
 	return store.sessionSelected.messages.slice().reverse();
-	let item = store.sessionList.filter((x: Message.SessionInfo) => x.id == store.sessionSelectId);
-	if (item.length == 0) return [];
-	return item[0].messages.slice().reverse();
-	if (!store.messageList.has(store.sessionSelectId)) return [];
-	// store.toBottom();
-	return store.messageList.get(store.sessionSelectId)!;
 });
 
 async function loadMoreMessages() {
 	store.beforePullDown = false;
 	store.isPullingDown = true;
 	console.log("加载更多消息", store.beforePullDown);
-	let msgLen = store.sessionSelected.messages.length;
-	let pageSize = 10;
-	let pageNum = Math.floor(msgLen / pageSize);
-	if (pageNum == 0 || store.sessionSelectId == 0) {
-		console.log("结束加载", msgLen, pageNum);
+	let offset = store.sessionSelected.messages.length;
+	let limit = 10;
+	// let offset = Math.floor(msgLen / limit);
+	// offset += msgLen % limit;
+	if (offset < limit || store.sessionSelectId == 0) {
+		console.log("结束加载", offset, limit);
 		finishPullDown();
 		// store.isPullingDown = false;
 		// store.beforePullDown = true;
@@ -152,8 +147,8 @@ async function loadMoreMessages() {
 	let params: Message.ReqGetParams = {
 		from_uid: globalStore.uid,
 		to_uid: store.sessionSelectId,
-		page_num: pageNum,
-		page_size: pageSize
+		offset: offset,
+		limit: limit
 	};
 	const res = await getMessagesApi(params);
 	if (res.code == 200) {

@@ -47,7 +47,7 @@
 				<el-icon :size="40" class="hint-icon"><WarningFilled /></el-icon>
 				<div class="hint">快来发表你的评论吧</div>
 			</div>
-			<el-scrollbar class="comment-list" :height="scrollHeight" v-else>
+			<div class="scroll-wrapper comment-list max-h-100%" ref="scrollbarRef" v-else>
 				<div class="comment-item" v-for="comment in commentList" :key="comment.ID">
 					<div class="comment-left">
 						<el-avatar :src="comment.avatar" />
@@ -71,25 +71,23 @@
 						</div>
 					</div>
 				</div>
-			</el-scrollbar>
+			</div>
 		</div>
-		<el-divider />
-		<div class="comment-input" id="comment-input">
-			<div class="input-box"><el-input v-model="commentInput" autosize type="textarea" placeholder="添加评论..." /></div>
-			<el-button class="submit-btn" round>发表</el-button>
-		</div>
+		<CommentFoot></CommentFoot>
 	</div>
 </template>
 <script lang="ts" setup>
-import { computed, nextTick, onMounted, onUpdated, ref } from "vue";
+import { computed, nextTick, onUpdated, ref } from "vue";
 import { Share, ChatDotSquare, WarningFilled } from "@element-plus/icons-vue";
 import { Like, LikeFilled, Thumb, ThumbFilled } from "../icon";
 import { ViewCard, CommentCard } from "../interface";
 import { CommentStore } from "@/store";
+import CommentFoot from "./CommentFoot.vue";
 import { formatTime } from "../utils";
 import { handleStar, handleCommentLike } from "../api";
 
 const store = CommentStore();
+
 const commentList = computed(() => {
 	return store.currentCommentList;
 });
@@ -104,17 +102,30 @@ const props = withDefaults(defineProps<ArticleProps>(), {
 // const currentDate = new Date().toLocaleString();
 // const commentList = ref<CommentCard[]>([]);
 const tags = ref<Array<string>>(["Tag 1", "Tag 4"]);
-const commentInput = ref("");
 
+function handleStar(item: ViewCard) {
+	const _item = item;
+	if (_item.star) {
+		_item.like -= 1;
+	} else {
+		_item.like += 1;
+	}
+	_item.star = !_item.star;
+}
+function handleCommentLike(item: CommentCard) {
+	if (item.is_like) {
+		item.like! -= 1;
+	} else {
+		item.like! += 1;
+	}
+	item.is_like = !item.is_like;
+}
+const commentInput = ref("");
 const scrollHeight = ref("100px");
 nextTick(() => {
 	fixHeight();
 });
-onMounted(() => {
-	window.onresize = () => {
-		fixHeight();
-	};
-});
+
 onUpdated(() => {
 	// fixHeight();
 });

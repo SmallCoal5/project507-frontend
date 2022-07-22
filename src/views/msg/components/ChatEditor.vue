@@ -9,6 +9,7 @@
 			v-model="valueHtml"
 			:defaultConfig="editorConfig"
 			mode="simple"
+			@keypress.enter="send"
 			@onCreated="handleCreated"
 			@onChange="handleChange"
 		/>
@@ -26,13 +27,16 @@
 // const store = MsgStore();
 import "@wangeditor/editor/dist/css/style.css"; // 引入 css
 
-import { onBeforeUnmount, ref } from "vue";
+import { onBeforeUnmount, ref, shallowRef } from "vue";
 import { Editor } from "@wangeditor/editor-for-vue";
 import { Message } from "@/api/interface/index";
 import { GlobalStore } from "@/store";
 import { MsgStore } from "..";
-import { IEditorConfig } from "@wangeditor/core";
+import { IDomEditor, IEditorConfig } from "@wangeditor/core";
+import { Boot } from "@wangeditor/editor";
+import ctrlEnterModule from "@wangeditor/plugin-ctrl-enter";
 
+Boot.registerModule(ctrlEnterModule);
 // interface EditorProps {
 // 	value: string;
 // 	id: string;
@@ -46,7 +50,7 @@ import { IEditorConfig } from "@wangeditor/core";
 // const { proxy }: any = getCurrentInstance();
 const globalStore = GlobalStore();
 const store = MsgStore();
-// const editorRef = shallowRef();
+const editorRef = shallowRef();
 const valueHtml = ref("");
 const editorConfig: Partial<IEditorConfig> = {
 	placeholder: "请输入内容...",
@@ -60,10 +64,11 @@ onBeforeUnmount(() => {
 	editor.destroy();
 });
 
-const handleCreated = (editor: any) => {
+const handleCreated = (editor: IDomEditor) => {
 	// editorRef.value = editor; // 记录 editor 实例，重要！
 	store.editor = editor;
-	store.editorData = valueHtml;
+	store.editorData = editorRef;
+	editorRef.value = editor;
 };
 const handleChange = () => {
 	console.log("change:", store.editor.getHtml().trim());
@@ -91,12 +96,12 @@ function send() {
 
 		if (store.socket != null) {
 			store.socket.send(JSON.stringify(wsMsg));
-			setTimeout(() => {
-				// store.chatScrollbar.refresh();
-				store.chatScrollbar.refresh();
-				store.chatScrollbar.scrollTo(0, store.chatScrollbar.maxScrollY);
-			}, 1);
 		}
+		setTimeout(() => {
+			// store.chatScrollbar.refresh();
+			store.chatScrollbar.refresh();
+			store.chatScrollbar.scrollTo(0, store.chatScrollbar.maxScrollY);
+		}, 1);
 		store.editor.setHtml("<p></p>");
 	}
 }

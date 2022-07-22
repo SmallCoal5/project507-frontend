@@ -16,11 +16,11 @@ export interface Message {
 
 export interface Main {
 	sessionList: Array<any>; //User.UserInfo[]
+	allSessionList: Array<any>;
 	sessionListOffset: number;
 	sessionSelectId: number;
 	sessionName: string;
 	sessionSelected: any;
-	messageList: Map<number, Message.MessageInfo[]>;
 	sessionAvatar: string;
 	// systemSession: Message.ResMessages;
 	socket: any;

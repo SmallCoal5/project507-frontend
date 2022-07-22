@@ -55,9 +55,7 @@
 				<ImageShow :url="previewURL" :srcList="srcList"></ImageShow>
 				<Right :item="articleItem!" :commentitem="commentItem!"></Right>
 			</div>
-			<!-- <img style="width: 100%" :src="previewURL" /> -->
 		</el-dialog>
-		<!-- <Dialog :url="previewURL" :title="previewTitle" :visible="previewVisible"></Dialog> -->
 	</div>
 </template>
 
