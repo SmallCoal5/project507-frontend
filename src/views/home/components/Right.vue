@@ -57,7 +57,7 @@
 							<span class="username">{{ comment.username }} </span> {{ comment.content }}
 						</div>
 						<div class="bottom">
-							<div class="time">{{ comment.created_on }}</div>
+							<div class="time">{{ formatTime(comment.created_on * 1000) }}</div>
 							<div class="reply">
 								<button class="cm-btn">
 									<!-- <el-icon :size="13"><ChatDotSquare /></el-icon> -->
@@ -83,6 +83,9 @@ import { Like, LikeFilled, Thumb, ThumbFilled } from "../icon";
 import { ViewCard, CommentCard } from "../interface";
 import { CommentStore } from "@/store";
 import CommentFoot from "./CommentFoot.vue";
+import { formatTime } from "../utils";
+import { handleStar, handleCommentLike } from "../api";
+
 const store = CommentStore();
 
 const commentList = computed(() => {
@@ -117,6 +120,7 @@ function handleCommentLike(item: CommentCard) {
 	}
 	item.is_like = !item.is_like;
 }
+const commentInput = ref("");
 const scrollHeight = ref("100px");
 nextTick(() => {
 	fixHeight();

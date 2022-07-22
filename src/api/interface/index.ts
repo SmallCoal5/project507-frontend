@@ -118,7 +118,7 @@ export namespace Article {
 	export interface ReqGetArticleParams extends ReqPage {
 		// title: string;
 		// content: string;
-		user_id?: number;
+		uid?: number;
 		// tags: string[];
 		// images: File[];
 	}
@@ -144,7 +144,7 @@ export namespace Article {
 		is_like: boolean;
 		images: Image[];
 		tags: Tag[];
-		// state: number;
+		state: number;
 		// modified_on: string;
 	}
 	export interface ResArticleComment {
@@ -156,7 +156,7 @@ export namespace Article {
 		username: string;
 		avatar: any;
 		content: string;
-		like: number;
+		like_count: number;
 		is_like: boolean;
 		replies?: ResArticleComment[];
 	}
