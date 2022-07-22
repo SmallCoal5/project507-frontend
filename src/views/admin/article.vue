@@ -179,7 +179,7 @@ const columns: Partial<ColumnProps>[] = [
 ];
 
 const deleteItem = async (row: Article.ResArticleList) => {
-	await useHandleData(deleteArticle, { id: row.ID }, `删除文章【${row.title}】`);
+	await useHandleData(deleteArticle, { id: row.id }, `删除文章【${row.title}】`);
 	proTable.value.refresh();
 };
 
@@ -189,7 +189,7 @@ const downloadFile = async () => {
 };
 // 切换状态
 const changeStatus = async (row: Article.ResArticleList) => {
-	await useHandleData(changeArticleStatus, { id: row.ID, state: row.state == 1 ? 0 : 1 }, `切换【${row.title}】用户状态`);
+	await useHandleData(changeArticleStatus, { id: row.id, state: row.state == 1 ? 0 : 1 }, `切换【${row.title}】用户状态`);
 	proTable.value.refresh();
 };
 

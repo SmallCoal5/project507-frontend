@@ -26,7 +26,7 @@
 					</el-image> -->
 					<LazyImg :url="url" @click="handlePreview(item, url)" />
 					<div class="pic-info">
-						<span>{{ item.name }}</span>
+						<span>{{ item.title }}</span>
 						<div class="bottom card-header">
 							<div class="time">{{ item.data }}</div>
 							<div class="like_content">
@@ -67,21 +67,22 @@ import "vue-waterfall-plugin-next/style.css";
 import { onMounted, reactive, ref } from "vue";
 import loading from "./assets/loading.png";
 import error from "./assets/error.png";
-import { getArtileList } from "./api";
+import { getArtileList, handleStar } from "./api";
 import { CommentCard, ViewCard } from "./interface";
 // import { Star, StarFilled } from "@element-plus/icons-vue";
 // import { Picture as IconPicture } from "@element-plus/icons-vue";
 import { Like, LikeFilled } from "./icon";
 import ImageShow from "./components/ImageShow.vue";
 import Right from "./components/Right.vue";
-import { getArticleCommentApi } from "@/api/modules/article";
+import { getArticleCommentApi } from "@/api/modules/comment";
 import { ElMessage } from "element-plus";
 
-import { CommentStore } from "@/store";
+import { CommentStore, GlobalStore } from "@/store";
 const store = CommentStore();
 // 侧边栏控制
 // const currentDate = new Date().toDateString();
 // const loadingCard = ref(false);
+const globalStore = GlobalStore();
 
 function usePreview() {
 	const previewVisible = ref(false);
@@ -98,19 +99,24 @@ function usePreview() {
 		srcList.value = [url, url];
 		articleItem.value = item;
 
-		const res = await getArticleCommentApi({ article_id: item.id });
+		const res = await getArticleCommentApi({ article_id: item.id, user_id: globalStore.uid });
 
-		if (res.code == "200") {
-			let temp: CommentCard[] = [
-				{
-					ID: res.data!.datalist[0].ID!,
-					created_on: res.data!.datalist[0].created_on,
-					user_id: res.data!.datalist[0].user_id,
-					article_id: res.data!.datalist[0].article_id,
-					username: res.data!.datalist[0].username,
-					content: res.data!.datalist[0].content
-				}
-			];
+		if (res.code == 200) {
+			let temp: CommentCard[] = [];
+			res.data?.datalist.forEach(item => {
+				temp.push({
+					ID: item.ID,
+					created_on: item.created_on,
+					user_id: item.user_id,
+					article_id: item.article_id,
+					username: item.username,
+					content: item.content,
+					like: item.like_count,
+					is_like: item.is_like,
+					avatar:
+						"https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fc-ssl.duitang.com%2Fuploads%2Fitem%2F202105%2F29%2F20210529001057_aSeLB.thumb.1000_0.jpeg&refer=http%3A%2F%2Fc-ssl.duitang.com&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=auto?sec=1660900218&t=bb2fcc1f70fedc4c7f8ef3710c05a6ac"
+				});
+			});
 			store.setCurrentCommentList(temp);
 			// commentItem.value = temp;
 			// commentStore.currentCommentList = temp;
@@ -202,14 +208,6 @@ const { Artile_list, options, handleLoadMore } = useWaterfall();
 
 // 侧边栏控制
 // const { isOpen, handleToggleController } = useSlideBar();
-function handleStar(item: ViewCard) {
-	if (item.star) {
-		item.like -= 1;
-	} else {
-		item.like += 1;
-	}
-	item.star = !item.star;
-}
 </script>
 <style scoped lang="scss">
 @import "./index.scss";

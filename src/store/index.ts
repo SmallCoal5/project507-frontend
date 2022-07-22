@@ -82,6 +82,7 @@ export const CommentStore = defineStore({
 		}
 	}
 });
+
 // piniaPersist(持久化)
 const pinia = createPinia();
 pinia.use(piniaPersist);

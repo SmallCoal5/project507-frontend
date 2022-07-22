@@ -8,7 +8,9 @@
  */
 
 import { Article } from "@/api/interface";
-import { getArticleListApi, getArticleCommentApi } from "@/api/modules/article";
+import { getArticleListApi, addArticleLike } from "@/api/modules/article";
+import { getCommentLike, getArticleCommentApi } from "@/api/modules/comment";
+import { GlobalStore } from "@/store";
 // import axios from "axios";
 import { CommentCard, ViewCard } from "./interface";
 import { formatTime } from "./utils";
@@ -17,6 +19,8 @@ import { formatTime } from "./utils";
  * @param {*} length
  * @returns
  */
+
+const globalStore = GlobalStore();
 export function randomID(length = 6) {
 	return Number(Math.random().toString().substr(3, length) + Date.now()).toString(36);
 }
@@ -37,7 +41,8 @@ export async function getArtileList(pageSize = 1) {
 	const list: ViewCard[] = [];
 	let params: Article.ReqGetArticleParams = {
 		pageNum: 0,
-		pageSize: pageSize
+		pageSize: pageSize,
+		uid: globalStore.uid
 	};
 	const res = await getArticleListApi(params);
 	res.data?.datalist.forEach(item => {
@@ -65,8 +70,9 @@ export async function getArtileList(pageSize = 1) {
 
 export async function getCommentList(id: number) {
 	// const end = start + pageSize;
-	let params: Article.Comments = {
-		article_id: id
+	let params = {
+		article_id: id,
+		user_id: globalStore.uid
 	};
 	const res = await getArticleCommentApi(params);
 	console.log("res", res);
@@ -90,4 +96,28 @@ export async function getCommentList(id: number) {
 		];
 		return list;
 	}
+}
+
+export function handleStar(item: ViewCard) {
+	if (item.star) {
+		item.like -= 1;
+	} else {
+		item.like += 1;
+	}
+	console.log(item.star);
+	item.star = !item.star;
+	let params = { id: item.id, user_id: globalStore.uid, type: item.star ? 1 : 0 };
+	console.log(params, item.star);
+	addArticleLike(params);
+}
+
+export function handleCommentLike(item: CommentCard) {
+	if (item.is_like) {
+		item.like! -= 1;
+	} else {
+		item.like! += 1;
+	}
+	item.is_like = !item.is_like;
+	let params = { id: item.ID, user_id: globalStore.uid, type: item.is_like ? 1 : 0, token: globalStore.token };
+	getCommentLike(params);
 }
