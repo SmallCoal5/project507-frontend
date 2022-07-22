@@ -1,4 +1,4 @@
-import { ResPage, Message, ImageInfo, VideoInfo } from "@/api/interface/index";
+import { ResPage, Message, ImageInfo, VideoInfo, Page } from "@/api/interface/index";
 import { API } from "@/api/config/servicePort";
 import http from "@/api";
 import { ContentTypeEnum } from "@/enums/httpEnum";
@@ -9,7 +9,7 @@ import { ContentTypeEnum } from "@/enums/httpEnum";
 
 // * 获取消息列表
 export const getMessagesApi = (params: Message.ReqGetParams) => {
-	return http.get<ResPage<Message.MessageInfo>>(API + `/msg/history`, params);
+	return http.get<Page.Response<Message.MessageInfo>>(API + `/msg/history`, params);
 };
 
 // * 获取消息列表

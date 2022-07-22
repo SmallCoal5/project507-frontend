@@ -4,7 +4,15 @@
 			<div class="search-icon">
 				<Search style="width: 1em; height: 1em; margin-right: 8px" />
 			</div>
-			<input type="search" placeholder="搜索" autocomplete="off" class="search-input" spellcheck="false" data-ms-editor="true" />
+			<input
+				v-model="searchInput"
+				type="search"
+				placeholder="搜索"
+				autocomplete="off"
+				class="search-input"
+				spellcheck="false"
+				data-ms-editor="true"
+			/>
 		</div>
 		<el-scrollbar height="auto">
 			<!-- 会话列表 -->
@@ -23,9 +31,11 @@
 								<div class="username text-ellipsis">{{ item.username }}</div>
 								<div class="text-date">{{ formatTime(item.messages[0].created_on) }}</div>
 							</div>
-							<div class="truncate text-12px h-16px max-w-258px" style="color: #67717a">
-								{{ item.messages[0].content }}
-							</div>
+							<div
+								class="truncate text-12px h-16px max-w-258px"
+								style="color: #67717a"
+								v-dompurify-html="item.messages[0].content"
+							></div>
 						</div>
 					</div>
 				</div>
@@ -40,13 +50,32 @@ import { Message } from "@/api/interface";
 import { updateUnreadMessageApi } from "@/api/modules/msg";
 import { GlobalStore } from "@/store";
 // import { ElMessage } from "element-plus";
-import { computed } from "vue";
+import { computed, ref, watch } from "vue";
 import { MsgStore } from "..";
 import { Search } from "@element-plus/icons-vue";
 import { formatTime } from "../utils";
 const store = MsgStore();
 const globalStore = GlobalStore();
+const searchInput = ref("");
 
+watch(
+	() => searchInput.value,
+	() => {
+		console.log("会话列表搜索");
+		if (searchInput.value.length == 0) {
+			store.sessionList = store.allSessionList.slice();
+		} else {
+			store.sessionList = store.allSessionList
+				.filter((x: Message.SessionInfo) => x.username.indexOf(searchInput.value) != -1)
+				.slice();
+		}
+		// setTimeout(() => {
+		// 	// store.chatScrollbar.refresh();
+		// 	store.chatScrollbar.refresh();
+		// 	store.chatScrollbar.scrollTo(0, store.chatScrollbar.maxScrollY);
+		// }, 100);
+	}
+);
 // 选择聊天用户
 async function selectSession(item: Message.SessionInfo) {
 	// 更新已读消息状态
@@ -74,8 +103,12 @@ async function selectSession(item: Message.SessionInfo) {
 		// store.chatScrollbar.refresh();
 		store.chatScrollbar.refresh();
 		store.chatScrollbar.scrollTo(0, store.chatScrollbar.maxScrollY);
-	}, 1);
-
+	}, 10);
+	setTimeout(() => {
+		// store.chatScrollbar.refresh();
+		store.chatScrollbar.refresh();
+		store.chatScrollbar.scrollTo(0, store.chatScrollbar.maxScrollY);
+	}, 10);
 	// if (!store.messageList.has(store.sessionSelectId)) {
 	// 	let params: Message.ReqGetParams = {
 	// 		from_uid: globalStore.uid,

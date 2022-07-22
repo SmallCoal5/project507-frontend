@@ -22,7 +22,18 @@ export interface ReqPage {
 	page_num: number;
 	page_size: number;
 }
-
+export namespace Page {
+	export interface Request {
+		offset: number;
+		limit: number;
+	}
+	export interface Response<T> {
+		datalist: T[];
+		offset: number;
+		limit: number;
+		total?: number;
+	}
+}
 // * 登录
 export namespace Login {
 	export interface ReqLoginForm {
@@ -163,7 +174,7 @@ export namespace Message {
 		status: number;
 		readed?: boolean;
 	}
-	export interface ReqGetParams extends ReqPage {
+	export interface ReqGetParams extends Page.Request {
 		from_uid: number;
 		to_uid: number;
 	}

@@ -12,13 +12,14 @@
 <script setup lang="ts">
 import { getSessionsApi, updateUnreadMessageApi } from "@/api/modules/msg";
 import { GlobalStore } from "@/store";
-import { onMounted } from "vue";
+import { onMounted, onUnmounted } from "vue";
 import { MsgStore } from ".";
 import { Message } from "@/api/interface/index";
 import ChatContent from "./components/ChatContent.vue";
 import ChatDomain from "./components/ChatDomain.vue";
 import { ElMessage } from "element-plus";
 import router from "@/routers";
+import { onBeforeRouteLeave } from "vue-router";
 // import { io } from "socket.io-client";
 // import WebSocket from "ws";
 
@@ -31,6 +32,13 @@ onMounted(() => {
 	initSocket();
 });
 
+onBeforeRouteLeave(() => {
+	console.log("Connection closed.");
+	if (store.sessionSelectId > 0) {
+		updateUnreadMessageApi({ uid: globalStore.uid, session_uid: store.sessionSelectId });
+	}
+});
+onUnmounted(() => {});
 function initSocket() {
 	if (store.socket != null) return;
 	let wsUrl = "ws://172.31.225.62:8000/api/v1/msg/" + globalStore.uid + "/chat/" + globalStore.token;
@@ -46,15 +54,18 @@ function initSocket() {
 	store.socket.onmessage = function (evt: any) {
 		let msg: Message.MessageInfo = JSON.parse(evt.data);
 		console.log("Received Message: ", msg, msg.from_uid);
-		// store.messageList.get(msg.from_uid)?.push(msg);
-		let item: Message.SessionInfo = store.sessionList.filter((x: Message.SessionInfo) => x.id == msg.from_uid)[0];
-		item.messages.push(msg);
-		if (store.sessionSelectId != msg.from_uid) {
-			item.unread += 1;
+		if (msg.from_uid !== 0) {
+			let item: Message.SessionInfo = store.sessionList.filter((x: Message.SessionInfo) => x.id == msg.from_uid)[0];
+			item.messages.unshift(msg);
+			if (store.sessionSelectId != msg.from_uid) {
+				item.unread += 1;
+			} else {
+				setTimeout(() => {
+					store.chatScrollbar.refresh();
+					store.chatScrollbar.scrollTo(0, store.chatScrollbar.maxScrollY);
+				}, 10);
+			}
 		}
-
-		console.log("收到消息", store.messageList.get(msg.from_uid));
-		// store.socket.close();
 	};
 
 	store.socket.onclose = function (evt: any) {
@@ -94,10 +105,10 @@ async function getSessionList(start: number) {
 	console.log("获取会话列表", res);
 	if (res.code == 200) {
 		store.sessionList = res.data!.datalist;
+		store.allSessionList = res.data!.datalist;
 		// store.sessionList.forEach(item => {
 		// 	store.messageList.set(item.id, item.messages);
 		// });
-		console.log(store.messageList);
 	} else {
 		ElMessage.error("获取会话列表失败！");
 	}

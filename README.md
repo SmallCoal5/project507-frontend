@@ -65,9 +65,19 @@ npm run commit
 
 ## 项目截图
 
+Prepare
+
 ## Dependency
 
-- unocss 原子化 css 插件
-- wangEditor5 富文本编辑器
-- Moment.js 日期处理库
-- [betterScroll](https://better-scroll.github.io/) 滚动插件
+|                    |                        |                                                                                                  |
+| ------------------ | ---------------------- | ------------------------------------------------------------------------------------------------ |
+| Vue3               | 渐进式 JavaScript 框架 | [https://v3.cn.vuejs.org/](https://v3.cn.vuejs.org/)                                             |
+| TypeScript         | JavaScript 的一个超集  | [https://www.tslang.cn/](https://www.tslang.cn/)                                                 |
+| Vite               | 前端开发与构建工具     | [https://cn.vitejs.dev/](https://cn.vitejs.dev/)                                                 |
+| Element Plus       | UI 组件库              | [https://element-plus.gitee.io/zh-CN/](https://element-plus.gitee.io/zh-CN/)                     |
+| Pinia              | 新一代状态管理工具     | [https://pinia.vuejs.org/](https://pinia.vuejs.org/)                                             |
+| Vue Router         | Vue.js 的官方路由      | [https://router.vuejs.org/zh/](https://router.vuejs.org/zh/)                                     |
+| Uno css            | 原子 CSS 引擎          | [https://github.com/unocss/unocss](https://github.com/unocss/unocss)                             |
+| WangEditor5        | 富文本编辑器           | [https://github.com/unocss/unocss](https://github.com/unocss/unocss)                             |
+| BetterScroll       | 滚动条                 | [https://better-scroll.github.io/](https://better-scroll.github.io/)                             |
+| Vue-dompurify-html | html 安全替换          | [https://github.com/LeSuisse/vue-dompurify-html](https://github.com/LeSuisse/vue-dompurify-html) |
