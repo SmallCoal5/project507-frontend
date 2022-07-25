@@ -1,50 +1,5 @@
 <template>
-	<div class="header">
-		<!-- <el-menu :default-active="activeIndex" class="el-menu-top" mode="horizontal" :ellipsis="false" @select="handleSelect">
-				<el-menu-item index="1">
-					<el-icon><HomeFilled /></el-icon>
-					<span>主页</span>
-				</el-menu-item>
-				<el-menu-item index="2">
-					<el-icon><View /></el-icon>
-					<span>发现</span>
-				</el-menu-item>
-				<el-menu-item index="3">
-					<el-icon><Shop /></el-icon>
-					<span>闲置</span>
-				</el-menu-item>
-				<el-menu-item index="4">
-					<el-icon><ChatLineSquare /></el-icon>
-					<span>聊天</span>
-				</el-menu-item>
-			</el-menu> -->
-		<div class="header-lf flx-center">
-			<el-menu
-				:default-active="activeIndex"
-				class="el-menu-top"
-				mode="horizontal"
-				:ellipsis="false"
-				:router="true"
-				@select="handleSelect"
-			>
-				<el-menu-item index="/home">
-					<el-icon><HomeFilled /></el-icon>
-					<span>主页</span>
-				</el-menu-item>
-				<el-menu-item index="2">
-					<el-icon><View /></el-icon>
-					<span>发现</span>
-				</el-menu-item>
-				<el-menu-item index="/mm/pred">
-					<el-icon><Shop /></el-icon>
-					<span>闲置</span>
-				</el-menu-item>
-				<el-menu-item index="/msg">
-					<el-icon><ChatLineSquare /></el-icon>
-					<span>聊天</span>
-				</el-menu-item>
-			</el-menu>
-		</div>
+	<div class="header w-70%">
 		<form class="nav-searchform">
 			<el-autocomplete
 				v-model="state2"
@@ -59,32 +14,64 @@
 				<el-icon><Search /></el-icon>
 			</div>
 		</form>
-		<div class="header-ri flx-center">
-			<el-button :icon="Plus" class="icon-style" @click="addNew" text bg round></el-button>
-			<!-- <Upload></Upload> -->
-			<Language></Language>
+		<div class="flex justify-space-between">
+			<el-tooltip content="主页"
+				><el-button text size="large" @click="selectHome"
+					><div class="i-ep-home-filled cursor-pointer h-24px w-24px"></div></el-button
+			></el-tooltip>
+			<el-tooltip content="发现"
+				><el-button text size="large"><div class="i-ep-compass cursor-pointer h-24px w-24px"></div></el-button
+			></el-tooltip>
+			<el-tooltip content="消息"
+				><el-button text size="large" @click="selectMessage"
+					><div class="i-ep-message cursor-pointer h-24px w-24px"></div></el-button
+			></el-tooltip>
+			<el-tooltip content="我的"
+				><el-button text size="large" @click="selectMy"><div class="i-ep-user cursor-pointer h-24px w-24px"></div></el-button
+			></el-tooltip>
+			<el-tooltip content="发布">
+				<el-button text size="large" @click="addNew" bg round
+					><div class="i-ep-plus cursor-pointer h-24px w-28px"></div
+				></el-button>
+			</el-tooltip>
+		</div>
+		<div class="ml-20px right flex justify-center items-center">
 			<!-- Theme -->
-			<Theme></Theme>
-			<Fullscreen></Fullscreen>
-			<Avatar></Avatar>
+			<Avatar v-if="store.token.length !== 0"></Avatar>
+			<div v-else>
+				<el-button type="primary" round @click="login">登录/注册</el-button>
+			</div>
+			<SwitchDark class="dark ml-20px"></SwitchDark>
 		</div>
 	</div>
 	<UploadArticle ref="dialogRef"></UploadArticle>
 </template>
 
 <script setup lang="ts">
-import { HomeFilled, View, ChatLineSquare, Plus, Search } from "@element-plus/icons-vue";
+import { Search } from "@element-plus/icons-vue";
 import { ref, onMounted } from "vue";
-import Fullscreen from "./components/Fullscreen.vue";
+// import Fullscreen from "./components/Fullscreen.vue";
 import Avatar from "./components/Avatar.vue";
-import Language from "./components/Language.vue";
-import Theme from "./components/Theme.vue";
+import SwitchDark from "@/components/SwitchDark/index.vue";
+// import Theme from "./components/Theme.vue";
 import UploadArticle from "@/components/UploadArticle/index.vue";
-// import Upload from "./components/Upload.vue";
-const activeIndex = ref("/home");
-const handleSelect = (key: string, keyPath: string[]) => {
-	console.log(key, keyPath);
+import { GlobalStore } from "@/store";
+import { useRouter } from "vue-router";
+
+const store = GlobalStore();
+const router = useRouter();
+const selectHome = () => {
+	router.push({ name: "home" });
 };
+const selectMessage = () => {
+	router.push({ name: "msg" });
+};
+const selectMy = () => {
+	router.push({ name: "mm" });
+};
+function login() {
+	router.push({ name: "login" });
+}
 interface DialogExpose {
 	acceptParams: () => void;
 }

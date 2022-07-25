@@ -1,6 +1,6 @@
 <template>
 	<el-container>
-		<el-header>
+		<el-header class="justify-center flex">
 			<Header></Header>
 		</el-header>
 		<el-main>

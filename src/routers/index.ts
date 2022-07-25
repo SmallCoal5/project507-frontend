@@ -18,11 +18,6 @@ router.beforeEach((to, from, next) => {
 	let nowt = new Date().getTime() / 1000;
 	if (globalStore.expireTime - nowt < 60) {
 		globalStore.setToken("");
-		// refreshToken({ id: globalStore.uid, uuid: globalStore.uuid }).then(res => {
-		// 	console.log("refresh", res);
-		// 	globalStore.setToken(res.data!.token);
-		// 	globalStore.setExpireTime(res.data!.expire_time);
-		// });
 	}
 	// * 判断是否有Token
 	if (!globalStore.token) {

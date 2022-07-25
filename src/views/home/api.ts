@@ -1,12 +1,3 @@
-/*
- * @Description:
- * @Version: 2.0
- * @Author: Yaowen Liu
- * @Date: 2021-10-14 13:34:56
- * @LastEditors: Yaowen Liu
- * @LastEditTime: 2022-03-24 14:25:30
- */
-
 import { Article } from "@/api/interface";
 import { getArticleListApi, addArticleLike } from "@/api/modules/article";
 import { getCommentLike, getArticleCommentApi } from "@/api/modules/comment";
@@ -40,8 +31,8 @@ export async function getArtileList(pageSize = 1) {
 	const end = start + pageSize;
 	const list: ViewCard[] = [];
 	let params: Article.ReqGetArticleParams = {
-		pageNum: 0,
-		pageSize: pageSize,
+		page_num: 0,
+		page_size: pageSize,
 		uid: globalStore.uid
 	};
 	const res = await getArticleListApi(params);
@@ -50,9 +41,10 @@ export async function getArtileList(pageSize = 1) {
 			id: item.id,
 			star: item.is_like,
 			like: item.like_count,
+			image_url: `/base` + item.images[0].url,
 			src: {
 				// original: Math.random() < 0.95 ? successURL : errorURL
-				original: `/base/` + item.images[0].url
+				original: `/base` + item.images[0].url
 			},
 			backgroundColor: randomColor(),
 			title: item.title,

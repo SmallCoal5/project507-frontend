@@ -41,8 +41,8 @@
 							<el-image
 								v-if="item.image_url.length != 0"
 								class="w-200px ha max-h-200px"
-								:src="item.image_url.indexOf('blob') == 0 ? item.image_url : '/base/' + item.image_url"
-								:preview-src-list="[item.image_url.indexOf('blob') == 0 ? item.image_url : '/base/' + item.image_url]"
+								:src="item.image_url.indexOf('blob') == 0 ? item.image_url : '/base' + item.image_url"
+								:preview-src-list="[item.image_url.indexOf('blob') == 0 ? item.image_url : '/base' + item.image_url]"
 								:initial-index="4"
 								fit="cover"
 							/>

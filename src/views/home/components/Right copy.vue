@@ -28,7 +28,7 @@
 					</button>
 				</div>
 				<div class="op-box">
-					<button class="op-btn" @click="handleClickComment">
+					<button class="op-btn">
 						<el-icon :size="22"><ChatDotSquare /></el-icon>
 						<div class="op-name">评论</div>
 					</button>
@@ -41,19 +41,60 @@
 				</div>
 			</div>
 		</div>
-		<div class="comment-box px-5% flex flex-col flex-1 overflow-auto" id="comment-box">
-			<Comment></Comment>
+		<div class="comment-box" id="comment-box">
+			<div class="header">评论</div>
+			<div class="divider"></div>
+			<div class="suggest" v-if="commentList.length <= 0">
+				<el-icon :size="40" class="hint-icon"><WarningFilled /></el-icon>
+				<div class="hint">快来发表你的评论吧</div>
+			</div>
+			<div class="comment-list max-h-100%" v-else>
+				<Comment></Comment>
+				<!-- <div ref="commentRef" class="comment-wrap">
+					<Comment
+						:data="data1"
+						:user="currentUser"
+						:before-submit="submitComment"
+						:before-like="likeComment"
+						:before-delete="deleteComment"
+						:upload-img="uploadImg"
+					></Comment>
+				</div> -->
+				<!-- <div class="comment-item" v-for="comment in commentList" :key="comment.ID">
+					<div class="comment-left">
+						<el-avatar :src="comment.avatar" />
+					</div>
+					<div class="comment-right">
+						<div class="content">
+							<span class="username">{{ comment.username }} </span> {{ comment.content }}
+						</div>
+						<div class="bottom">
+							<div class="time">{{ formatTime(comment.created_on) }}</div>
+							<div class="reply">
+								<button class="cm-btn">
+									<div>回复</div>
+								</button>
+							</div>
+							<button class="cm-btn cm-like-btn" @click.stop="handleCommentLike(comment)">
+								<el-icon :size="13"><ThumbFilled v-if="comment.is_like"></ThumbFilled> <Thumb v-else></Thumb></el-icon>
+								<div class="like_count">{{ comment.like }}</div>
+							</button>
+						</div>
+					</div>
+				</div> -->
+			</div>
 		</div>
+		<CommentFoot></CommentFoot>
 	</div>
 </template>
 <script lang="ts" setup>
-import { nextTick, onMounted, onUpdated, ref } from "vue";
-import { Share, ChatDotSquare } from "@element-plus/icons-vue";
+import { computed, nextTick, onMounted, onUpdated, ref } from "vue";
+import { Share, ChatDotSquare, WarningFilled } from "@element-plus/icons-vue";
 import { Like, LikeFilled } from "../icon";
 import { ViewCard } from "../interface";
 // import { GlobalStore } from "@/store";
-import Comment from "./Comment.vue";
-// import CommentFoot from "./CommentFoot.vue";
+import Comment from "@/components/Comment/index.vue";
+import CommentFoot from "./CommentFoot.vue";
 // import { formatTime } from "../utils";
 // import Comment from "vue-juejin-comment";
 import avatar from "vue-avatar/src/avatar.vue";
@@ -61,9 +102,9 @@ import { CommentStore } from "@/store/modules/comment";
 const commentStore = CommentStore();
 // const globalStore = GlobalStore();
 // const commentRef = ref();
-// const commentList = computed(() => {
-// 	return commentStore.currentCommentList;
-// });
+const commentList = computed(() => {
+	return commentStore.currentCommentList;
+});
 commentStore.currentCommentList = [
 	{
 		id: 1,
@@ -199,9 +240,7 @@ const props = withDefaults(defineProps<ArticleProps>(), {
 // const currentDate = new Date().toLocaleString();
 // const commentList = ref<CommentCard[]>([]);
 const tags = ref<Array<string>>(["Tag 1", "Tag 4"]);
-function handleClickComment() {
-	commentStore.clickComment = !commentStore.clickComment;
-}
+
 function handleStar(item: ViewCard) {
 	const _item = item;
 	if (_item.star) {
@@ -220,15 +259,15 @@ function handleStar(item: ViewCard) {
 // 	item.is_like = !item.is_like;
 // }
 // const commentInput = ref("");
-// const scrollHeight = ref("100px");
+const scrollHeight = ref("100px");
 nextTick(() => {
-	// fixHeight();
+	fixHeight();
 });
 
-// const fixHeight = () => {
-// 	scrollHeight.value = document.getElementById("comment-box")!.offsetHeight - 45 + "px";
-// 	console.log("scrollHeight.value", scrollHeight.value);
-// };
+const fixHeight = () => {
+	scrollHeight.value = document.getElementById("comment-box")!.offsetHeight - 45 + "px";
+	console.log("scrollHeight.value", scrollHeight.value);
+};
 </script>
 <style scoped lang="scss">
 @import "../index.scss";

@@ -154,6 +154,7 @@ export namespace Article {
 		article_id: number;
 		reply_id?: null;
 		username: string;
+		name: string;
 		avatar: any;
 		content: string;
 		like_count: number;

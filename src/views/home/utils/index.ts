@@ -1,4 +1,6 @@
+import moment from "moment";
 export function formatTime(created_data: number) {
+	return moment(created_data * 1000).calendar();
 	//时间戳
 	const date_temp = new Date(created_data);
 	const y = date_temp.getFullYear();

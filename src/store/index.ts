@@ -1,5 +1,5 @@
 import { defineStore } from "pinia";
-import { GlobalState, ThemeConfigProp, CommentState } from "./interface";
+import { GlobalState, ThemeConfigProp } from "./interface";
 import { createPinia } from "pinia";
 import piniaPersist from "pinia-plugin-persist";
 import piniaPersistConfig from "@/config/piniaPersist";
@@ -70,27 +70,27 @@ export const GlobalStore = defineStore({
 	persist: piniaPersistConfig("GlobalState")
 });
 
-export const CommentStore = defineStore({
-	id: "CommentState",
-	state: (): CommentState => ({
-		currentCommentList: [],
-		editor: null,
-		scrollBar: null,
-		emojiList: []
-	}),
-	getters: {},
-	actions: {
-		setCurrentCommentList(CommentList: any) {
-			this.currentCommentList = CommentList;
-		},
-		handleEditorCreated(editor: any) {
-			this.editor = editor;
-		},
-		handleEditorChange() {
-			console.log("change:", this!.editor.getHtml().trim());
-		}
-	}
-});
+// export const CommentStore = defineStore({
+// 	id: "CommentState",
+// 	state: (): CommentState => ({
+// 		currentCommentList: [],
+// 		editor: null,
+// 		scrollBar: null,
+// 		emojiList: []
+// 	}),
+// 	getters: {},
+// 	actions: {
+// 		setCurrentCommentList(CommentList: any) {
+// 			this.currentCommentList = CommentList;
+// 		},
+// 		handleEditorCreated(editor: any) {
+// 			this.editor = editor;
+// 		},
+// 		handleEditorChange() {
+// 			console.log("change:", this!.editor.getHtml().trim());
+// 		}
+// 	}
+// });
 
 // piniaPersist(持久化)
 const pinia = createPinia();

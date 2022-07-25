@@ -1,12 +1,13 @@
 <template>
 	<el-dropdown trigger="click">
 		<div class="avatar">
-			<img src="@/assets/images/avatar.gif" alt="avatar" />
+			<!-- <img :src="'/base' + globalStore.avatar" alt="avatar" /> -->
+			<avatar :username="globalStore.username" :size="50" :src="'/base' + globalStore.avatar"></avatar>
 		</div>
 		<template #dropdown>
 			<el-dropdown-menu>
 				<el-dropdown-item @click="openDialog('infoRef')">{{ $t("header.personalData") }}</el-dropdown-item>
-				<el-dropdown-item @click="openDialog('passwordRef')">{{ $t("header.changePassword") }}</el-dropdown-item>
+				<el-dropdown-item @click="openDialog('uploadAvatarRef')">修改头像</el-dropdown-item>
 				<el-dropdown-item @click="logout" divided>{{ $t("header.logout") }}</el-dropdown-item>
 			</el-dropdown-menu>
 		</template>
@@ -14,17 +15,17 @@
 	<!-- infoDialog -->
 	<InfoDialog ref="infoRef"></InfoDialog>
 	<!-- passwordDialog -->
-	<PasswordDialog ref="passwordRef"></PasswordDialog>
+	<UploadAvatar ref="uploadAvatarRef"></UploadAvatar>
 </template>
 
 <script setup lang="ts">
 import { ref } from "vue";
 import InfoDialog from "./InfoDialog.vue";
-import PasswordDialog from "./PasswordDialog.vue";
+// import PasswordDialog from "./PasswordDialog.vue";
 import { ElMessageBox, ElMessage } from "element-plus";
 import { useRouter } from "vue-router";
 import { GlobalStore } from "@/store";
-
+import UploadAvatar from "@/components/UploadAvatar/index.vue";
 const router = useRouter();
 const globalStore = GlobalStore();
 
@@ -48,11 +49,11 @@ interface DialogExpose {
 	openDialog: () => void;
 }
 const infoRef = ref<null | DialogExpose>(null);
-const passwordRef = ref<null | DialogExpose>(null);
+const uploadAvatarRef = ref<null | DialogExpose>(null);
 // openDialog
 const openDialog = (refName: string) => {
 	if (refName == "infoRef") return infoRef.value?.openDialog();
-	passwordRef.value?.openDialog();
+	uploadAvatarRef.value?.openDialog();
 };
 </script>
 
