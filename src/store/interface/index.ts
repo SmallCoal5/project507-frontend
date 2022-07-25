@@ -29,6 +29,11 @@ export interface CommentState {
 	editor: any;
 	scrollBar: any;
 	emojiList: Array<any>;
+	loadingComments: boolean;
+	noMoreComments: boolean;
+	gallery: any;
+	selectImageUrls: Array<any>;
+	clickComment: boolean;
 }
 /* MenuState */
 export interface MenuState {

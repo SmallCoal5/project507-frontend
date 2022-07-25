@@ -42,12 +42,12 @@
 
 <script setup lang="ts">
 import { nextTick, onBeforeUnmount, onMounted } from "vue";
-import { CommentStore } from "@/store";
 import { Editor } from "@wangeditor/editor-for-vue";
 import { IEditorConfig } from "@wangeditor/core";
 // import { formatTime } from "../utils";
 import BScroll from "@better-scroll/core";
 import MouseWheel from "@better-scroll/mouse-wheel";
+import { CommentStore } from "@/store/modules/comment";
 // BScroll.use(PullDown);
 BScroll.use(MouseWheel);
 const store = CommentStore();
@@ -132,9 +132,10 @@ store.emojiList =
 
 		// box-sizing: border-box;
 	}
-	:deep(.w-e-text-container) {
-		color: #999999;
-		background-color: #0d0d0d;
-	}
+
+	// :deep(.w-e-text-container) {
+	// color: #999999;
+	// background-color: #0d0d0d;
+	// }
 }
 </style>

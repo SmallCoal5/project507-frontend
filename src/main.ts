@@ -20,6 +20,7 @@ import "element-plus/theme-chalk/dark/css-vars.css";
 import "@/styles/element-dark.scss";
 // custom element css
 import "@/styles/element.scss";
+import "undraw-ui/dist/style.css";
 // custom directives
 import directives from "@/directives/index";
 // vue Router
@@ -28,17 +29,18 @@ import router from "@/routers/index";
 import I18n from "@/language/index";
 // pinia store
 import pinia from "@/store/index";
-
 import "uno.css";
 
-import "nprogress/nprogress.css";
 //编辑器
 import "@wangeditor/editor/dist/css/style.css";
-
+//安全html
 import VueDOMPurifyHTML from "vue-dompurify-html";
 //日期时间库
 import moment from "moment";
 import "moment/dist/locale/zh-cn";
+//瀑布流
+import V3waterfall from "v3-waterfall";
+import "v3-waterfall/style.css";
 moment.locale("zh-cn");
 
 const app = createApp(App);
@@ -47,4 +49,4 @@ Object.keys(Icons).forEach(key => {
 	app.component(key, Icons[key as keyof typeof Icons]);
 });
 
-app.use(router).use(I18n).use(pinia).use(directives).use(ElementPlus).use(VueDOMPurifyHTML).mount("#app");
+app.use(router).use(I18n).use(pinia).use(directives).use(ElementPlus).use(VueDOMPurifyHTML).use(V3waterfall).mount("#app");

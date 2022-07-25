@@ -46,3 +46,8 @@ export const resetUserPassWord = (params: { id: string }) => {
 export const exportUserInfo = (params: User.ReqGetUserParams) => {
 	return http.post<BlobPart>(PORT1 + `/user/export`, params, { responseType: "blob" });
 };
+
+// * 修改用户头像
+// export const updateAvatarApi = (params: { id: string }) => {
+// 	return http.post(API + `/user/`);
+// };

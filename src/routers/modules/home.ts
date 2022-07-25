@@ -14,9 +14,19 @@ const homeRouter: Array<RouteRecordRaw> = [
 				component: () => import("@/views/home/index.vue"),
 				meta: {
 					keepAlive: true,
-					requiresAuth: true,
+					requiresAuth: false,
 					title: "主页",
 					key: "home"
+				}
+			},
+			{
+				path: "/msg",
+				name: "msg",
+				component: () => import("@/views/msg/index.vue"),
+				meta: {
+					requiresAuth: false,
+					title: "消息",
+					key: "msg"
 				}
 			}
 		]

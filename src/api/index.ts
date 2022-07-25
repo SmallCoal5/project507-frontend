@@ -1,5 +1,5 @@
 import axios, { AxiosInstance, AxiosError, AxiosRequestConfig, AxiosResponse } from "axios";
-import { showFullScreenLoading, tryHideFullScreenLoading } from "@/config/serviceLoading";
+import { tryHideFullScreenLoading } from "@/config/serviceLoading";
 import { AxiosCanceler } from "./helper/axiosCancel";
 import { ResultData } from "@/api/interface";
 import { ResultEnum } from "@/enums/httpEnum";
@@ -37,7 +37,7 @@ class RequestHttp {
 			(config: AxiosRequestConfig) => {
 				// * 将当前请求添加到 pending 中
 				axiosCanceler.addPending(config);
-				showFullScreenLoading();
+				// showFullScreenLoading();
 				// console.log("发送请求");
 				const token: string = globalStore.token;
 				return { ...config, headers: { token: token } };
