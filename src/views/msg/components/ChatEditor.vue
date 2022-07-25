@@ -25,17 +25,15 @@
 // import { getCurrentInstance, watch, reactive, onMounted, nextTick } from "vue";
 // import { MsgStore } from "..";
 // const store = MsgStore();
-import "@wangeditor/editor/dist/css/style.css"; // 引入 css
-
 import { onBeforeUnmount, ref, shallowRef } from "vue";
 import { Editor } from "@wangeditor/editor-for-vue";
+import "@wangeditor/editor/dist/css/style.css"; // 引入 css
 import { Message } from "@/api/interface/index";
 import { GlobalStore } from "@/store";
 import { MsgStore } from "..";
 import { IDomEditor, IEditorConfig } from "@wangeditor/core";
 import { Boot } from "@wangeditor/editor";
 import ctrlEnterModule from "@wangeditor/plugin-ctrl-enter";
-
 Boot.registerModule(ctrlEnterModule);
 // interface EditorProps {
 // 	value: string;

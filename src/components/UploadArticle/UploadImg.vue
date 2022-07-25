@@ -9,8 +9,6 @@
 		:limit="excelLimit"
 		:before-upload="beforeUpload"
 		:on-exceed="handleExceed"
-		:on-success="excelUploadSuccess"
-		:on-error="excelUploadError"
 		:on-change="handleChange"
 		:http-request="upload"
 		accept="image/png,image/jpg,image/jpeg,image/gif"
@@ -67,29 +65,12 @@ const handleExceed = (): void => {
 	});
 };
 
-// 上传错误提示
-const excelUploadError = (): void => {
-	ElNotification({
-		title: "温馨提示",
-		message: "导入数据失败，请您重新上传！",
-		type: "error"
-	});
-};
-// 上传成功提示
-const excelUploadSuccess = (): void => {
-	ElNotification({
-		title: "温馨提示",
-		message: "上传数据成功！",
-		type: "success"
-	});
-};
-
 let files = ref<UploadFiles>();
 const handleChange: UploadProps["onChange"] = (_uploadFile, uploadFiles) => {
 	files.value = uploadFiles;
 };
 
-// const uploadRef = ref<UploadInstance>();
+const uploadRef = ref();
 
 // const articleForm = inject("articleForm") as Article.ReqAddArticleWithImgParams;
 // 文件上传
@@ -110,7 +91,8 @@ const upload = async () => {
 	// dialogVisible.value = false;
 };
 defineExpose({
-	files
+	files,
+	uploadRef
 });
 </script>
 

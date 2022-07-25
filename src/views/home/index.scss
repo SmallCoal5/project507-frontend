@@ -24,9 +24,11 @@
 .pic-card {
 	// background-color: rgb(17 24 39 / 100%);
 	border-radius: 0.5rem;
-	transition-duration: 300ms;
-	transition-property: all;
-	transition-timing-function: linear;
+	box-sizing: border-box;
+
+	// transition-duration: 300ms;
+	// transition-property: all;
+	// transition-timing-function: linear;
 }
 
 // .el-card__body {
@@ -75,8 +77,8 @@
 	height: 100%;
 	padding: 0;
 }
-::v-deep .el-dialog__header {
-	// display: none;
+:deep(.el-dialog__header) {
+	display: none;
 	padding: 0;
 	margin: 0;
 	border-bottom: 0;

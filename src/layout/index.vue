@@ -1,22 +1,16 @@
 <template>
-	<el-container>
-		<el-header class="justify-center flex">
-			<Header></Header>
-		</el-header>
-		<el-main>
-			<div class="main-box">
-				<router-view v-slot="{ Component, route }">
-					<transition appear name="fade-transform" mode="out-in">
-						<keep-alive>
-							<component :is="Component" :key="route.path"></component>
-						</keep-alive>
-					</transition>
-				</router-view>
-			</div>
+	<el-container class="justify-center flex flex-col w-full h-full">
+		<el-header><Header></Header></el-header>
+		<el-main class="main-box justify-center flex w-full box-border flex-1 h-0 overflow-y-auto">
+			<router-view v-slot="{ Component, route }">
+				<transition appear name="fade-transform" mode="out-in">
+					<keep-alive>
+						<component :is="Component" :key="route.path"></component>
+					</keep-alive>
+				</transition>
+			</router-view>
 		</el-main>
-		<el-footer>
-			<Footer></Footer>
-		</el-footer>
+		<el-footer><Footer></Footer></el-footer>
 	</el-container>
 </template>
 

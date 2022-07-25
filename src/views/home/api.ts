@@ -26,37 +26,37 @@ function randomColor() {
 	return COLORS[getRandomNum(0, 4)];
 }
 
-let start = 0;
-export async function getArtileList(pageSize = 1) {
-	const end = start + pageSize;
+export async function getArtileList(offset: number, limit = 1) {
 	const list: ViewCard[] = [];
 	let params: Article.ReqGetArticleParams = {
-		page_num: 0,
-		page_size: pageSize,
+		page_num: offset,
+		page_size: limit,
 		uid: globalStore.uid
 	};
 	const res = await getArticleListApi(params);
+	if (res.code !== 200 || !res.data?.datalist || res.data?.datalist.length == 0) return [];
 	res.data?.datalist.forEach(item => {
-		list.push({
-			id: item.id,
-			star: item.is_like,
-			like: item.like_count,
-			image_url: `/base` + item.images[0].url,
-			src: {
-				// original: Math.random() < 0.95 ? successURL : errorURL
-				original: `/base` + item.images[0].url
-			},
-			backgroundColor: randomColor(),
-			title: item.title,
-			content: item.content,
-			data: formatTime(item.created_on * 1000),
-			owner_id: item.owner_id,
-			owner_name: item.owner_name,
-			owner_username: item.owner_username,
-			owner_avatar: item.owner_avatar
-		});
+		if (item.images && item.images.length !== 0) {
+			list.push({
+				id: item.id,
+				star: item.is_like,
+				like: item.like_count,
+				image_url: `/base` + item.images[0].url,
+				src: {
+					// original: Math.random() < 0.95 ? successURL : errorURL
+					original: `/base` + item.images[0].url
+				},
+				backgroundColor: randomColor(),
+				title: item.title,
+				content: item.content,
+				data: formatTime(item.created_on * 1000),
+				owner_id: item.owner_id,
+				owner_name: item.owner_name,
+				owner_username: item.owner_username,
+				owner_avatar: item.owner_avatar
+			});
+		}
 	});
-	start = end + 1;
 	return list;
 }
 

@@ -178,15 +178,18 @@
 		}
 	}
 }
-
-// * el-dialog 样式
-.el-dialog {
-	.el-dialog__header {
-		padding: 15px 20px;
-		margin: 0;
-		border-bottom: 1px solid #f0f0f0;
-		.el-dialog__title {
-			font-size: 17px;
-		}
-	}
+.el-header {
+	padding: 0;
 }
+
+// // * el-dialog 样式
+// .el-dialog {
+// 	.el-dialog__header {
+// 		padding: 15px 20px;
+// 		margin: 0;
+// 		border-bottom: 1px solid #f0f0f0;
+// 		.el-dialog__title {
+// 			font-size: 17px;
+// 		}
+// 	}
+// }
