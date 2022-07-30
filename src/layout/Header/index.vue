@@ -1,20 +1,6 @@
 <template>
-	<div class="header w-70%">
-		<form class="nav-searchform">
-			<el-autocomplete
-				v-model="state2"
-				:fetch-suggestions="querySearch"
-				:trigger-on-focus="false"
-				clearable
-				class="nav-search-content"
-				placeholder="Please Input"
-				@select="handleSelectSuggest"
-			/>
-			<div class="nav-search-btn">
-				<el-icon><Search /></el-icon>
-			</div>
-		</form>
-		<div class="flex justify-space-between">
+	<div class="header flex-shrink-0 border-b border-gray-200 shadow-gray-200">
+		<div class="mx-24px flex justify-center">
 			<el-tooltip content="主页"
 				><el-button text size="large" @click="selectHome"
 					><div class="i-ep-home-filled cursor-pointer h-24px w-24px"></div></el-button
@@ -35,14 +21,28 @@
 				></el-button>
 			</el-tooltip>
 		</div>
-		<div class="ml-20px right flex justify-center items-center">
+		<form class="nav-searchform">
+			<el-autocomplete
+				v-model="state2"
+				:fetch-suggestions="querySearch"
+				:trigger-on-focus="false"
+				clearable
+				class="nav-search-content"
+				placeholder="Please Input"
+				@select="handleSelectSuggest"
+			/>
+			<div class="nav-search-btn">
+				<el-icon><Search /></el-icon>
+			</div>
+		</form>
+		<div class="ml-20px flex justify-center items-center">
 			<!-- Theme -->
 			<Avatar v-if="store.token.length !== 0"></Avatar>
 			<div v-else>
 				<el-button type="primary" round @click="login">登录/注册</el-button>
 			</div>
-			<SwitchDark class="dark ml-20px"></SwitchDark>
 		</div>
+		<SwitchDark class="dark ml-20px right-24px absolute"></SwitchDark>
 	</div>
 	<UploadArticle ref="dialogRef"></UploadArticle>
 </template>

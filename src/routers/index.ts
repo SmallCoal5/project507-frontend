@@ -12,13 +12,13 @@ router.beforeEach((to, from, next) => {
 	// * 在跳转路由之前，清除所有的请求
 	axiosCanceler.removeAllPending();
 	const globalStore = GlobalStore();
+	let nowt = new Date().getTime() / 1000;
+	if (globalStore.token && globalStore.expireTime - nowt < 60) {
+		globalStore.setToken("");
+	}
 	// * 判断当前路由是否需要访问权限
 	if (!to.matched.some(record => record.meta.requiresAuth)) return next();
 
-	let nowt = new Date().getTime() / 1000;
-	if (globalStore.expireTime - nowt < 60) {
-		globalStore.setToken("");
-	}
 	// * 判断是否有Token
 	if (!globalStore.token) {
 		console.log("不存在token");

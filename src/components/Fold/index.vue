@@ -43,6 +43,7 @@ let observer: ResizeObserver;
 onMounted(() => {
 	observer = new ResizeObserver(() => {
 		if (fold.value && divBox.value) {
+			console.log("observer", divBox.value.offsetHeight, divBox.value.scrollHeight);
 			//offsetHeight：包括内容可见部分的高度，border，可见的padding，水平方向的scrollbar（如果存在）；不包括margin。
 			// clientHeight：包括内容可见部分的高度，可见的padding；不包括border，水平方向的scrollbar，margin。
 			//scrollHeight：包括内容的高度（可见与不可见），padding（可见与不可见）；不包括border，margin。

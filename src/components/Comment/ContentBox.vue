@@ -15,7 +15,7 @@
 				<!-- <span class="address" style="font-size: 12px; color: #939393">&nbsp;&nbsp;{{ data.address }}</span> -->
 				<time class="time">{{ data.createTime }}</time>
 			</div>
-			<Fold>
+			<Fold :unfold="true" line="3">
 				<div v-html="data.content"></div>
 			</Fold>
 			<div class="action-box select-none">

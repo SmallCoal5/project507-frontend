@@ -5,14 +5,14 @@
 			v-model="content"
 			:class="{ 'input-active': action }"
 			:placeholder="props.placeholder"
-			class="max-h-180px overflow-auto"
+			class="max-h-140px overflow-auto"
 			:min-height="64"
 			@focus="onFocus"
 			@input="isEmpty(content.replace(/&nbsp; |<br>/g, '')) ? (disabled = true) : (disabled = false)"
 			@submit="onSubmit"
 		></Editor>
 		<Transition name="fade">
-			<div v-if="action" class="action-box">
+			<div v-if="action && showBtn === true" class="action-box">
 				<!-- <u-emoji :emoji="emoji" @add-emoji="(val: string) => editorRef?.addText(val)"></u-emoji> -->
 				<el-button type="primary" :disabled="disabled" @click="onSubmit">
 					{{ props.contentBtn }}
@@ -38,10 +38,14 @@ interface Props {
 	contentBtn: string;
 	parentId?: number;
 	replay?: string;
+	showBtn?: boolean;
 }
 
-const props = defineProps<Props>();
-
+const props = withDefaults(defineProps<Props>(), {
+	placeholder: "请输入内容",
+	contentBtn: "提交",
+	showBtn: true
+});
 const content = ref("");
 const action = ref(false);
 const disabled = ref(true);
@@ -81,6 +85,8 @@ function onFocus() {
 }
 
 defineExpose({
+	content,
+	disabled,
 	focus: () => (editorRef as any).value?.focus()
 });
 </script>
@@ -89,7 +95,9 @@ defineExpose({
 .form-box {
 	position: relative;
 	width: 100%;
+	padding: 1px;
 	overflow: hidden;
+	border-radius: 8px;
 	.action-box {
 		display: flex;
 		align-items: center;
